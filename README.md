@@ -1,7 +1,7 @@
 
 # SharpQuill
 
-SharpQuill is an open source .NET library for reading and writing Oculus Quill scenes.
+FORKED FROM JOAN CHARMANT. I'M ONLY USING FOR VERY SIMPLE PURPOSES. SharpQuill is an open source .NET library for reading and writing Oculus Quill scenes.
 
 This project is not affiliated with Facebook or Oculus.
 
