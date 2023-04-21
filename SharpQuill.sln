@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpQuill", "SharpQuill\Sh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateBlendshapesStarter", "ConsoleApp1\CreateBlendshapesStarter.csproj", "{67D9E358-56A0-41A2-8778-26E0CFAFAA3F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CondenseToSingleLayers", "CondenseToSingleLayers\CondenseToSingleLayers.csproj", "{1CB7A411-7727-47BC-81E8-2E72E5A78151}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{67D9E358-56A0-41A2-8778-26E0CFAFAA3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67D9E358-56A0-41A2-8778-26E0CFAFAA3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67D9E358-56A0-41A2-8778-26E0CFAFAA3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CB7A411-7727-47BC-81E8-2E72E5A78151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CB7A411-7727-47BC-81E8-2E72E5A78151}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CB7A411-7727-47BC-81E8-2E72E5A78151}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CB7A411-7727-47BC-81E8-2E72E5A78151}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

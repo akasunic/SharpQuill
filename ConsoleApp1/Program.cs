@@ -5,11 +5,12 @@ using System.IO;
 using System.Runtime;
 using System.Xml.Linq;
 
-var readPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onefolder";
+var readPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onelayer";
 //some sample file paths: "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onefolder"
 var suffix = "_blendshapes";
 //default, change to whatever you want
 var writePath = readPath + suffix;
+String headLayer = "Face-base"; //set this to however you named your base head layer or folder
 
 
 //first, get access to the layer using the read functions
@@ -26,14 +27,12 @@ void LayerName(Layer layer)
 }
 
 
-//make a deep copy of the layer???
-
-
+//comment out if not needed
 LayerName(sequence.RootLayer);
-//so it's Face-base in this case-- will want to start using a standard naming convention
-//note that this script is for folder?? 
+//so it's Face-base in this case-- will want to start using a standard naming convention in general, will make it easier
 
-var baseHead = sequence.RootLayer.FindChild("Face-base");
+
+var baseHead = sequence.RootLayer.FindChild(headLayer);
 //Attempting to make two new copies of a layer and give them new names???
 
 string[] blendshapeNames =
