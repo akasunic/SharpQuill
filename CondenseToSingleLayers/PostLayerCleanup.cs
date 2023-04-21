@@ -1,7 +1,17 @@
 ﻿using SharpQuill;
 using System.IO;
 
-var readPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onefolder_blendshapes";
+//*****************WHERE I'm CURRENTLY STUCK************************
+//********So, even when I just literally read and write the document, it's generating an empty file. WHICH IS A PROBLEM OF COURSE. It has bounding box data etc
+//BUT each layer has a beginnning drawing of BBox 0^X6. And it seems that because this is present, it doesn't generate
+//BUT THEN SHOULDNT IT HAVE WORKED TO MAKE SURE WE DIDN"T DRAW THOSE 0 BOXES??? it seems it should have
+//SO it could be an issue with the file you're working on. In fact, try this using a non modified file to see, that will give you some insight...
+//OKAY NO SO It is still generating an empty stroke file--
+//SO HOPEFUL BIT IS: MUST BE SOMETHING ELSE MORE SOLVABLE!!! THOUGH ALSO< DID YOU MESS WITH ANY SHARP QUIlL SETTINGS??? TEST IT!!!
+//MAKE SURE PROGRAM.CS STILL RUNS!!!
+////***** SHIT!!! I DID SOMETHING. NEED TO LOOK AT ALL CHANGES TO ORIGINAL. BC NOW PREVIOUS ONE DOESN"'t WORK EITHER!!!
+///FIXED LAYERPAINT ISSUE!!! DON"T MESS WITH THOSE BOOLS DUMMY
+var readPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onefolder";
 //some sample file paths: "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onefolder_blendshapes"
 //whatever it is, needs to be the reference to the Quill folder that was modified by original script (test it first to check)
 var suffix = "_layersTidied";
@@ -9,87 +19,69 @@ var suffix = "_layersTidied";
 var writePath = readPath + suffix;
 
 //I really want to do like, sequence.RootLayer.children, you know??
-// Create the standard default scene but without any paint layer.
+// Create the standard default scene but without any paint layer. (?)
 
-
+var newSequence = Sequence.CreateDefault();
+var readSequence = QuillSequenceReader.Read(readPath);
+List<Layer> layers = new List<Layer>();
 void FlattenLayers(Layer layer)
 {
-  var newSequence = Sequence.CreateDefault();
+  
   if (layer is LayerGroup) //will be true for Root
   {
     foreach (Layer child in ((LayerGroup)layer).Children)
     {
       if (child is LayerGroup)
       {
-        //make an empty paint layer with the name of the group
+        break;//make an empty paint layer with the name of the group
         var path = "/" + child.Name; 
         LayerPaint flattenedLayer = new LayerPaint(child.Name);
-        var allStrokes = new List<Stroke>();
-        var mergedDrawing = new Drawing();
+        //var allStrokes = new List<Stroke>();
+        
     
 
         //iterate through all the children of this child--
         //Use: Drawings.Add(new Drawing()); see LayerPaint.cs
         foreach (Layer grandchild in ((LayerGroup)child).Children) 
         {
+          Console.WriteLine(grandchild.Name);
           //going to assume these are now all just plain paint layers
           var listOfDrawings = ((LayerPaint)grandchild).Drawings;
           //Console.Write(listOfDrawings);
           var x = 0;
           foreach (Drawing drawing in listOfDrawings) {
-            
-            Console.WriteLine("drawing bounding box: " + drawing.BoundingBox);
-            if (CheckIfNonZeroBB(drawing.BoundingBox))
-            {
-              mergedDrawing.BoundingBox.Expand(drawing.BoundingBox); //only expand if a non-zero bounding box
-            }
-            //mergedDrawing.BoundingBox.Expand(drawing.BoundingBox);//WHY IS THIS NOT WORKING?????????????????????????
-            //Console.WriteLine(mergedDrawing.BoundingBox);
+            //make a clone of the drawing
+            flattenedLayer.Drawings.Add(drawing.Clone());
 
-            foreach (Stroke stroke in drawing.Data.Strokes)
-            {
-             
-              allStrokes.Add(stroke);// can set or get strokes, but maybe can't add directly to the data so doing later?
-              //Console.WriteLine(allStrokes[x].BoundingBox);
-              x++;
-            }
         
           }
 
         }
-        //trying adding a new drawing with all the specified strokes!
-        
-        mergedDrawing.Data.Strokes = allStrokes;
-        //Console.WriteLine(mergedDrawing.Data.Strokes.Count); //so it has all 26 strokes captured, so it's accurate stroke data I think! And stroke bounding boxes were being added. So... what's going on??
-        mergedDrawing.UpdateBoundingBox(false); //should be false I think because strokes were already updated. let's see..
-        Console.WriteLine("merged Drawing: " + mergedDrawing.BoundingBox);
-        flattenedLayer.Drawings = new List<Drawing> { mergedDrawing };
+ 
         flattenedLayer.Visible = false; //otherwise might be too many visible at once, performance issues
         newSequence.InsertLayerAt(flattenedLayer, "");
       }
       //if it's already a single paint layer, want to make sure that is added to the Quill file
       else
       {
-        newSequence.InsertLayerAt(child, "");
+        //Layer newLayer = child.DeepCopy(child.Name);//testing using a clone, bc for some reason this also empty of strokes??
+        foreach(Drawing drawing in ((LayerPaint)child).Drawings)
+        {
+          //if bounding box of drawing is 00000, then remove from the list-- COME BACK TO THIS LATER!!!!
+         // ((LayerPaint)child).Drawings
+        }
+        layers.Add(child);
+        //readSequence.InsertLayerAt(child, "");//CHANGE BACK TO NEW LATER??
       }
     }
   }
-  QuillSequenceWriter.Write(newSequence, writePath);
+  
 }
 
-bool CheckIfNonZeroBB(BoundingBox box)
 
+//FlattenLayers(readSequence.RootLayer);
+/*foreach(Layer lay in layers)
 {
-  List<float> coords = new List<float> { box.MinX, box.MinY, box.MinZ, box.MaxX, box.MaxY, box.MaxZ };
-  foreach(float coord in coords)
-  {
-    if (coord > 0 || coord < 0)
-    {
-      return true;
-    }
-  }
-  return false;
-}
-
-var readSequence = QuillSequenceReader.Read(readPath);
-FlattenLayers(readSequence.RootLayer);
+  readSequence.InsertLayerAt(lay, ""); //OKAY SOMETHING GOING ON!!! BC EVEN WITH NOTHING CHANGING IT'S DELETING ALL STROKE DATA!!!
+}*/
+QuillSequenceWriter.Write(readSequence, writePath);

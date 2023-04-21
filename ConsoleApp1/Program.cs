@@ -5,7 +5,7 @@ using System.IO;
 using System.Runtime;
 using System.Xml.Linq;
 
-var readPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onelayer";
+var readPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_two-folders";
 //some sample file paths: "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onefolder"
 var suffix = "_blendshapes";
 //default, change to whatever you want
@@ -33,7 +33,6 @@ LayerName(sequence.RootLayer);
 
 
 var baseHead = sequence.RootLayer.FindChild(headLayer);
-//Attempting to make two new copies of a layer and give them new names???
 
 string[] blendshapeNames =
 {
