@@ -26,6 +26,7 @@ void FlattenLayers(Layer layer)
         LayerPaint flattenedLayer = new LayerPaint(child.Name);
         var allStrokes = new List<Stroke>();
         var mergedDrawing = new Drawing();
+    
 
         //iterate through all the children of this child--
         //Use: Drawings.Add(new Drawing()); see LayerPaint.cs
@@ -36,8 +37,13 @@ void FlattenLayers(Layer layer)
           //Console.Write(listOfDrawings);
           var x = 0;
           foreach (Drawing drawing in listOfDrawings) {
-            Console.WriteLine(drawing.BoundingBox);
-            mergedDrawing.BoundingBox.Expand(drawing.BoundingBox);//WHY IS THIS NOT WORKING?????????????????????????
+            
+            Console.WriteLine("drawing bounding box: " + drawing.BoundingBox);
+            if (CheckIfNonZeroBB(drawing.BoundingBox))
+            {
+              mergedDrawing.BoundingBox.Expand(drawing.BoundingBox); //only expand if a non-zero bounding box
+            }
+            //mergedDrawing.BoundingBox.Expand(drawing.BoundingBox);//WHY IS THIS NOT WORKING?????????????????????????
             //Console.WriteLine(mergedDrawing.BoundingBox);
 
             foreach (Stroke stroke in drawing.Data.Strokes)
@@ -55,8 +61,8 @@ void FlattenLayers(Layer layer)
         
         mergedDrawing.Data.Strokes = allStrokes;
         //Console.WriteLine(mergedDrawing.Data.Strokes.Count); //so it has all 26 strokes captured, so it's accurate stroke data I think! And stroke bounding boxes were being added. So... what's going on??
-        //mergedDrawing.UpdateBoundingBox(true);
-        //Console.WriteLine(mergedDrawing.BoundingBox);
+        mergedDrawing.UpdateBoundingBox(false); //should be false I think because strokes were already updated. let's see..
+        Console.WriteLine("merged Drawing: " + mergedDrawing.BoundingBox);
         flattenedLayer.Drawings = new List<Drawing> { mergedDrawing };
         flattenedLayer.Visible = false; //otherwise might be too many visible at once, performance issues
         newSequence.InsertLayerAt(flattenedLayer, "");
@@ -69,6 +75,20 @@ void FlattenLayers(Layer layer)
     }
   }
   QuillSequenceWriter.Write(newSequence, writePath);
+}
+
+bool CheckIfNonZeroBB(BoundingBox box)
+
+{
+  List<float> coords = new List<float> { box.MinX, box.MinY, box.MinZ, box.MaxX, box.MaxY, box.MaxZ };
+  foreach(float coord in coords)
+  {
+    if (coord > 0 || coord < 0)
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 var readSequence = QuillSequenceReader.Read(readPath);

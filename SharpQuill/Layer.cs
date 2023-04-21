@@ -70,7 +70,7 @@ namespace SharpQuill
     public Animation Animation { get; set; } = new Animation();
 
       /// <summary>
-    /// Use DeepCopy to copy a layer and give it a new name. Use case: creating base layers for all the arkit blendshapes
+    /// [added by anna] Use DeepCopy to copy a layer and give it a new name. Use case: creating base layers for all the arkit blendshapes
     /// </summary>
     public Layer DeepCopy(String name)
     {
