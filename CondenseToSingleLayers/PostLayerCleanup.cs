@@ -11,7 +11,7 @@ using System.IO;
 //MAKE SURE PROGRAM.CS STILL RUNS!!!
 ////***** SHIT!!! I DID SOMETHING. NEED TO LOOK AT ALL CHANGES TO ORIGINAL. BC NOW PREVIOUS ONE DOESN"'t WORK EITHER!!!
 ///FIXED LAYERPAINT ISSUE!!! DON"T MESS WITH THOSE BOOLS DUMMY
-var readPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onefolder";
+var readPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onefolder_blendshapes";
 //some sample file paths: "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onefolder_blendshapes"
 //whatever it is, needs to be the reference to the Quill folder that was modified by original script (test it first to check)
 var suffix = "_layersTidied";
@@ -65,13 +65,9 @@ void FlattenLayers(Layer layer)
       else
       {
         //Layer newLayer = child.DeepCopy(child.Name);//testing using a clone, bc for some reason this also empty of strokes??
-        foreach(Drawing drawing in ((LayerPaint)child).Drawings)
-        {
-          //if bounding box of drawing is 00000, then remove from the list-- COME BACK TO THIS LATER!!!!
-         // ((LayerPaint)child).Drawings
-        }
-        layers.Add(child);
-        //readSequence.InsertLayerAt(child, "");//CHANGE BACK TO NEW LATER??
+        
+        //layers.Add(child);
+        newSequence.InsertLayerAt(child, "");//CHANGE BACK TO NEW LATER??
       }
     }
   }
@@ -79,9 +75,9 @@ void FlattenLayers(Layer layer)
 }
 
 
-//FlattenLayers(readSequence.RootLayer);
-/*foreach(Layer lay in layers)
+FlattenLayers(readSequence.RootLayer);
+/*foreach (Layer lay in layers)
 {
   readSequence.InsertLayerAt(lay, ""); //OKAY SOMETHING GOING ON!!! BC EVEN WITH NOTHING CHANGING IT'S DELETING ALL STROKE DATA!!!
 }*/
-QuillSequenceWriter.Write(readSequence, writePath);
+QuillSequenceWriter.Write(newSequence, writePath);
