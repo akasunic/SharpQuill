@@ -68,5 +68,14 @@ namespace SharpQuill
     /// The animation channels for this layer (for interpolated animation).
     /// </summary>
     public Animation Animation { get; set; } = new Animation();
+
+    public Layer DeepCopy(String name)
+    {
+      Layer other = (Layer)this.MemberwiseClone();
+      other.Name = name;
+      return other;
+    }
   }
+
+  
 }
