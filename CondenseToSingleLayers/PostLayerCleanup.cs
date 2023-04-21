@@ -25,7 +25,7 @@ void FlattenLayers(Layer layer)
         var path = "/" + child.Name; 
         LayerPaint flattenedLayer = new LayerPaint(child.Name);
         var allStrokes = new List<Stroke>();
-        
+        var mergedDrawing = new Drawing();
 
         //iterate through all the children of this child--
         //Use: Drawings.Add(new Drawing()); see LayerPaint.cs
@@ -35,7 +35,11 @@ void FlattenLayers(Layer layer)
           var listOfDrawings = ((LayerPaint)grandchild).Drawings;
           //Console.Write(listOfDrawings);
           var x = 0;
-          foreach (Drawing drawing in listOfDrawings) { 
+          foreach (Drawing drawing in listOfDrawings) {
+            Console.WriteLine(drawing.BoundingBox);
+            mergedDrawing.BoundingBox.Expand(drawing.BoundingBox);//WHY IS THIS NOT WORKING?????????????????????????
+            //Console.WriteLine(mergedDrawing.BoundingBox);
+
             foreach (Stroke stroke in drawing.Data.Strokes)
             {
              
@@ -48,10 +52,12 @@ void FlattenLayers(Layer layer)
 
         }
         //trying adding a new drawing with all the specified strokes!
-        var mergedDrawing = new Drawing();
+        
         mergedDrawing.Data.Strokes = allStrokes;
-        mergedDrawing.UpdateBoundingBox(true);
-        flattenedLayer.Drawings.Add(mergedDrawing);
+        //Console.WriteLine(mergedDrawing.Data.Strokes.Count); //so it has all 26 strokes captured, so it's accurate stroke data I think! And stroke bounding boxes were being added. So... what's going on??
+        //mergedDrawing.UpdateBoundingBox(true);
+        //Console.WriteLine(mergedDrawing.BoundingBox);
+        flattenedLayer.Drawings = new List<Drawing> { mergedDrawing };
         flattenedLayer.Visible = false; //otherwise might be too many visible at once, performance issues
         newSequence.InsertLayerAt(flattenedLayer, "");
       }

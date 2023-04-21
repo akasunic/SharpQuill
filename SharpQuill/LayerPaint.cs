@@ -44,7 +44,7 @@ namespace SharpQuill
     /// </summary>
     /// <param name="name">The name of the layer.</param>
     /// <param name="addDrawing">Whether a drawing is immediately added to the layer. All paint layers need to have at least one drawing.</param>
-    public LayerPaint(string name = "", bool addDrawing = false) 
+    public LayerPaint(string name = "", bool addDrawing = true) 
     {
       this.Name = name;
 
