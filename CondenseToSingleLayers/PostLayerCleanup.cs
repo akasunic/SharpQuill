@@ -23,7 +23,7 @@ var writePath = readPath + suffix;
 
 var newSequence = Sequence.CreateDefault();
 var readSequence = QuillSequenceReader.Read(readPath);
-List<Layer> layers = new List<Layer>();
+
 void FlattenLayers(Layer layer)
 {
   
@@ -33,31 +33,52 @@ void FlattenLayers(Layer layer)
     {
       if (child is LayerGroup)
       {
-        break;//make an empty paint layer with the name of the group
-        var path = "/" + child.Name; 
+
+        //var path = "/" + child.Name; 
         LayerPaint flattenedLayer = new LayerPaint(child.Name);
+        BoundingBox newBox = new BoundingBox(0,0,0,0,0,0);
+        flattenedLayer.Drawings.Add(new Drawing());
+        List<Stroke> layerStrokes = new List<Stroke>();
+       
         //var allStrokes = new List<Stroke>();
-        
-    
+        //WAAHHHHHH IT'S NOT 
+
 
         //iterate through all the children of this child--
         //Use: Drawings.Add(new Drawing()); see LayerPaint.cs
-        foreach (Layer grandchild in ((LayerGroup)child).Children) 
+        foreach (Layer grandchild in ((LayerGroup)child).Children)
         {
           Console.WriteLine(grandchild.Name);
           //going to assume these are now all just plain paint layers
-          var listOfDrawings = ((LayerPaint)grandchild).Drawings;
+          Drawing drawingToCopy = ((LayerPaint)grandchild).Drawings[0];
+          List<Stroke> strokesCopy = drawingToCopy.Data.Clone().Strokes;
           //Console.Write(listOfDrawings);
-          var x = 0;
-          foreach (Drawing drawing in listOfDrawings) {
-            //make a clone of the drawing
-            flattenedLayer.Drawings.Add(drawing.Clone());
-
-        
-          }
+          
+          
+            //add that drawing to the big drawing list
+            //NO THIS WILL NOT WORK BECAUSE YOU SHOULD ONLY HAVE ONE DRAWING FOR A FRAME, AND THIS IS ADDING A BUNCH FOR ONE, SO NO!!!
+            /*layerDrawings.Add(drawing);*/
+            //GET THE STROKE DATA
+            foreach (Stroke stroke in strokesCopy)
+            {
+              layerStrokes.Add(stroke);
+            //Console.WriteLine(stroke.BoundingBox);
+            newBox.Expand(stroke.BoundingBox);
+            Console.WriteLine("newBox: "+ newBox);//CHECK OUT OUTPUT MORE AND SEE WHAT'S WRONG!!!!
+            //Console.WriteLine(flattenedLayer.Drawings[0].BoundingBox);
+            }
 
         }
- 
+
+        
+        flattenedLayer.Drawings[0].Data.Strokes = layerStrokes;
+        flattenedLayer.Drawings[0].BoundingBox = newBox;//OKAY BUT THIS IS MAKING ALL OF THEM THE SAME!!! WHY WOULD THAT BE???? PLAY AROUND WITH THIS MORE!!!
+        ((LayerPaint)flattenedLayer).Frames = new List<int> { 0}; //WOW NOW IT ACTUALLY SHOWS UP!!!
+        //GAH just realized they SHOULD all have the same bounding boxes, because they all have the same stroke data!! So...  dunno what issue could be then
+        //*****************FRAMES-- CURRENTLY EMPTY, I HTINK IT SHOULD BE 0.0 SEE OTHER FILE!!!!
+        //Console.WriteLine(flattenedLayer.Drawings[0].Data.Strokes[0].BoundingBox);
+        //flattenedLayer.Drawings[0].UpdateBoundingBox(false);
+        Console.WriteLine(flattenedLayer.Drawings[0].BoundingBox);
         flattenedLayer.Visible = false; //otherwise might be too many visible at once, performance issues
         newSequence.InsertLayerAt(flattenedLayer, "");
       }
