@@ -11,7 +11,7 @@ var suffix = "_blendshapes";
 //default, change to whatever you want
 var writePath = readPath + suffix;
 String headLayer = "Face-base"; //set this to however you named your base head layer or folder
-
+//NOTE might want to change this to a mini UI.
 
 //first, get access to the layer using the read functions
 var sequence = QuillSequenceReader.Read(readPath);

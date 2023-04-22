@@ -26,7 +26,7 @@ var readSequence = QuillSequenceReader.Read(readPath);
 
 void FlattenLayers(Layer layer)
 {
-  
+  //will need to write all assumptions out about structure of original file etc...
   if (layer is LayerGroup) //will be true for Root, so going down one level
   {
     foreach (Layer child in ((LayerGroup)layer).Children)
@@ -37,13 +37,14 @@ void FlattenLayers(Layer layer)
         //var path = "/" + child.Name; 
         LayerPaint flattenedLayer = new LayerPaint(child.Name);
         //Get transform of child [the group layer] and set the flattenedLayer to the same Transform
+        //****OK SO WE NEED TO MAKE SURE ALL THE SUB LAYERS ARE NOT TRANSFORMED!!!!
+        //***CAN DO A TEST HERE AND GIVE A WARNING OR ERROR IF THAT'S THE CASE!!!!!!
         flattenedLayer.Transform = child.Transform;
         BoundingBox newBox = new BoundingBox(0,0,0,0,0,0);
         flattenedLayer.Drawings.Add(new Drawing());
         List<Stroke> layerStrokes = new List<Stroke>();
        
-        //var allStrokes = new List<Stroke>();
-        //WAAHHHHHH IT'S NOT 
+
 
 
         //iterate through all the children of this child--
@@ -77,11 +78,11 @@ void FlattenLayers(Layer layer)
         flattenedLayer.Drawings[0].BoundingBox = newBox;//OKAY BUT THIS IS MAKING ALL OF THEM THE SAME!!! WHY WOULD THAT BE???? PLAY AROUND WITH THIS MORE!!!
         ((LayerPaint)flattenedLayer).Frames = new List<int> { 0}; //WOW NOW IT ACTUALLY SHOWS UP!!!
         //GAH just realized they SHOULD all have the same bounding boxes, because they all have the same stroke data!! So...  dunno what issue could be then
-        //*****************FRAMES-- CURRENTLY EMPTY, I HTINK IT SHOULD BE 0.0 SEE OTHER FILE!!!!
+        //*****************FRAMES-- CURRENTLY EMPTY, I HTINK IT SHOULD BE 0.0 SEE OTHER FILE!!!! yes
         //Console.WriteLine(flattenedLayer.Drawings[0].Data.Strokes[0].BoundingBox);
         //flattenedLayer.Drawings[0].UpdateBoundingBox(false);
         Console.WriteLine(flattenedLayer.Drawings[0].BoundingBox);
-        flattenedLayer.Visible = false; //otherwise might be too many visible at once, performance issues
+        flattenedLayer.Visible = true; //when exporting for Maya, you'll want them all visible. So yeah.
         newSequence.InsertLayerAt(flattenedLayer, "");
       }
       //if it's already a single paint layer, want to make sure that is added to the Quill file
@@ -99,8 +100,5 @@ void FlattenLayers(Layer layer)
 
 
 FlattenLayers(readSequence.RootLayer);
-/*foreach (Layer lay in layers)
-{
-  readSequence.InsertLayerAt(lay, ""); //OKAY SOMETHING GOING ON!!! BC EVEN WITH NOTHING CHANGING IT'S DELETING ALL STROKE DATA!!!
-}*/
+
 QuillSequenceWriter.Write(newSequence, writePath);
