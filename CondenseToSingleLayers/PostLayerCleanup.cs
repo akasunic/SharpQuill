@@ -27,7 +27,7 @@ var readSequence = QuillSequenceReader.Read(readPath);
 void FlattenLayers(Layer layer)
 {
   
-  if (layer is LayerGroup) //will be true for Root
+  if (layer is LayerGroup) //will be true for Root, so going down one level
   {
     foreach (Layer child in ((LayerGroup)layer).Children)
     {
@@ -36,6 +36,8 @@ void FlattenLayers(Layer layer)
 
         //var path = "/" + child.Name; 
         LayerPaint flattenedLayer = new LayerPaint(child.Name);
+        //Get transform of child [the group layer] and set the flattenedLayer to the same Transform
+        flattenedLayer.Transform = child.Transform;
         BoundingBox newBox = new BoundingBox(0,0,0,0,0,0);
         flattenedLayer.Drawings.Add(new Drawing());
         List<Stroke> layerStrokes = new List<Stroke>();
