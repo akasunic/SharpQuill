@@ -8,6 +8,7 @@ using System.Xml.Linq;
 /*
  * Purpose of this program: Take a head model and quill and (in a new Quill project), duplicate it to create the named bases for the ARkit blendshapes.
  * Basically, automating the somewhat tedious steps of copying and renaming the head 51 times from within Quill.
+ * Note that this script will not modify the original files or folders; it will output a new project folder
  * Expectations for file you're reading in:
  * 1. Should contain only 1 head (as either a single layer, or a single folder), and separate paint layers for right eye and left eye.
  * The expectation is that there are no other nested folders-- if so, the script needs to be modified. Having additional layers is okay, but
@@ -193,7 +194,7 @@ if(baseHead!= null)
 
   //Writes the modified sequence layer to a new Quill project (renamed using suffixes specified at start)
   QuillSequenceWriter.Write(sequence, writePath);
-  Console.WriteLine("New file with blendshape starter assets created! See: " + writePath);
+  Console.WriteLine("New Quill project folder with blendshape starter assets created! See: " + writePath);
 }
 else
 {

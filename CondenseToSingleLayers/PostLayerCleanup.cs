@@ -1,104 +1,145 @@
 ﻿using SharpQuill;
 using System.IO;
 
-//*****************WHERE I'm CURRENTLY STUCK************************
-//********So, even when I just literally read and write the document, it's generating an empty file. WHICH IS A PROBLEM OF COURSE. It has bounding box data etc
-//BUT each layer has a beginnning drawing of BBox 0^X6. And it seems that because this is present, it doesn't generate
-//BUT THEN SHOULDNT IT HAVE WORKED TO MAKE SURE WE DIDN"T DRAW THOSE 0 BOXES??? it seems it should have
-//SO it could be an issue with the file you're working on. In fact, try this using a non modified file to see, that will give you some insight...
-//OKAY NO SO It is still generating an empty stroke file--
-//SO HOPEFUL BIT IS: MUST BE SOMETHING ELSE MORE SOLVABLE!!! THOUGH ALSO< DID YOU MESS WITH ANY SHARP QUIlL SETTINGS??? TEST IT!!!
-//MAKE SURE PROGRAM.CS STILL RUNS!!!
-////***** SHIT!!! I DID SOMETHING. NEED TO LOOK AT ALL CHANGES TO ORIGINAL. BC NOW PREVIOUS ONE DOESN"'t WORK EITHER!!!
-///FIXED LAYERPAINT ISSUE!!! DON"T MESS WITH THOSE BOOLS DUMMY
-var readPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onefolder_blendshapes";
-//some sample file paths: "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\scriptPractice_FolderCopies\\Face-test_Onefolder_blendshapes"
-//whatever it is, needs to be the reference to the Quill folder that was modified by original script (test it first to check)
+/*
+ * This script is not well-named... It can be used to flatten layers in a Quill document, specifically intended for a blendshape workflow
+ * That is, it expects as input a Quill project where each blendshape is a folder (LayerGroup), each of which contains paint layers
+ * Not set up to handle nested folders!
+ * Output: a Quill project that contains only paint layers for each blendshape (folder aka LayerGroup)
+ * Note that this script will not modify the original files or folders; it will output a new project folder
+ * 
+ * 
+ * But this script could technically be used for any Quill projects with folders that contain only paint layers (not sub-folders) that you want to flatten programatically
+ * It is NOT necessary to run this for blendshape projects if blendshapes were already individual paint layers
+ * But it may sometimes be easier to work with folders, whereas the final output should be individual paint layers, so here we are
+ * 
+ * Known issue: the paint layers under each folder must NOT have transforms on them. The eyes and the top level folders may.
+ * If you forgot this while creating, and have transforms on individual paint layers, it would be easier to just flatten layers manually, as I've not accounted for this in this code!
+ * This script re-uses some code used in blendshape starter file script (Program.cs, under ConsoleApp1/CreateBlendshapesStarter), but I am lazy so copied and pasted relevant code when needed...
+ */
+
+//get the location of the project you want to create a flattened version of; check for path and project validity
+Console.WriteLine("Copy-paste the full directory path for the Quill project folder. \nThis project should have Quill folders (i.e. for blendshapes) that need to be flattened into single paint layers.\nProject cannot have nested folders.");
+Console.WriteLine("Example structure: C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\Face-test_blendshapes");
+var readPath = Console.ReadLine();
+var readSequence = QuillSequenceReader.Read(readPath); //code line direct from Joan Charmant's example
+Console.WriteLine();//like to have an extra line for readability
+ConfirmReadPathValidity();
+
+/*
+ Checks that specified path is a valid directory. If it's not, keeps asking user for new path until it is valid
+Then reassigns the value of sequence using valid read path, and uses ConfirmQuillValidity() to ensure it is a valid Quill project folder
+*/
+void ConfirmReadPathValidity()
+{
+  while (!Directory.Exists(readPath))
+  {
+    Console.WriteLine("This is not a valid Directory path. Please enter a new path and press Enter");
+    readPath = Console.ReadLine();
+  }
+  readSequence = QuillSequenceReader.Read(readPath);
+  ConfirmQuillValidity();
+}
+
+/*
+ Run from within ConfirmReadPathValidity. Checks if the verified valid read path is a valid Quill project folder
+If it's not, asks for user to re-enter (and will return to checking read path validity)
+ */
+void ConfirmQuillValidity()
+{
+  while (readSequence == null)
+  {
+    Console.WriteLine("Not a valid Quill project folder.");
+    Console.WriteLine("Please ensure that the directory you specified is a Quill project folder containing: Quill.json, Quill.qbin, State.json");
+    Console.WriteLine("Re-enter the project directory and press Enter");
+    readPath = Console.ReadLine();
+    ConfirmReadPathValidity();
+  }
+}
+
 var suffix = "_layersTidied";
 //default, change to whatever you want
 var writePath = readPath + suffix;
 
-//I really want to do like, sequence.RootLayer.children, you know??
-// Create the standard default scene but without any paint layer. (?)
-
+// From Joan Charmant's example: Create the standard default scene but without any paint layers
 var newSequence = Sequence.CreateDefault();
-var readSequence = QuillSequenceReader.Read(readPath);
 
+/*
+ When passed a root layer, this method then goes through each top-level layer/folder. If it's a folder (aka a LayerGroup),
+create a flattened paint layer, set transform and name equivalent to folder (aka LayerGroup)
+and then add drawing data from each paint layer from original folder structure
+by iteratively cloning the drawing data from the first drawing of each layer, getting all the strokes,
+iteratively adding the strokes to the data of the new data and updating the bounding box of the new layer to include each stroke's bounding box
+assigning the new layer's drawing's strokes, bounding box and frames after you have iteratively visited all info from the original layers.
+This method also adds any original paint layers and all updated (flattened) paint layers to a new Quill sequence
+ */
 void FlattenLayers(Layer layer)
 {
-  //will need to write all assumptions out about structure of original file etc...
   if (layer is LayerGroup) //will be true for Root, so going down one level
   {
     foreach (Layer child in ((LayerGroup)layer).Children)
     {
+      //if it's a LayerGroup, then you want to flatten the paint layers into a single paint layer before adding to the new sequence
       if (child is LayerGroup)
       {
-
-        //var path = "/" + child.Name; 
         LayerPaint flattenedLayer = new LayerPaint(child.Name);
         //Get transform of child [the group layer] and set the flattenedLayer to the same Transform
-        //****OK SO WE NEED TO MAKE SURE ALL THE SUB LAYERS ARE NOT TRANSFORMED!!!!
-        //***CAN DO A TEST HERE AND GIVE A WARNING OR ERROR IF THAT'S THE CASE!!!!!!
+        //Note that this does nothing with the sub-layers in that group layer-- those need to NOT have been transformed!
+        //If they have, then just skip this script and flatten layers manually in Quill
+        //(Note: can look into Quill.json OR just run the script and see if it looks wonky)
         flattenedLayer.Transform = child.Transform;
+
+        //A note about BoundingBox: had to instantiate it separately from a drawing, and add it in at the end
+        //Otherwise it was not setting up properly
+        //this will be the bounding box of the new flattened layer
         BoundingBox newBox = new BoundingBox(0,0,0,0,0,0);
+
+        //there can only be one drawing per frame, so one drawing total in the JSON file per LayerPaint
         flattenedLayer.Drawings.Add(new Drawing());
+        //instantiate empty list of strokes that you can then iteratively add to
         List<Stroke> layerStrokes = new List<Stroke>();
-       
 
-
-
-        //iterate through all the children of this child--
-        //Use: Drawings.Add(new Drawing()); see LayerPaint.cs
+        //iterate through all paint layers contained in the folder (LayerGroup)
         foreach (Layer grandchild in ((LayerGroup)child).Children)
         {
-          Console.WriteLine(grandchild.Name);
-          //going to assume these are now all just plain paint layers
+          
+          //Assumes that there are NOT nested folders, so these are truly all LayerPaints
+
+          //clone the Drawing data from this paint layer, and then get all the strokes
           Drawing drawingToCopy = ((LayerPaint)grandchild).Drawings[0];
           List<Stroke> strokesCopy = drawingToCopy.Data.Clone().Strokes;
-          //Console.Write(listOfDrawings);
-          
-          
-            //add that drawing to the big drawing list
-            //NO THIS WILL NOT WORK BECAUSE YOU SHOULD ONLY HAVE ONE DRAWING FOR A FRAME, AND THIS IS ADDING A BUNCH FOR ONE, SO NO!!!
-            /*layerDrawings.Add(drawing);*/
-            //GET THE STROKE DATA
-            foreach (Stroke stroke in strokesCopy)
-            {
-              layerStrokes.Add(stroke);
-            //Console.WriteLine(stroke.BoundingBox);
-            newBox.Expand(stroke.BoundingBox);
-            Console.WriteLine("newBox: "+ newBox);//CHECK OUT OUTPUT MORE AND SEE WHAT'S WRONG!!!!
-            //Console.WriteLine(flattenedLayer.Drawings[0].BoundingBox);
-            }
 
+          //iterate through strokes in this copy, and add them to the list of strokes
+          //you will later also
+          //as each stroke is added, also update the bounding box of the drawing (tried using bounding box of copied drawing directly, but wasn't working)
+          foreach (Stroke stroke in strokesCopy)
+          {
+            layerStrokes.Add(stroke);
+            newBox.Expand(stroke.BoundingBox);
+          }
         }
 
-        
+        //NOW you can update the strokes and bounding box for the new flattened layer
         flattenedLayer.Drawings[0].Data.Strokes = layerStrokes;
-        flattenedLayer.Drawings[0].BoundingBox = newBox;//OKAY BUT THIS IS MAKING ALL OF THEM THE SAME!!! WHY WOULD THAT BE???? PLAY AROUND WITH THIS MORE!!!
-        ((LayerPaint)flattenedLayer).Frames = new List<int> { 0}; //WOW NOW IT ACTUALLY SHOWS UP!!!
-        //GAH just realized they SHOULD all have the same bounding boxes, because they all have the same stroke data!! So...  dunno what issue could be then
-        //*****************FRAMES-- CURRENTLY EMPTY, I HTINK IT SHOULD BE 0.0 SEE OTHER FILE!!!! yes
-        //Console.WriteLine(flattenedLayer.Drawings[0].Data.Strokes[0].BoundingBox);
-        //flattenedLayer.Drawings[0].UpdateBoundingBox(false);
-        Console.WriteLine(flattenedLayer.Drawings[0].BoundingBox);
-        flattenedLayer.Visible = true; //when exporting for Maya, you'll want them all visible. So yeah.
+        flattenedLayer.Drawings[0].BoundingBox = newBox;
+
+        //Also need to add 0 to Frames, otherwise it was defaulting to null and causing errors
+        ((LayerPaint)flattenedLayer).Frames = new List<int> { 0}; 
+        flattenedLayer.Visible = true; //when exporting for Maya, you'll want them all visible
         newSequence.InsertLayerAt(flattenedLayer, "");
       }
-      //if it's already a single paint layer, want to make sure that is added to the Quill file
-      else
+
+      //if it's already a single paint layer (e.g., the two eye layers, or any LayerGroups you've already flattened manually), add it directly to sequence
       {
-        //Layer newLayer = child.DeepCopy(child.Name);//testing using a clone, bc for some reason this also empty of strokes??
-        
-        //layers.Add(child);
-        newSequence.InsertLayerAt(child, "");//CHANGE BACK TO NEW LATER??
+
+        newSequence.InsertLayerAt(child, "");
       }
     }
   }
-  
 }
-
 
 FlattenLayers(readSequence.RootLayer);
 
+
 QuillSequenceWriter.Write(newSequence, writePath);
+Console.WriteLine("New Quill project folder with flattened layers created! See: " + writePath);
