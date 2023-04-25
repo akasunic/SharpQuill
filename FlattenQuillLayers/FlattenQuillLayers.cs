@@ -1,5 +1,8 @@
 ﻿using SharpQuill;
+using System;
 using System.IO;
+using System.Runtime;
+using System.Xml.Linq;
 
 /*
  * This script can be used to flatten layers in a Quill document, specifically intended for a blendshape workflow
