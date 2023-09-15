@@ -71,6 +71,7 @@ namespace SharpQuill
 
       /// <summary>
     /// [added by anna] Use DeepCopy to copy a layer and give it a new name. Use case: creating base layers for all the arkit blendshapes
+    /// but actually it's a shallow copy?? So i don't know why I specifically named this deep copy? Maybe I'll change it later
     /// </summary>
     public Layer DeepCopy(String name)
     {

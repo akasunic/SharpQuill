@@ -1,7 +1,9 @@
 ﻿using SharpQuill;
 using System;
+using System.Numerics;
 using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
+using Newtonsoft.Json;
 //SEE CHATGPT!!! FIRST JUST TRY ANIMATING ANYTHIGN!!!! EG DO A RANDOM SCALE CHANGE, OR A DUPLICATION OR WHATE HAVE YOU
 
 
@@ -40,22 +42,47 @@ var newBlankLayer = new LayerPaint("testLayer3", true);
 Console.WriteLine(sequence.RootLayer.Children[1].Name);
 
 var heartLayer = (LayerPaint)sequence.RootLayer.Children[1]; //hard coding for now
-var blue = new Color(36, 126, 219);
+//var blueHeart = (LayerPaint)heartLayer.DeepCopy("blueHeart");
+//var bigHeart = (LayerPaint)heartLayer.DeepCopy("bigHeart");
+
+//YOU NEED THIS TO DO A DEEP COPY< BELOW-- I WAS MAKING A SHALLOW COPY BEFORE
+LayerPaint blueHeart = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(heartLayer));
+blueHeart.Name = "blueHeart";
+LayerPaint bigHeart = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(heartLayer));
+bigHeart.Name = "bigHeart";
+
+//need to divide by 255 bc stored in this format in SharpQuill-- v important to make float type explicit, otherwise does int division!
+var blue = new Color(36/255f, 126/255f, 219/255f);
 
 //okay, let's get the drawings and then the stroke data for the heartLayer, whereby we can change the color??
 Console.WriteLine(heartLayer.Drawings[0].Data.Strokes[0].Vertices.Count);
-var stroke0 = heartLayer.Drawings[0].Data.Strokes[0];
+
 var stroke1Vertices = heartLayer.Drawings[0].Data.Strokes[0].Vertices;
-var newVertices = new List<Vertex>();
+
+Console.WriteLine(heartLayer.Drawings[0].Data.Strokes[0].Vertices[0].Color);
+var blueVertices = new List<Vertex>();
+var enlargedVertices = new List<Vertex>();
 for(int i=0; i<stroke1Vertices.Count; i++)
 {
-  var vertexRef = stroke1Vertices[i];
-  vertexRef.Color = blue;
-  newVertices.Add(vertexRef);
+  var enlargeRef = bigHeart.Drawings[0].Data.Strokes[0].Vertices[i];
+  var blueRef = blueHeart.Drawings[0].Data.Strokes[0].Vertices[i];
+  blueRef.Color = blue;
+  blueVertices.Add(blueRef);
+  //NOTE: these are SharpQuill Vector3s, that's why you can't multiply them!!
+  enlargeRef.Position.X *= 3;
+  enlargeRef.Position.Y *= 3;
+  enlargeRef.Position.Z *= 3;
+  enlargeRef.Width *= 2;
+
+  enlargedVertices.Add(enlargeRef);
 }
+
+
 //stroke0.Vertices = newVertices;
-heartLayer.Drawings[0].Data.Strokes[0].Vertices = newVertices; //jic, not sure how references work in C#
-sequence.InsertLayerAt(heartLayer, "");
+blueHeart.Drawings[0].Data.Strokes[0].Vertices = blueVertices; //jic, not sure how references work in C#
+bigHeart.Drawings[0].Data.Strokes[0].Vertices = enlargedVertices;
+sequence.InsertLayerAt(blueHeart, "");
+sequence.InsertLayerAt(bigHeart, "");
 
 
 //Below to test insertion-- it's works
