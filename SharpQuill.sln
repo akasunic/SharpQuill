@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateBlendshapesStarter", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlattenQuillLayers", "FlattenQuillLayers\FlattenQuillLayers.csproj", "{50116D54-25C0-466E-8965-5680AAF9388E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateParticleEffects", "CreateParticleEffects\CreateParticleEffects.csproj", "{4235039C-BFD7-4843-9858-B290B86BFE20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisemeMatcher", "VisemeMatcher\VisemeMatcher.csproj", "{A825E734-24DD-42B8-90F1-6E882158B5C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{50116D54-25C0-466E-8965-5680AAF9388E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50116D54-25C0-466E-8965-5680AAF9388E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50116D54-25C0-466E-8965-5680AAF9388E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4235039C-BFD7-4843-9858-B290B86BFE20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4235039C-BFD7-4843-9858-B290B86BFE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4235039C-BFD7-4843-9858-B290B86BFE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4235039C-BFD7-4843-9858-B290B86BFE20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A825E734-24DD-42B8-90F1-6E882158B5C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A825E734-24DD-42B8-90F1-6E882158B5C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A825E734-24DD-42B8-90F1-6E882158B5C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A825E734-24DD-42B8-90F1-6E882158B5C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

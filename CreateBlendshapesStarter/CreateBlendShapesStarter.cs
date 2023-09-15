@@ -65,7 +65,7 @@ void ConfirmQuillValidity()
 
 
 //used for naming the output file. Change to something different if desired
-var suffix = "_blendshapes";
+var suffix = "_blendshapes_str";
 var writePath = readPath + suffix;
 
 /*
@@ -179,7 +179,8 @@ string[] blendshapeNames =
   "mouthPressLeft",
   "mouthPressRight",
   "mouthStretchLeft",
-  "mouthStretchRight"
+  "mouthStretchRight",
+  "tongueOut"
 };
 
 //iterate through blendshape names and create a duplicate of head folder/layer with appropriate name
