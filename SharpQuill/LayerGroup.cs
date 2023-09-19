@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SharpQuill
 {
@@ -83,5 +84,44 @@ namespace SharpQuill
 
       return null;
     }
+
+    public LayerGroup DeepCopy()
+    {
+      LayerGroup copy = new LayerGroup
+      {
+        Name = this.Name,
+        Visible = this.Visible,
+        Locked = this.Locked,
+        Collapsed = this.Collapsed,
+        BBoxVisible = this.BBoxVisible,
+        Opacity = this.Opacity,
+        IsModelTopLayer = this.IsModelTopLayer,
+        KeepAlive = this.KeepAlive,
+        Transform = this.Transform,
+        Animation = this.Animation,
+        // DeepCopy the children with correct types
+        Children = this.Children.Select(child =>
+        {
+          if (child is LayerPaint paintChild)
+            return JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(paintChild));
+          // Add other types if needed
+          else if (child is LayerGroup groupChild)
+            return groupChild.DeepCopy();
+          else if (child is LayerCamera camChild)
+            return JsonConvert.DeserializeObject<LayerCamera>(JsonConvert.SerializeObject(camChild));
+          else if (child is LayerPicture picChild)
+            return JsonConvert.DeserializeObject<LayerPicture>(JsonConvert.SerializeObject(picChild));
+          else if (child is LayerSound soundChild)
+            return JsonConvert.DeserializeObject<LayerSound>(JsonConvert.SerializeObject(soundChild));
+          else if (child is LayerViewpoint viewChild)
+            return JsonConvert.DeserializeObject<LayerViewpoint>(JsonConvert.SerializeObject(viewChild));
+          // Default: return a shallow copy if type is not recognized
+          return (Layer)child.ShallowCopy(child.Name);
+        }).ToList()
+      };
+
+      return copy;
+    }
+
   }
 }

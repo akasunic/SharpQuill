@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
 using Newtonsoft.Json;
-
+using System.Runtime.CompilerServices;
 
 Console.WriteLine("Testing: new project");
 /*
@@ -304,20 +304,21 @@ void sequenceChanges()
   
   //Need to make a layer group, and then add the children. That's what I'm thinking.
   //So let's make a new layer group, then add all the layer info from sequence data?? 
-  Layer seqLayerCopy = JsonConvert.DeserializeObject<Layer>(JsonConvert.SerializeObject(seqGenLayer));
+  LayerGroup seqLayerCopy = seqLayer.DeepCopy();
 
 
 
   LayerPaint animLayerCopy = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(animLayer));
-  // seqLayerCopy.Name = "edited-sequence";
-  //animLayerCopy.Name = "edited anim layer";
+  seqLayerCopy.Name = "edited-sequence";
+  animLayerCopy.Name = "edited anim layer";
   //First just make sure it gets copied properly-- like, the sequence is still a sequence, etc.
 
 
-  //sequence.InsertLayerAt(seqLayerCopy, "");
-  //sequence.InsertLayerAt(animLayerCopy, "/edited-sequence");
+  sequence.InsertLayerAt(seqLayerCopy, ""); //note that it's a deep copy, so it also includes the original children... it doesn't seem worth effort to get rid of at this point
+  sequence.InsertLayerAt(animLayerCopy, "/edited-sequence");
 
 }
+
 
 
 
