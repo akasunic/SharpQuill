@@ -4,7 +4,6 @@ using System.Numerics;
 using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
 using Newtonsoft.Json;
-//SEE CHATGPT!!! FIRST JUST TRY ANIMATING ANYTHIGN!!!! EG DO A RANDOM SCALE CHANGE, OR A DUPLICATION OR WHATE HAVE YOU
 
 
 Console.WriteLine("Testing: new project");
@@ -237,6 +236,53 @@ void framesColorsetc()
 1. change spaces of keyframes in a layer
 2. change transforms (e.g. pos, scale, rot)
  */
+
+keyframAnimManips();
+void keyframAnimManips()
+{
+  //will start this tomorrow
+  var keyAnimLayer = (LayerPaint)sequence.RootLayer.FindChild("Anim-key1_yel"); //hard coding for now
+  LayerPaint keyanimspaces = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(keyAnimLayer));
+  keyanimspaces.Name = "movingTrans";
+  LayerPaint keyanimtransforms = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(keyAnimLayer));
+  keyanimtransforms.Name = "changeTransValues";
+
+  //for keyanimspaces first
+  //let's say we want to double the spaces between them, huh?
+  //need to get to the animation for the LayerPaint, then get to the keys, then select all the transform keys
+  //and then from there can iterate through the times, so to make twice as fast, you'll just divide all the times by 2 and to make slow, mult by 2
+  //THIS MIGHT BE USEFUL AS A MINI TOOL ON ITS OWN, TBH
+
+  var transforms = keyanimspaces.Animation.Keys.Transform;
+  
+  for(int i = 0; i<transforms.Count; i++)
+  {
+    keyanimspaces.Animation.Keys.Transform[i].Time = transforms[i].Time * 2;
+    var transformVal = keyanimtransforms.Animation.Keys.Transform[i].Value;
+
+    //keyanimtransforms.Animation.Keys.Transform[i].Value.Scale = 2; //THis will give errors, see note below
+    //NOTE: TO CHANGE TRANSFORMS, you can't change directly parts of the value. You just have to make a whole new Transform.
+    //THIS IS BC-- Transform class is a value type struct, which means it's pointing to copies of values, not the values themselves
+    //So you can't change aspects of transform directly, you have to assign to a new transform, which I suppose is safer? idk
+    SharpQuill.Quaternion rot = transformVal.Rotation;
+    float scale = transformVal.Scale * 2;
+    string flip = transformVal.Flip;
+
+    var newX = transformVal.Translation.X + 2;
+    var newY = transformVal.Translation.Y*2;
+    var newZ = transformVal.Translation.Z*10;
+    SharpQuill.Vector3 trans = new SharpQuill.Vector3(newX, newY, newZ);
+    if (i % 2 > 0) {
+      keyanimtransforms.Animation.Keys.Transform[i].Value = new Transform(rot, scale, flip, trans);
+    }
+  }
+
+  //now keyanimstransforms, maybe changing position, scale, etc.
+
+
+  sequence.InsertLayerAt(keyanimspaces, "/keyanims");
+  sequence.InsertLayerAt(keyanimtransforms, "/keyanims");
+}
 
 
 
