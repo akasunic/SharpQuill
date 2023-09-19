@@ -131,7 +131,8 @@ sequence.InsertLayerAt(bigHeart, "");
  a ftn to modify colors in Frames-bl
 1. make all a base color
 2. flicker colors
-3. edit color scheme (so take input, change to certain output-- just hard code to test)
+3. edit color scheme (so take input, change to certain output-- just hard code to test)-- Oh i combined these. Could have done a totally random flicker
+but get the idea enough, could be done. So okay.
 4. add in extra frames for certain frames? i dont know. semi hard coded.
  
  */
@@ -144,14 +145,40 @@ void framesColorsetc()
   //this is the one you make all black
   LayerPaint framesbl= JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(origframesbl));
   LayerPaint flicker = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(origframesbl));
-  LayerPaint newcolors = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(origframesbl));
+  LayerPaint extraframes = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(origframesbl));
   framesbl.Name = "framesbl";
   flicker.Name = "flicker";
-  newcolors.Name = "newcolors";
+  extraframes.Name = "extraframes";
+
+
+
+  //let's just try doubling frames?? I dunno
+  //so drawings are like a set, right? of unique drawings
+  //if you just insert, it's the same drawing
+  //so you're really just modifying those frames
+  //but there could be other uses where you have a new drawing you want to insert or whatever-- actually, for the viseme stuff later, this
+  //will be really relevant, so okay. You get a little sense of it.
+  var curPos = 0;
+  List<int> doubledFrames = extraframes.Frames;
+  for (int f = 0; f< origframesbl.Frames.Count; f++)
+  {
+    int val = origframesbl.Frames[f];// this was key-- seems in C# you always gotta assign separately first
+    doubledFrames.Insert(curPos, val);
+    curPos += 2;
+  }
+  extraframes.Frames = doubledFrames;
+  //extraframes.Frames.Insert(1, 1); //so this works
+  sequence.InsertLayerAt(extraframes, "/frames");
+
+
 
   //iterate through all the drawings for the layer
   for (int i = 0; i < origframesbl.Drawings.Count; i++)
   {
+
+   
+
+
     //get all the strokes of the current drawing
     var strokes = framesbl.Drawings[i].Data.Strokes;
     var flickerstrokes = flicker.Drawings[i].Data.Strokes;
@@ -199,8 +226,8 @@ void framesColorsetc()
     }
   }
 
-  sequence.InsertLayerAt(framesbl, "");
-  sequence.InsertLayerAt(flicker, "");
+  sequence.InsertLayerAt(framesbl, "/frames");
+  sequence.InsertLayerAt(flicker, "/frames");
 }
 
 
