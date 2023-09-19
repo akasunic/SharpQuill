@@ -150,15 +150,18 @@ void framesColorsetc()
   newcolors.Name = "newcolors";
 
   //iterate through all the drawings for the layer
-  for (int i = 0; i < framesbl.Drawings.Count; i++)
+  for (int i = 0; i < origframesbl.Drawings.Count; i++)
   {
     //get all the strokes of the current drawing
     var strokes = framesbl.Drawings[i].Data.Strokes;
+    var flickerstrokes = flicker.Drawings[i].Data.Strokes;
     //iterate through all the strokes of this drawing
     for (int s = 0; s < strokes.Count; s++)
     {
       //gather all the vertices of each stroke and iterate through
       var vertices = strokes[s].Vertices;
+      var flickervertices = flickerstrokes[s].Vertices;
+      
 
       for (int v=0; v < vertices.Count; v++)
       {
@@ -166,14 +169,38 @@ void framesColorsetc()
         Color black = new Color(0, 0, 0);
         var curVert = vertices[v];
         curVert.Color = black;
+       Console.WriteLine("vertices[v]: " + vertices[v].Color);
         vertices[v] = curVert; //oh, assignment is weird... so only worked once I did this. okay...i guess assignment doesn't work for nested shit.
-        //Console.WriteLine("vertices[v]: " + vertices[v].Color);
+
+        //for the flicker, see what color the vertex is first, and have a rule for changing
+        var curFlickVert = flickervertices[v];
+        if(curFlickVert.Color.R == 0.52033985f)
+        {
+          curFlickVert.Color = new Color(0, 1, 0);
+          flickervertices[v] = curFlickVert;
+
+        }
+        else if (curFlickVert.Color.R  == .5530473f)
+        {
+          curFlickVert.Color = new Color(0, 0.5f, 0);
+          flickervertices[v] = curFlickVert;
+        }
+        else
+        {
+          curFlickVert.Color = new Color(1, 0, 0);
+          flickervertices[v] = curFlickVert;
+        }
+        
+       // Console.WriteLine("r: " + curFlickVert.Color.R);
+
+        
       }
 
     }
   }
 
   sequence.InsertLayerAt(framesbl, "");
+  sequence.InsertLayerAt(flicker, "");
 }
 
 
