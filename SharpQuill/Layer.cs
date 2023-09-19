@@ -70,10 +70,10 @@ namespace SharpQuill
     public Animation Animation { get; set; } = new Animation();
 
       /// <summary>
-    /// [added by anna] Use DeepCopy to copy a layer and give it a new name. Use case: creating base layers for all the arkit blendshapes
-    /// but actually it's a shallow copy?? So i don't know why I specifically named this deep copy? Maybe I'll change it later
+    /// [added by anna] Use case: creating base layers for all the arkit blendshapes. Makes copy of layer
+    /// (only useful if not modifying that layer in code at all-- otherwise, do a DeepCopy using Newtonsoft.JSON)
     /// </summary>
-    public Layer DeepCopy(String name)
+    public Layer ShallowCopy(String name)
     {
       Layer other = (Layer)this.MemberwiseClone();
       other.Name = name;

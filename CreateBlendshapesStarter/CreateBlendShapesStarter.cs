@@ -189,7 +189,7 @@ if(baseHead!= null)
   for (int i = 0; i < blendshapeNames.Length; i++)
   {
     //needs to reference a new layer each time (otherwise, all new layers have the same name)
-    Layer newLayer = baseHead.DeepCopy(blendshapeNames[i]);
+    Layer newLayer = baseHead.ShallowCopy(blendshapeNames[i]);
     newLayer.Visible = false; //assuming you will work on each layer separately, so starts off with all of them non-visible
     sequence.InsertLayerAt(newLayer, ""); //putting layers at the root of the existing sequence from the document
   }

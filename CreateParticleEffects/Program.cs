@@ -78,12 +78,130 @@ for(int i=0; i<stroke1Vertices.Count; i++)
 }
 
 
+
+
+/*
+ --------------------------------------------------------------------------------------------
+ANIMATION TIMELINE STUFF IS BELOW HERE
+----------------------------------------------------------------------------------------
+sequence.RootLayer.FindChild(userAnswer);
+ 
+ 
+ 
+ 
+ 
+ */
+
+
+//OBVIOUSLY BETTER WAYS TO DO THIS BUT FOR NOW COPYING AND PASTING FROM BLENDSHAPES STARTER-- NEED BETTER LONGER TERM SOLUTION-- ALSO NEED TO LOOK INTO PYTHON STUFF SOONER RATHER THAN LATER!!
+//
+List<string> LayerName(Layer layer)
+{
+  List<string> quillLayers = new List<string>();
+  if (layer is LayerGroup)
+  {
+    foreach (Layer child in ((LayerGroup)layer).Children)
+    {
+      Console.WriteLine(child.Name);
+      quillLayers.Add(child.Name);
+    }
+  }
+  return quillLayers;
+}
+
+LayerName(sequence.RootLayer);
+//So, layerPaints with different drawings by frames VS keyframes, that often have just one drawing (but may have multiple)
+var singleAnimLayer = (LayerPaint)sequence.RootLayer.FindChild("Anim-key1_yel");
+
+//so the below just has 1 drawing, 1 frame
+Console.WriteLine(singleAnimLayer.Drawings.Count);
+Console.WriteLine(singleAnimLayer.Frames.Count);
+
+//and then below, 20 drawings, 20 frames
+/*Console.WriteLine(frameByframeAnimLayer.Drawings.Count);
+Console.WriteLine(frameByframeAnimLayer.Frames.Count);
+*/
 //stroke0.Vertices = newVertices;
 blueHeart.Drawings[0].Data.Strokes[0].Vertices = blueVertices; //jic, not sure how references work in C#
 bigHeart.Drawings[0].Data.Strokes[0].Vertices = enlargedVertices;
 sequence.InsertLayerAt(blueHeart, "");
 sequence.InsertLayerAt(bigHeart, "");
 
+/*
+ a ftn to modify colors in Frames-bl
+1. make all a base color
+2. flicker colors
+3. edit color scheme (so take input, change to certain output-- just hard code to test)
+4. add in extra frames for certain frames? i dont know. semi hard coded.
+ 
+ */
+
+framesColorsetc();
+void framesColorsetc()
+{
+
+  var origframesbl = (LayerPaint)sequence.RootLayer.FindChild("Frames-bl");
+  //this is the one you make all black
+  LayerPaint framesbl= JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(origframesbl));
+  LayerPaint flicker = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(origframesbl));
+  LayerPaint newcolors = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(origframesbl));
+  framesbl.Name = "framesbl";
+  flicker.Name = "flicker";
+  newcolors.Name = "newcolors";
+
+  //iterate through all the drawings for the layer
+  for (int i = 0; i < framesbl.Drawings.Count; i++)
+  {
+    //get all the strokes of the current drawing
+    var strokes = framesbl.Drawings[i].Data.Strokes;
+    //iterate through all the strokes of this drawing
+    for (int s = 0; s < strokes.Count; s++)
+    {
+      //gather all the vertices of each stroke and iterate through
+      var vertices = strokes[s].Vertices;
+
+      for (int v=0; v < vertices.Count; v++)
+      {
+        //change the color of each of those vertices to, in this case, black
+        Color black = new Color(0, 0, 0);
+        var curVert = vertices[v];
+        curVert.Color = black;
+        vertices[v] = curVert; //oh, assignment is weird... so only worked once I did this. okay...i guess assignment doesn't work for nested shit.
+        //Console.WriteLine("vertices[v]: " + vertices[v].Color);
+      }
+
+    }
+  }
+
+  sequence.InsertLayerAt(framesbl, "");
+}
+
+
+
+/*
+ non-nested animkey
+1. change spaces of keyframes in a layer
+2. change transforms (e.g. pos, scale, rot)
+ */
+
+
+
+/*
+ * animkey sequence
+ * 1. change offset
+ * 2. changing spacing of keyframes and then change sequence to correspond with that
+ 
+ 
+ */
+
+
+
+/*
+ puppeteering
+1. speeding up
+2. slowing down
+ 
+ */
 
 //Below to test insertion-- it's works
 //sequence.InsertLayerAt(newBlankLayer, "");
@@ -112,6 +230,8 @@ sequence.InsertLayerAt(bigHeart, "");
 
 QuillSequenceWriter.Write(sequence, "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\part-heart-test1");
 Console.WriteLine("I ran this code");
+
+
 
 /*class ParticleCreator
 {
