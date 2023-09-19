@@ -293,6 +293,31 @@ void keyframAnimManips()
  
  
  */
+sequenceChanges();
+
+void sequenceChanges()
+{
+  LayerGroup seqLayer = (LayerGroup)sequence.RootLayer.FindChild("Anim-key-seq-or");
+  Console.WriteLine(seqLayer.Animation);//hard coding for now
+  LayerPaint animLayer = (LayerPaint)seqLayer.FindChild("Anim-key");
+  Layer seqGenLayer = (Layer)seqLayer;
+  
+  //Need to make a layer group, and then add the children. That's what I'm thinking.
+  //So let's make a new layer group, then add all the layer info from sequence data?? 
+  Layer seqLayerCopy = JsonConvert.DeserializeObject<Layer>(JsonConvert.SerializeObject(seqGenLayer));
+
+
+
+  LayerPaint animLayerCopy = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(animLayer));
+  // seqLayerCopy.Name = "edited-sequence";
+  //animLayerCopy.Name = "edited anim layer";
+  //First just make sure it gets copied properly-- like, the sequence is still a sequence, etc.
+
+
+  //sequence.InsertLayerAt(seqLayerCopy, "");
+  //sequence.InsertLayerAt(animLayerCopy, "/edited-sequence");
+
+}
 
 
 
