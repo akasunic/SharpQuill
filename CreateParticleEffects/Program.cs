@@ -311,6 +311,12 @@ void sequenceChanges()
   LayerPaint animLayerCopy = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(animLayer));
   seqLayerCopy.Name = "edited-sequence";
   animLayerCopy.Name = "edited anim layer";
+  //FIX THIS-- WHAT DO MULTIPLE VISIBILITY KEYS EVEN MEAN??? AND SAME WITH OFFSET??? NOW I'M CONFUSED...
+  //OK INTERESTING-- in practice, probably always will be max of 2, and just change them both if you want to offset. Can play around more with things like, cutting off restarting etc, but that can be later
+  animLayerCopy.Animation.Keys.Visibility[0].Time=8400;
+  animLayerCopy.Animation.Keys.Offset[0].Time = 8400;
+  animLayerCopy.Animation.Keys.Visibility[1].Time = 8400;
+  animLayerCopy.Animation.Keys.Offset[1].Time = 8400;
   //First just make sure it gets copied properly-- like, the sequence is still a sequence, etc.
 
 
@@ -328,6 +334,30 @@ void sequenceChanges()
 2. slowing down
  
  */
+speeduppuppet();
+void speeduppuppet()
+{
+  //I AM TIRED SO NOT THINKING STRAIGHT SO NOT GOING TO COMMENT BUT DID SOME THINGS OK MIGHT WORK HAVE AN IDEA THAT'S ENOUGH
+  LayerPaint pup = (LayerPaint)sequence.RootLayer.FindChild("Anim-Pup-gr");
+  LayerPaint pupCopy = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(pup));
+  pupCopy.Name = "pup-copy";
+  var trans = pupCopy.Animation.Keys.Transform;//list of transform keyframes
+  var newTrans = new List<Keyframe<Transform>>();
+  for (int i = 0; i < trans.Count; i++)
+  {
+    if (i % 2 > 0)
+    {
+      newTrans.Add(trans[i]);
+    }
+  }
+  pupCopy.Animation.Keys.Transform = newTrans;
+  for (int i = 0; i < pupCopy.Animation.Keys.Transform.Count; i++)
+  {
+    pupCopy.Animation.Keys.Transform[i].Time = (int)(trans[i].Time / 2.0f);
+  }
+
+    sequence.InsertLayerAt(pupCopy, "");
+}
 
 //Below to test insertion-- it's works
 //sequence.InsertLayerAt(newBlankLayer, "");
