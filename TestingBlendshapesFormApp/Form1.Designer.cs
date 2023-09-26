@@ -35,6 +35,8 @@
             this.pickfileInstructions = new System.Windows.Forms.TextBox();
             this.folderPath = new System.Windows.Forms.TextBox();
             this.warning = new System.Windows.Forms.TextBox();
+            this.layerDropdown = new System.Windows.Forms.ComboBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -85,11 +87,36 @@
             this.warning.TabIndex = 3;
             this.warning.TextChanged += new System.EventHandler(this.warning_TextChanged);
             // 
+            // layerDropdown
+            // 
+            this.layerDropdown.FormattingEnabled = true;
+            this.layerDropdown.Location = new System.Drawing.Point(207, 110);
+            this.layerDropdown.MaxDropDownItems = 100;
+            this.layerDropdown.Name = "layerDropdown";
+            this.layerDropdown.Size = new System.Drawing.Size(302, 23);
+            this.layerDropdown.TabIndex = 4;
+            this.layerDropdown.Visible = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Location = new System.Drawing.Point(37, 110);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(151, 30);
+            this.textBox1.TabIndex = 5;
+            this.textBox1.Text = "Select main face layer or group";
+            this.textBox1.Visible = false;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(614, 450);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.layerDropdown);
             this.Controls.Add(this.warning);
             this.Controls.Add(this.folderPath);
             this.Controls.Add(this.pickfileInstructions);
@@ -109,5 +136,7 @@
     private TextBox pickfileInstructions;
     private TextBox folderPath;
     private TextBox warning;
+    private ComboBox layerDropdown;
+    private TextBox textBox1;
   }
 }
