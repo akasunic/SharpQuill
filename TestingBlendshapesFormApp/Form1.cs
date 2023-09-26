@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Windows.Forms;
+using System.Diagnostics;
 using SharpQuill;
 
 namespace TestingBlendshapesFormApp
@@ -12,11 +13,67 @@ namespace TestingBlendshapesFormApp
       InitializeComponent();
     }
 
-    private Sequence sequence; 
+    private Sequence sequence;
+
+    //array of all the 50 blendshapes names needed for Unity Live Face Capture. Can adjust names as needed
+    private string[] blendshapeNames =
+    {
+      "browInnerUp",
+      "browDownLeft",
+      "browDownRight",
+      "browOuterUpLeft",
+      "browOuterUpRight",
+      "eyeLookUpLeft",
+      "eyeLookUpRight",
+      "eyeLookDownLeft",
+      "eyeLookDownRight",
+      "eyeLookInLeft",
+      "eyeLookInRight",
+      "eyeLookOutLeft",
+      "eyeLookOutRight",
+      "eyeBlinkLeft",
+      "eyeBlinkRight",
+      "eyeSquintRight",
+      "eyeSquintLeft",
+      "eyeWideLeft",
+      "eyeWideRight",
+      "cheekPuff",
+      "cheekSquintLeft",
+      "cheekSquintRight",
+      "noseSneerLeft",
+      "noseSneerRight",
+      "jawOpen",
+      "jawForward",
+      "jawLeft",
+      "jawRight",
+      "mouthFunnel",
+      "mouthPucker",
+      "mouthLeft",
+      "mouthRight",
+      "mouthRollUpper",
+      "mouthRollLower",
+      "mouthShrugUpper",
+      "mouthShrugLower",
+      "mouthSmileLeft",
+      "mouthSmileRight",
+      "mouthFrownLeft",
+      "mouthFrownRight",
+      "mouthDimpleLeft",
+      "mouthDimpleRight",
+      "mouthUpperUpLeft",
+      "mouthUpperUpRight",
+      "mouthLowerDownLeft",
+      "mouthLowerDownRight",
+      "mouthPressLeft",
+      "mouthPressRight",
+      "mouthStretchLeft",
+      "mouthStretchRight",
+      "tongueOut"
+    };
 
     private void button1_Click(object sender, EventArgs e)
     {
-
+      Debug.WriteLine("clicking first button");
       if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
       {
         string selectedFolder = folderBrowserDialog1.SelectedPath;
@@ -25,6 +82,12 @@ namespace TestingBlendshapesFormApp
         ConfirmQuillValidity();
       }
 
+    }
+
+   private void createProject_Click(object sender, EventArgs e)
+    {
+      Debug.WriteLine("clicking submit button");
+      saveDialog();
     }
 
     private void textBox1_TextChanged(object sender, EventArgs e)
@@ -90,8 +153,50 @@ namespace TestingBlendshapesFormApp
         {
           layerDropdown.Visible = true;
           textBox1.Visible = true;
+          createProject.Visible = true;
+          finalSubmitInstructions.Visible = true;
         }
 
+      }
+    }
+
+    private void saveDialog()
+    {
+      Debug.WriteLine("running Save Dialog code");
+      //open a dialog to save file
+      SaveFileDialog sfd = new SaveFileDialog();
+      if (sfd.ShowDialog() == DialogResult.OK)
+      {
+        createQuillProject(Path.GetFullPath(sfd.FileName));
+        Debug.WriteLine("creating Quill project");
+      }
+    }
+
+    private void createQuillProject(string writePath)
+    {
+      Debug.WriteLine("string path: " + writePath);
+      //set basehead variable to the chosen layer in the Quill sequence using the answer given (in dropdown)
+      var baseHead = sequence.RootLayer.FindChild(layerDropdown.Text);
+      Debug.WriteLine("selected text: " + layerDropdown.Text);
+
+      //iterate through blendshape names and create a duplicate of head folder/layer with appropriate name
+      if (baseHead != null)
+      {
+        for (int i = 0; i < blendshapeNames.Length; i++)
+        {
+          //needs to reference a new layer each time (otherwise, all new layers have the same name)
+          Layer newLayer = baseHead.ShallowCopy(blendshapeNames[i]);
+          newLayer.Visible = false; //assuming you will work on each layer separately, so starts off with all of them non-visible
+          sequence.InsertLayerAt(newLayer, ""); //putting layers at the root of the existing sequence from the document
+        }
+
+        //Writes the modified sequence layer to a new Quill project
+        QuillSequenceWriter.Write(sequence, writePath);
+        warning.Text = "New Quill project folder with blendshape starter assets created! See: " + writePath;
+      }
+      else
+      {
+        warning.Text = "baseHead was null";
       }
     }
 
@@ -101,6 +206,16 @@ namespace TestingBlendshapesFormApp
     }
 
     private void textBox1_TextChanged_1(object sender, EventArgs e)
+    {
+
+    }
+
+    private void Form1_Load(object sender, EventArgs e)
+    {
+
+    }
+
+    private void textBox2_TextChanged(object sender, EventArgs e)
     {
 
     }

@@ -29,6 +29,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.button1 = new System.Windows.Forms.Button();
@@ -37,6 +38,8 @@
             this.warning = new System.Windows.Forms.TextBox();
             this.layerDropdown = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.createProject = new System.Windows.Forms.Button();
+            this.finalSubmitInstructions = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -90,7 +93,7 @@
             // layerDropdown
             // 
             this.layerDropdown.FormattingEnabled = true;
-            this.layerDropdown.Location = new System.Drawing.Point(207, 110);
+            this.layerDropdown.Location = new System.Drawing.Point(212, 110);
             this.layerDropdown.MaxDropDownItems = 100;
             this.layerDropdown.Name = "layerDropdown";
             this.layerDropdown.Size = new System.Drawing.Size(302, 23);
@@ -100,21 +103,50 @@
             // textBox1
             // 
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Location = new System.Drawing.Point(37, 110);
+            this.textBox1.Location = new System.Drawing.Point(37, 113);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(151, 30);
+            this.textBox1.Size = new System.Drawing.Size(178, 20);
             this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "Select main face layer or group";
+            this.textBox1.Text = "Select main face layer or group:";
             this.textBox1.Visible = false;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
+            // 
+            // createProject
+            // 
+            this.createProject.BackColor = System.Drawing.Color.Green;
+            this.createProject.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.createProject.ForeColor = System.Drawing.Color.White;
+            this.createProject.Location = new System.Drawing.Point(179, 230);
+            this.createProject.Name = "createProject";
+            this.createProject.Size = new System.Drawing.Size(217, 47);
+            this.createProject.TabIndex = 6;
+            this.createProject.Text = "Create New Quill File";
+            this.createProject.UseVisualStyleBackColor = false;
+            this.createProject.Visible = false;
+            this.createProject.Click += new System.EventHandler(this.createProject_Click);
+      // 
+      // finalSubmitInstructions
+      // 
+      this.finalSubmitInstructions.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.finalSubmitInstructions.Location = new System.Drawing.Point(37, 179);
+            this.finalSubmitInstructions.Multiline = true;
+            this.finalSubmitInstructions.Name = "finalSubmitInstructions";
+            this.finalSubmitInstructions.ReadOnly = true;
+            this.finalSubmitInstructions.Size = new System.Drawing.Size(488, 30);
+            this.finalSubmitInstructions.TabIndex = 7;
+            this.finalSubmitInstructions.Text = resources.GetString("finalSubmitInstructions.Text");
+            this.finalSubmitInstructions.Visible = false;
+            this.finalSubmitInstructions.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(614, 450);
+            this.ClientSize = new System.Drawing.Size(614, 341);
+            this.Controls.Add(this.finalSubmitInstructions);
+            this.Controls.Add(this.createProject);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.layerDropdown);
             this.Controls.Add(this.warning);
@@ -123,6 +155,7 @@
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Quill Blendshape Helper";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,5 +171,8 @@
     private TextBox warning;
     private ComboBox layerDropdown;
     private TextBox textBox1;
+    private Button submit;
+    private TextBox finalSubmitInstructions;
+    private Button createProject;
   }
 }
