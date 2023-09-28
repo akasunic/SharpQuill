@@ -13,7 +13,7 @@ namespace TestingBlendshapesFormApp
       InitializeComponent();
     }
 
-    private Sequence sequence;
+    private Sequence? sequence; //this syntax declares as nullable (so can set sequence to null to reset form)
 
     //array of all the 50 blendshapes names needed for Unity Live Face Capture. Can adjust names as needed
     private string[] blendshapeNames =
@@ -192,13 +192,27 @@ namespace TestingBlendshapesFormApp
 
         //Writes the modified sequence layer to a new Quill project
         QuillSequenceWriter.Write(sequence, writePath);
-        warning.Text = "New Quill project folder with blendshape starter assets created! See: " + writePath;
+        MessageBox.Show("New Quill project folder with blendshape starter assets created! See: " + writePath);
+        resetForm();
       }
       else
       {
-        warning.Text = "baseHead was null";
+        MessageBox.Show("Error. Did you select a layer from the dropdown menu? Please try again.");
+        
       }
     }
+
+    private void resetForm()
+    {
+      layerDropdown.Visible = false;
+      textBox1.Visible = false;
+      warning.Text = "";
+      sequence = null;
+      createProject.Visible = false;
+      finalSubmitInstructions.Visible = false;
+      folderPath.Text = "";
+
+  }
 
     private void showLayerDropdown()
     {

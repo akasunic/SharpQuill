@@ -40,6 +40,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.createProject = new System.Windows.Forms.Button();
             this.finalSubmitInstructions = new System.Windows.Forms.TextBox();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // button1
@@ -126,15 +127,15 @@
             this.createProject.UseVisualStyleBackColor = false;
             this.createProject.Visible = false;
             this.createProject.Click += new System.EventHandler(this.createProject_Click);
-      // 
-      // finalSubmitInstructions
-      // 
-      this.finalSubmitInstructions.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.finalSubmitInstructions.Location = new System.Drawing.Point(37, 179);
+            // 
+            // finalSubmitInstructions
+            // 
+            this.finalSubmitInstructions.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.finalSubmitInstructions.Location = new System.Drawing.Point(37, 173);
             this.finalSubmitInstructions.Multiline = true;
             this.finalSubmitInstructions.Name = "finalSubmitInstructions";
             this.finalSubmitInstructions.ReadOnly = true;
-            this.finalSubmitInstructions.Size = new System.Drawing.Size(488, 30);
+            this.finalSubmitInstructions.Size = new System.Drawing.Size(488, 64);
             this.finalSubmitInstructions.TabIndex = 7;
             this.finalSubmitInstructions.Text = resources.GetString("finalSubmitInstructions.Text");
             this.finalSubmitInstructions.Visible = false;
@@ -174,5 +175,6 @@
     private Button submit;
     private TextBox finalSubmitInstructions;
     private Button createProject;
+    private System.ComponentModel.BackgroundWorker backgroundWorker2;
   }
 }
