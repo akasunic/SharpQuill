@@ -52,5 +52,11 @@ namespace SharpQuill
       this.Opacity = opacity;
       this.Width = width;
     }
+
+
+    public override string ToString()
+    {
+      return "Position: " + this.Position.X + ", " + this.Position.Y + ", " + this.Position.Z + "\n" + "Normal: " + this.Normal.X + ", " + this.Normal.Y + ", " + this.Normal.Z + "\n" + "Tangent: " + this.Tangent.X + ", " + this.Tangent.Y + ", " + this.Tangent.Z + "\n" + "Color: " + this.Color + "\n" + "Opacity: " + this.Opacity + "\n" + "Width: " + this.Width;  
+    }
   }
 }
