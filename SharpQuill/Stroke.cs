@@ -69,6 +69,21 @@ namespace SharpQuill
       return s;
     }
 
+    //creates a new repositioned stroke (added by Anna)
+    public Stroke NewPosStroke(List<Vertex> vertices)
+    {
+      Stroke s = new Stroke();
+      s.Id = Id;
+      s.u2 = u2;
+      s.BoundingBox = BoundingBox;
+      s.BrushType = BrushType;
+      s.DisableRotationalOpacity = DisableRotationalOpacity;
+      s.u3 = u3;
+      s.Vertices = vertices;
+      return s;
+
+    }
+
     /// <summary>
     /// Updates the bounding of the stroke.
     /// </summary>
