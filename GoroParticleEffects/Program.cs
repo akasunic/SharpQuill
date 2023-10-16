@@ -23,6 +23,7 @@ using System.Text;
 //oh, would need algorithms for linear, ease in, ease out, etc. but let's just start with linear
 
 var numObjs = 100;//hardcoding for now-- see Goro numbers, etc-- I think I had written 51
+var numDups = 4; //hardcoding for now-- how many times you want to move it over to the right (X axis) to offset
 var sequence = QuillSequenceReader.Read("C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\Grid-test");
 var writePath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\randomizedParticles";
 var heartLayer = (LayerPaint)sequence.RootLayer.FindChild("Heart");
@@ -50,14 +51,14 @@ var zFact = 1;
 //return instead of void here
 //going to assume the first frame if it's frame by frame animation! (so, Drawings[0])
 //want to always work with the original layer for each stroke, and then
-
+//NOTE: might want to later ensure that original object is at roughly center (0,0,0)-- just make sure it's first vertex is. Have a little ftn to center in the original layer, perhaps
 //might want to rename this... it's copy and reposition object currently bc I think that's what it's doing but I gotta double check cuz I already forget
 //NOTE: should have a test if it's a frame by frame or not! should have just 1 drawing. OR after you do the deserialization, delete drawings after Drawings[0}. Up to you. Omit for now
 void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
 {
   //want the same randomization across all vertices of all strokes, so apply here, at the drawing level
   //note that these values may be exclusive, need to double check documentation
-
+  //CenterObject(origLayer); //maybe make a ftn for this and add in later
   //hm, maybe need a new seed each time? otherwise it's looking kinda strange. Let me see. Before I had this outside of the function
   var randXseed = new Random();
   var randYseed = new Random();
@@ -68,9 +69,6 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
   double angleY = GenAngleInRadians();
   double angleZ = GenAngleInRadians();
 
-  
-
-
   var randXOffset = xFact * randXseed.Next(quillGridDict["xMin"], quillGridDict["xMax"]);
   var randYOffset = yFact * randYseed.Next(quillGridDict["yMin"], quillGridDict["yMax"]);
   var randZOffset = zFact * randZseed.Next(quillGridDict["zMin"], quillGridDict["zMax"]);
@@ -79,7 +77,15 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
     var stroke = origLayer.Drawings[0].Data.Strokes[i];
     //instantiate list of Vertex here
     List<Vertex> newVertices = new List<Vertex>();
-    //
+
+    //also instatiate the list of the lists of duplicated vertices
+    //will be adding to these each time you add a vertex to newVertices
+    List<List<Vertex>> dupVertices = new List<List<Vertex>>();
+    for (int dups = 0; dups<numDups; dups++)
+    {
+      dupVertices.Add(new List<Vertex>());
+    }
+  
     for (int v = 0; v<stroke.Vertices.Count; v++)
     {
       var vertex = stroke.Vertices[v];
@@ -103,27 +109,44 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
       
       Vertex newRandV = new Vertex(newPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
       newVertices.Add(newRandV);
+
+      for (int dups = 0; dups < numDups; dups++)
+      {
+        var fact = dups + 1;
+
+        dupVertices[dups].Add()
+      }
       //then add this new vertex to the copied layer's vertices list
       //OHHH you want a new stroke, though... okay
-   
-      
+
+
     }
     //add new stroke to drawing here, add in vertices, reset bounding boxes!
     Stroke newStroke = stroke.NewPosStroke(newVertices);
     newStroke.UpdateBoundingBox();
     newLayer.Drawings[0].Data.Strokes.Add(newStroke);
+
+    //now you want to take this stroke, and clone offset and for numDups, offset it gridX*Xfactor
+
   }
   //update drawing bbox here?? double check where it's stored
   newLayer.Drawings[0].UpdateBoundingBox(false);//setting to false bc already updated stroke bbox above-- can play around with this if not working
 }
 
 //for however many times chosen, copy
-for(int i = 0; i<numObjs; i++)
+
+
+//Okay, let's say this is good enough for now-- now let's do STEP 2, which is to move all the strokes from this layer and copy by
+//size of grid*Xfactor
+//certain num of times-- numDups
+
+
+for (int i = 0; i < numObjs; i++)
 {
+   //hard coding heartLayer for now! Redo later!
   CopyReposObj(heartLayer, heartCopy);
 }
 
-//Okay, let's say this is good enough for now-- now let
 
 
 sequence.InsertLayerAt(heartCopy, "");
@@ -214,7 +237,6 @@ void PrintBBoxData(LayerPaint paintLayer)
 }
 
 
-//Rotation code will go here!!!
 
 //output the angleInRandians-- should do this at the drawing layer, though!!
 //will do this 3 times at the drawing level when making a new copy of object, store 
