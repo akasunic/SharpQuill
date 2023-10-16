@@ -28,6 +28,7 @@ var sequence = QuillSequenceReader.Read("C:\\Users\\amkas\\OneDrive\\Documents\\
 var writePath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\randomizedParticles";
 var heartLayer = (LayerPaint)sequence.RootLayer.FindChild("Heart");
 LayerPaint heartCopy = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(heartLayer));
+LayerPaint emptyLayer = new LayerPaint("emptyLayer", true);
 //make a deep copy, otherwise original will be altered
 heartCopy.Name = "heartCopy";
 
@@ -110,11 +111,14 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
       Vertex newRandV = new Vertex(newPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
       newVertices.Add(newRandV);
 
+      // now you want to take this stroke, and clone offset and for numDups, offset it gridX * Xfactor (but at vertex level)
+      //also re-do this for original strokes, too!
       for (int dups = 0; dups < numDups; dups++)
       {
         var fact = dups + 1;
-
-        dupVertices[dups].Add()
+        SharpQuill.Vector3 transXPos = new SharpQuill.Vector3(newPos.X + fact*(quillGridDict["xMax"] - quillGridDict["xMin"]), newPos.Y, newPos.Z);
+        Vertex newDupVert = new Vertex(transXPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
+        dupVertices[dups].Add(newDupVert);
       }
       //then add this new vertex to the copied layer's vertices list
       //OHHH you want a new stroke, though... okay
@@ -126,8 +130,16 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
     newStroke.UpdateBoundingBox();
     newLayer.Drawings[0].Data.Strokes.Add(newStroke);
 
-    //now you want to take this stroke, and clone offset and for numDups, offset it gridX*Xfactor
+    //for the dups
+    for (int d = 0; d<numDups; d++)
+    {
+      Stroke dupStroke = stroke.NewPosStroke(dupVertices[d]);
+      dupStroke.UpdateBoundingBox();
+      newLayer.Drawings[0].Data.Strokes.Add(dupStroke);
+    }
 
+    
+     
   }
   //update drawing bbox here?? double check where it's stored
   newLayer.Drawings[0].UpdateBoundingBox(false);//setting to false bc already updated stroke bbox above-- can play around with this if not working
@@ -144,12 +156,12 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
 for (int i = 0; i < numObjs; i++)
 {
    //hard coding heartLayer for now! Redo later!
-  CopyReposObj(heartLayer, heartCopy);
+  CopyReposObj(heartLayer, emptyLayer);
 }
 
 
 
-sequence.InsertLayerAt(heartCopy, "");
+sequence.InsertLayerAt(emptyLayer, "");
 QuillSequenceWriter.Write(sequence, writePath);
 
 
