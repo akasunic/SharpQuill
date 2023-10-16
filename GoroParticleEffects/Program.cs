@@ -6,6 +6,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Newtonsoft.Json;
 using System.Reflection.Emit;
 using System.Drawing;
+using System.Text;
 
 //Steady particles test
 //take a simple drawing from a paint layer-- let's do hearts, to practice for more than 1 stroke (though default would be circle), randomly duplicate within a range, ideally keeping within 1 layer
@@ -29,9 +30,6 @@ LayerPaint heartCopy = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.Ser
 //make a deep copy, otherwise original will be altered
 heartCopy.Name = "heartCopy";
 
-  var randXseed = new Random();
-  var randYseed = new Random();
-  var randZseed = new Random();
 
 var quillGridDict = new Dictionary<string, int>
 {
@@ -59,6 +57,17 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
 {
   //want the same randomization across all vertices of all strokes, so apply here, at the drawing level
   //note that these values may be exclusive, need to double check documentation
+
+  //hm, maybe need a new seed each time? otherwise it's looking kinda strange. Let me see. Before I had this outside of the function
+  var randXseed = new Random();
+  var randYseed = new Random();
+  var randZseed = new Random();
+
+  //want the angle at the top level
+  double angleX = GenAngleInRadians();
+  double angleY = GenAngleInRadians();
+  double angleZ = GenAngleInRadians();
+
   var randXOffset = xFact * randXseed.Next(quillGridDict["xMin"], quillGridDict["xMax"]);
   var randYOffset = yFact * randYseed.Next(quillGridDict["yMin"], quillGridDict["yMax"]);
   var randZOffset = zFact * randZseed.Next(quillGridDict["zMin"], quillGridDict["zMax"]);
@@ -71,17 +80,19 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
     for (int v = 0; v<stroke.Vertices.Count; v++)
     {
       var vertex = stroke.Vertices[v];
-      //agh, maybe this won't work, need to understand SharpQuill.Vector3 vs the built in Vector3... why is there a new Vector3 in SharpQuill??
-      SharpQuill.Vector3 newPos = new SharpQuill.Vector3(vertex.Position.X + randXOffset, vertex.Position.Y + randYOffset, vertex.Position.Z + randZOffset);
-      // public Vertex(Vector3 position, Vector3 normal, Vector3 tangent, Color color, float opacity, float width)
+      float X = vertex.Position.X + randXOffset;
+      float Y = vertex.Position.Y + randYOffset;
+      float Z = vertex.Position.Z + randZOffset;
 
-      /*     this.Position = position;
-           this.Normal = normal;
-           this.Tangent = tangent;
-           this.Color = color;
-           this.Opacity = opacity;
-           this.Width = width;*/
-      //keep same as original vertex in other manners, but change position
+      //now apply randomized rotation
+      //Note: using ref so that the orinal values get changed
+      RotateVertex(angleX, "X", ref X, ref Y, ref Z);
+      RotateVertex(angleY, "Y", ref X, ref Y, ref Z);
+      RotateVertex(angleZ, "Z", ref X, ref Y, ref Z);
+      
+      //agh, maybe this won't work, need to understand SharpQuill.Vector3 vs the built in Vector3... why is there a new Vector3 in SharpQuill??
+      SharpQuill.Vector3 newPos = new SharpQuill.Vector3(X, Y, Z);
+      
       Vertex newRandV = new Vertex(newPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
       newVertices.Add(newRandV);
       //then add this new vertex to the copied layer's vertices list
@@ -191,6 +202,71 @@ void PrintBBoxData(LayerPaint paintLayer)
     }
   }
 }
-  
-  
+
+
+//Rotation code will go here!!!
+
+//output the angleInRandians-- should do this at the drawing layer, though!!
+//will do this 3 times at the drawing level when making a new copy of object, store 
+double GenAngleInRadians()
+{
+  // Generate a random angle in degrees within a desired range
+  Random rotRandom = new Random();
+  double minAngle = -Math.PI;  // -180 degrees in radians
+  double maxAngle = Math.PI;   // 180 degrees in radians
+  double randomAngle = rotRandom.NextDouble() * (maxAngle - minAngle) + minAngle;
+
+  // Convert the random angle to radians
+  double angleInRadians = randomAngle;
+
+  return angleInRadians;
+
+
+}
+
+//going to randomly rotate all vertices in a drawing along all 3 axes
+//place so X Y Z are at same level, so you can mod directly
+//use ref so original values change-- may need to look up more on this to understand later...
+//I also like, don't understand rotation in gen. will look into later
+void RotateVertex(double angleInRadians, string axis, ref float X, ref float Y, ref float Z)
+{
+  double sinTheta = Math.Sin(angleInRadians);
+  double cosTheta = Math.Cos(angleInRadians);
+  double newX;
+  double newY;
+  double newZ;
+  switch (axis)
+  {
+    case "X":
+      newY =Y*cosTheta - Z * sinTheta;
+      newZ = Y * sinTheta + Z * cosTheta;
+      newX = X;
+      X = (float)newX;
+      Y = (float)newY;
+      Z = (float)newZ;
+      break;
+
+    case "Y":
+      newY = Y;
+      newX = X * cosTheta + Z * sinTheta;
+      newZ = Z * cosTheta - X * sinTheta;
+      X = (float)newX;
+      Y = (float)newY;
+      Z = (float)newZ;
+      break;
+
+    case "Z":
+      newZ = Z;
+      newX = X * cosTheta - Y * sinTheta;
+      newY = X * sinTheta + Y * cosTheta;
+      X = (float)newX;
+      Y = (float)newY;
+      Z = (float)newZ;
+      break;
+  }
+
+}
+
+
+
 
