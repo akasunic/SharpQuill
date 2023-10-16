@@ -22,7 +22,7 @@ using System.Text;
 //let's say, just a circle moving along a keyframe, linear interpolation
 //oh, would need algorithms for linear, ease in, ease out, etc. but let's just start with linear
 
-var numObjs = 51;//hardcoding for now-- see Goro numbers, etc
+var numObjs = 100;//hardcoding for now-- see Goro numbers, etc-- I think I had written 51
 var sequence = QuillSequenceReader.Read("C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\Grid-test");
 var writePath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\randomizedParticles";
 var heartLayer = (LayerPaint)sequence.RootLayer.FindChild("Heart");
@@ -68,6 +68,9 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
   double angleY = GenAngleInRadians();
   double angleZ = GenAngleInRadians();
 
+  
+
+
   var randXOffset = xFact * randXseed.Next(quillGridDict["xMin"], quillGridDict["xMax"]);
   var randYOffset = yFact * randYseed.Next(quillGridDict["yMin"], quillGridDict["yMax"]);
   var randZOffset = zFact * randZseed.Next(quillGridDict["zMin"], quillGridDict["zMax"]);
@@ -80,16 +83,21 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
     for (int v = 0; v<stroke.Vertices.Count; v++)
     {
       var vertex = stroke.Vertices[v];
-      float X = vertex.Position.X + randXOffset;
-      float Y = vertex.Position.Y + randYOffset;
-      float Z = vertex.Position.Z + randZOffset;
+      float X = vertex.Position.X;
+      float Y = vertex.Position.Y;
+      float Z = vertex.Position.Z;
 
       //now apply randomized rotation
       //Note: using ref so that the orinal values get changed
       RotateVertex(angleX, "X", ref X, ref Y, ref Z);
       RotateVertex(angleY, "Y", ref X, ref Y, ref Z);
       RotateVertex(angleZ, "Z", ref X, ref Y, ref Z);
-      
+
+      //apply offset after have rotated?
+      X += randXOffset;
+      Y += randYOffset;
+      Z += randZOffset;
+
       //agh, maybe this won't work, need to understand SharpQuill.Vector3 vs the built in Vector3... why is there a new Vector3 in SharpQuill??
       SharpQuill.Vector3 newPos = new SharpQuill.Vector3(X, Y, Z);
       
@@ -114,6 +122,8 @@ for(int i = 0; i<numObjs; i++)
 {
   CopyReposObj(heartLayer, heartCopy);
 }
+
+//Okay, let's say this is good enough for now-- now let
 
 
 sequence.InsertLayerAt(heartCopy, "");
