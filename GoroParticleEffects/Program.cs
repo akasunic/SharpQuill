@@ -50,7 +50,7 @@ var zFact = 1;
 //traverse the vertices of the drawing, taking the original and adding
 
 //return instead of void here
-//going to assume the first frame if it's frame by frame animation! (so, Drawings[0])
+//going to assume the first frame if it's frame by frame animation! (so, Drawings[0])-- OHHH actually I should just do for all frames. Bc then more reusable
 //want to always work with the original layer for each stroke, and then
 //NOTE: might want to later ensure that original object is at roughly center (0,0,0)-- just make sure it's first vertex is. Have a little ftn to center in the original layer, perhaps
 //might want to rename this... it's copy and reposition object currently bc I think that's what it's doing but I gotta double check cuz I already forget
@@ -236,7 +236,7 @@ void PrintGridTestInfo()
   }
 
 }
-
+//Below is WRONG
 //A realization: so to move a stroke, you do have to move all the vertices (which may be 45, or what have you).
 //but we can use stroke BBox as a starting point, potentially-- basically, going to translate and rotate it all around
 //but actually, rotation is an issue-- when you rotate a selected stroke-- Ah. I see. For a vertex, moving it actually also rotates the stroke. okay

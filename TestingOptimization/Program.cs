@@ -26,6 +26,7 @@ LayerPaint square = (LayerPaint)sequence.RootLayer.FindChild("PerfectSquare1");
 /*var sixStrokes = six.Drawings[0].Data.Strokes.Count;
 var tenStrokes = ten.Drawings[0].Data.Strokes.Count;*/
 var sqStrokes = square.Drawings[0].Data.Strokes.Count;
+Console.WriteLine("line 29: " + sqStrokes);
 Stroke sqStroke = square.Drawings[0].Data.Strokes[0].Clone();
 
 /*Stroke tenStroke = ten.Drawings[0].Data.Strokes[0].Clone();
@@ -36,12 +37,31 @@ tenStroke.Vertices.Add(v1);
 tenStroke.Vertices.Add(v2);
 tenStroke.UpdateBoundingBox();//eh?*/
 
+//start fresh with a blank layer
+LayerPaint perfectPixel = new LayerPaint("perfectPixel", true);
+//instantiate list of Vertex here
+List<Vertex> newVertices = new List<Vertex>();
+Vertex firstVert = sqStroke.Vertices[0];
+//get info from first vertex of square
+SharpQuill.Vector3 p1 = new SharpQuill.Vector3(0, 0, -0.5f);
+SharpQuill.Vector3 p2 = new SharpQuill.Vector3(0, 0, 0.5f);
+Vertex v_01 = new Vertex(p1, firstVert.Normal, firstVert.Tangent, firstVert.Color, firstVert.Opacity, firstVert.Width);
+Vertex v_02 = new Vertex(p2, firstVert.Normal, firstVert.Tangent, firstVert.Color, firstVert.Opacity, firstVert.Width);
+newVertices.Add(v_02);
+newVertices.Add(v_01);
+Stroke newStroke = sqStroke.NewPosStroke(newVertices);
+newStroke.UpdateBoundingBox();
+perfectPixel.Drawings[0].Data.Strokes.Add(newStroke);
+perfectPixel.Drawings[0].UpdateBoundingBox(false);
+//then add to sequence
+sequence.InsertLayerAt(perfectPixel, "");
+
 
 //OutputVertices(square, sqStrokes);
 
 
 
-var vert = square.Drawings[0].Data.Strokes[0].Vertices[0];
+/*var vert = square.Drawings[0].Data.Strokes[0].Vertices[0];
 Vector3 v0Pos = new Vector3(vert.Position.X, vert.Position.Y, -vert.Width);
 Vector3 v1Pos = new Vector3(vert.Position.X, vert.Position.Y, vert.Width);
 
@@ -55,7 +75,7 @@ square.Drawings[0].Data.Strokes[0].Vertices.Clear();
 square.Drawings[0].Data.Strokes[0].Vertices = newVerts;
 square.Drawings[0].Data.Strokes[0].UpdateBoundingBox(); 
 square.Drawings[0].UpdateBoundingBox(false);//actually it should be false, because strokes already updated
-
+*/
 
 //square.Drawings[0].Data.Strokes[0].Vertices[0] = 
 /*OutputVertices(six, sixStrokes);

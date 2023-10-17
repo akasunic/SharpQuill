@@ -69,7 +69,7 @@ namespace SharpQuill
       return s;
     }
 
-    //creates a new repositioned stroke (added by Anna)
+    //creates a new repositioned stroke (added by Anna)-- I mean, technically just makes a stroke with new vertices
     public Stroke NewPosStroke(List<Vertex> vertices)
     {
       Stroke s = new Stroke();
