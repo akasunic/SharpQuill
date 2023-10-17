@@ -29,9 +29,15 @@ var writePath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\randomizedParticl
 var heartLayer = (LayerPaint)sequence.RootLayer.FindChild("Heart");
 LayerPaint heartCopy = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(heartLayer));
 LayerPaint emptyLayer = new LayerPaint("emptyLayer", true);
+/*for (int h=0; h<heartCopy.Drawings.Count-1; h++)// subtract 1 because you start with an empty drawing
+{
+  //add a clone of the first drawing of the empty layer, so you have an equal num of empty drawings
+  heartCopy.Drawings.Add(heartCopy.Drawings[0].Clone());
+}*/
+
 //make a deep copy, otherwise original will be altered
 heartCopy.Name = "heartCopy";
-
+Console.WriteLine("just testing");
 
 var quillGridDict = new Dictionary<string, int>
 {
@@ -73,77 +79,79 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
   var randXOffset = xFact * randXseed.Next(quillGridDict["xMin"], quillGridDict["xMax"]);
   var randYOffset = yFact * randYseed.Next(quillGridDict["yMin"], quillGridDict["yMax"]);
   var randZOffset = zFact * randZseed.Next(quillGridDict["zMin"], quillGridDict["zMax"]);
+   
   for (int i=0; i< origLayer.Drawings[0].Data.Strokes.Count; i++)
-  {
-    var stroke = origLayer.Drawings[0].Data.Strokes[i];
-    //instantiate list of Vertex here
-    List<Vertex> newVertices = new List<Vertex>();
-
-    //also instatiate the list of the lists of duplicated vertices
-    //will be adding to these each time you add a vertex to newVertices
-    List<List<Vertex>> dupVertices = new List<List<Vertex>>();
-    for (int dups = 0; dups<numDups; dups++)
     {
-      dupVertices.Add(new List<Vertex>());
-    }
-  
-    for (int v = 0; v<stroke.Vertices.Count; v++)
-    {
-      var vertex = stroke.Vertices[v];
-      float X = vertex.Position.X;
-      float Y = vertex.Position.Y;
-      float Z = vertex.Position.Z;
+      var stroke = origLayer.Drawings[0].Data.Strokes[i];
+      //instantiate list of Vertex here
+      List<Vertex> newVertices = new List<Vertex>();
 
-      //now apply randomized rotation
-      //Note: using ref so that the orinal values get changed
-      RotateVertex(angleX, "X", ref X, ref Y, ref Z);
-      RotateVertex(angleY, "Y", ref X, ref Y, ref Z);
-      RotateVertex(angleZ, "Z", ref X, ref Y, ref Z);
-
-      //apply offset after have rotated?
-      X += randXOffset;
-      Y += randYOffset;
-      Z += randZOffset;
-
-      //agh, maybe this won't work, need to understand SharpQuill.Vector3 vs the built in Vector3... why is there a new Vector3 in SharpQuill??
-      SharpQuill.Vector3 newPos = new SharpQuill.Vector3(X, Y, Z);
-      
-      Vertex newRandV = new Vertex(newPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
-      newVertices.Add(newRandV);
-
-      // now you want to take this stroke, and clone offset and for numDups, offset it gridX * Xfactor (but at vertex level)
-      //also re-do this for original strokes, too!
-      for (int dups = 0; dups < numDups; dups++)
+      //also instatiate the list of the lists of duplicated vertices
+      //will be adding to these each time you add a vertex to newVertices
+      List<List<Vertex>> dupVertices = new List<List<Vertex>>();
+      for (int dups = 0; dups<numDups; dups++)
       {
-        var fact = dups + 1;
-        SharpQuill.Vector3 transXPos = new SharpQuill.Vector3(newPos.X + fact*xFact*(quillGridDict["xMax"] - quillGridDict["xMin"]), newPos.Y, newPos.Z);
-        Vertex newDupVert = new Vertex(transXPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
-        dupVertices[dups].Add(newDupVert);
+        dupVertices.Add(new List<Vertex>());
       }
-      //then add this new vertex to the copied layer's vertices list
-      //OHHH you want a new stroke, though... okay
+  
+      for (int v = 0; v<stroke.Vertices.Count; v++)
+      {
+        var vertex = stroke.Vertices[v];
+        float X = vertex.Position.X;
+        float Y = vertex.Position.Y;
+        float Z = vertex.Position.Z;
+
+        //now apply randomized rotation
+        //Note: using ref so that the orinal values get changed
+        RotateVertex(angleX, "X", ref X, ref Y, ref Z);
+        RotateVertex(angleY, "Y", ref X, ref Y, ref Z);
+        RotateVertex(angleZ, "Z", ref X, ref Y, ref Z);
+
+        //apply offset after have rotated?
+        X += randXOffset;
+        Y += randYOffset;
+        Z += randZOffset;
+
+        //agh, maybe this won't work, need to understand SharpQuill.Vector3 vs the built in Vector3... why is there a new Vector3 in SharpQuill??
+        SharpQuill.Vector3 newPos = new SharpQuill.Vector3(X, Y, Z);
+      
+        Vertex newRandV = new Vertex(newPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
+        newVertices.Add(newRandV);
+
+        // now you want to take this stroke, and clone offset and for numDups, offset it gridX * Xfactor (but at vertex level)
+        //also re-do this for original strokes, too!
+        for (int dups = 0; dups < numDups; dups++)
+        {
+          var fact = dups + 1;
+          SharpQuill.Vector3 transXPos = new SharpQuill.Vector3(newPos.X + fact*xFact*(quillGridDict["xMax"] - quillGridDict["xMin"]), newPos.Y, newPos.Z);
+          Vertex newDupVert = new Vertex(transXPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
+          dupVertices[dups].Add(newDupVert);
+        }
+        //then add this new vertex to the copied layer's vertices list
+        //OHHH you want a new stroke, though... okay
 
 
-    }
-    //add new stroke to drawing here, add in vertices, reset bounding boxes!
-    Stroke newStroke = stroke.NewPosStroke(newVertices);
-    newStroke.UpdateBoundingBox();
-    newLayer.Drawings[0].Data.Strokes.Add(newStroke);
+      }
+      //add new stroke to drawing here, add in vertices, reset bounding boxes!
+      Stroke newStroke = stroke.NewPosStroke(newVertices);
+      newStroke.UpdateBoundingBox();
+      newLayer.Drawings[0].Data.Strokes.Add(newStroke);
 
-    //for the dups
-    for (int d = 0; d<numDups; d++)
-    {
-      Stroke dupStroke = stroke.NewPosStroke(dupVertices[d]);
-      dupStroke.UpdateBoundingBox();
-      newLayer.Drawings[0].Data.Strokes.Add(dupStroke);
-    }
+      //for the dups
+      for (int d = 0; d<numDups; d++)
+      {
+        Stroke dupStroke = stroke.NewPosStroke(dupVertices[d]);
+        dupStroke.UpdateBoundingBox();
+        newLayer.Drawings[0].Data.Strokes.Add(dupStroke);
+      }
 
     
      
-  }
+    }
   //update drawing bbox here?? double check where it's stored
-  newLayer.Drawings[0].UpdateBoundingBox(false);//setting to false bc already updated stroke bbox above-- can play around with this if not working
-}
+    newLayer.Drawings[0].UpdateBoundingBox(false);//setting to false bc already updated stroke bbox above-- can play around with this if not working
+  }
+
 
 //for however many times chosen, copy
 
