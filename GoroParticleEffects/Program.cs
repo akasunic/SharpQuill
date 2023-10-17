@@ -116,7 +116,7 @@ void CopyReposObj(LayerPaint origLayer, LayerPaint newLayer)
       for (int dups = 0; dups < numDups; dups++)
       {
         var fact = dups + 1;
-        SharpQuill.Vector3 transXPos = new SharpQuill.Vector3(newPos.X + fact*(quillGridDict["xMax"] - quillGridDict["xMin"]), newPos.Y, newPos.Z);
+        SharpQuill.Vector3 transXPos = new SharpQuill.Vector3(newPos.X + fact*xFact*(quillGridDict["xMax"] - quillGridDict["xMin"]), newPos.Y, newPos.Z);
         Vertex newDupVert = new Vertex(transXPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
         dupVertices[dups].Add(newDupVert);
       }
@@ -160,8 +160,31 @@ for (int i = 0; i < numObjs; i++)
 }
 
 
+//OKAY NOW THIS IS THE ANIMATION PART!!!
 
-sequence.InsertLayerAt(emptyLayer, "");
+//put the new layer in a folder
+LayerGroup layerParent = new LayerGroup("layerParent", false);
+LayerGroup seqGroup = new LayerGroup("seqGroup", true);//set to true to mark as a sequence
+
+Transform transform1 = new Transform(new SharpQuill.Quaternion(0, 0, 0, 1), 1.0f, "N", new SharpQuill.Vector3(0, 0, 0));
+
+Transform transform2 = new Transform(new SharpQuill.Quaternion(0, 0, 0, 1), 1.0f, "N", new SharpQuill.Vector3(xFact * (quillGridDict["xMax"] - quillGridDict["xMin"]), 0, 0));
+//add 2 key transforms to layerParent, setting to 1 second for now [HARD CODE NOW< MAKE AN OPTION LATER]
+Keyframe<Transform> initialKey = new Keyframe<Transform>(0, transform1, Interpolation.Linear);
+Keyframe<Transform> endKey = new Keyframe<Transform>(12600, transform2, Interpolation.Linear);//using milliseconds I think! ACTUALLY 12600 is 1 second i have no idea why???
+//want to move it by gridSize*xFactor for x; y and z remain the same
+layerParent.Animation.Keys.Transform.Add(initialKey); 
+layerParent.Animation.Keys.Transform.Add(endKey);
+
+//to loop sequence at a specific point, i think it's just the duration?
+seqGroup.Animation.Duration = 12600; //again, won't hard code this for this version
+Console.WriteLine(layerParent.Animation.Keys.Transform );
+
+//can we set animation to seqGroup and add paint layer after??
+sequence.InsertLayerAt(seqGroup, "");
+sequence.InsertLayerAt(layerParent, "/seqGroup");
+sequence.InsertLayerAt(emptyLayer, "/seqGroup/layerParent");
+Console.WriteLine("finding group: "+ sequence.RootLayer.FindChild("layerParent"));
 QuillSequenceWriter.Write(sequence, writePath);
 
 
