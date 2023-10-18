@@ -11,10 +11,47 @@ namespace ParticleGenerator
     private string readPath;
     private Sequence sequence;
 
+    
+
+
     public Form1()
     {
+
+
       InitializeComponent();
+
     }
+
+
+    //this is so that you can remove any errors after changing values
+    private void ErrorRemovingChangeHandler(object sender, EventArgs e)
+    {
+      //may want to change this from a list later!!
+      List<ErrorProvider> errorProviders = new List<ErrorProvider>
+      {
+        //quillErrorProvider; //not including this bc gets caught at the 
+        
+        //saveFileErrorProvider,
+        //noPaintLayersErrorProvider,
+        noLayerChosenErrorProvider,
+        //noStrokesErrorProvider,
+        //noProjectChosenErrorProvider
+      };
+      // Your event handling logic here
+      // You can access the control that triggered the event using 'sender'
+      Control control = sender as Control;
+      if (control != null)
+      {
+        foreach (ErrorProvider errorProvider in errorProviders)
+        {
+          if (errorProvider.GetError(control) != "")
+          {
+            errorProvider.SetError(control, String.Empty);
+          }
+        }
+      }
+    }
+
 
     private void genParts_click(object sender, EventArgs e)
     {
@@ -25,7 +62,7 @@ namespace ParticleGenerator
       //THE FOLLOWING CHANGED TO FORM CHOICE!!!
       int numObjs = (int)objChoice.Value;//have a dropdown/forced numerical entry-- use tooltips
       int numDups = (int)dupChoice.Value;//have a dropdown/forced numerical entry-- use tooltips
-
+      LayerPaint startLayer;
       //sequence from file dialog, write path from save dialog-- see blendshape starter for ideas
       //readPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\Grid-test";
 
@@ -34,37 +71,46 @@ namespace ParticleGenerator
       //use dropdown to choose layer-- see blendshape app for ideas
       //get start layer
 
-      if(readPath == null || readPath ==String.Empty || readPath == "")
+      //CHECK IF THERE ARE ALREADY ERROR PROVIDERS ON ANY CONTROLS!! IF THERE ARE, REMOVE FIRST BEFORE SUBMITTING!!!
+
+      //NEST THESE CHECKS!!!!
+      //first make sure a Quill project is selected
+      //NOY WORKING AS EXPECTED
+      if(readPath == null || readPath ==String.Empty || readPath == "" || quillErrorProvider.GetError(readPathChoice)!=null || noPaintLayersErrorProvider.GetError(readPathChoice)!=null)
       {
-        noProjectChosenErrorProvider.SetError(selectQuillButton, "You must select a Quill project folder");
+        noProjectChosenErrorProvider.SetError(selectQuillButton, "You must select a valid Quill project folder containing at least one paint layer");
         return;
       }
       else
       {
         noProjectChosenErrorProvider.SetError(selectQuillButton, String.Empty);
-      }
-      string startLayerName = layersComboBox.Text;
-      if(startLayerName == "" || startLayerName == null)
-      {
-        noLayerChosenErrorProvider.SetError(layersComboBox, "You must select a paint layer from the dropdown");
-        return; //to stop rest of function
-      }
-      else
-      {
-        noLayerChosenErrorProvider.SetError(layersComboBox, String.Empty);
-      }
-      LayerPaint startLayer = (LayerPaint)sequence.RootLayer.FindChild(startLayerName);
+        string startLayerName = layersComboBox.Text;
+        if (startLayerName == "" || startLayerName == null)
+        {
+          noLayerChosenErrorProvider.SetError(layersComboBox, "You must select a paint layer from the dropdown");
+          return; //to stop rest of function
+        }
+        else
+        {
+          startLayer = (LayerPaint)sequence.RootLayer.FindChild(startLayerName);
+          noLayerChosenErrorProvider.SetError(layersComboBox, String.Empty);
 
-      //check that startLayer contains strokes
-      if (startLayer.Drawings[0].Data.Strokes.Count == 0)
-      {
-        noStrokesErrorProvider.SetError(layersComboBox, "No strokes found in the layer (or first frame of the layer). Please inspect your Quill project file and try again.");
-        return;
+          //check that startLayer contains strokes
+          if (startLayer.Drawings[0].Data.Strokes.Count == 0)
+          {
+            noStrokesErrorProvider.SetError(layersComboBox, "No strokes found in the layer (or first frame of the layer). Please inspect your Quill project file and try again.");
+            return;
+          }
+          else
+          {
+            noStrokesErrorProvider.SetError(layersComboBox, String.Empty);
+          }
+        }
       }
-      else
-      {
-        noStrokesErrorProvider.SetError(layersComboBox, String.Empty);
-      }
+      
+      
+
+      
 
 
       string writePath = "";
@@ -87,7 +133,7 @@ namespace ParticleGenerator
       float zFact = (float)zChoice.Value;
       float xFact = (float)xChoice.Value;
 
-      //get value from form and then multiplay by 12600
+      //get value from form and then multiplay by 12600 (done later in code-- in steady particles)
       float loopTime = (float)secondsChoice.Value;
 
       bool rotate = checkBox_rotate.Checked;

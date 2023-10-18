@@ -7,6 +7,8 @@
     /// </summary>
     private System.ComponentModel.IContainer components = null;
 
+    
+
     /// <summary>
     ///  Clean up any resources being used.
     /// </summary>
@@ -105,6 +107,7 @@
             this.layersComboBox.Name = "layersComboBox";
             this.layersComboBox.Size = new System.Drawing.Size(221, 23);
             this.layersComboBox.TabIndex = 2;
+            this.layersComboBox.TextUpdate += new System.EventHandler(this.ErrorRemovingChangeHandler);
             // 
             // objChoice
             // 

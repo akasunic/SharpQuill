@@ -5,6 +5,7 @@ using System.Text;
 
 namespace SharpQuill
 {
+  
   public class SteadyParticles
   { 
     private int numObjs; //how many times to duplicate the drawing/object from the base layer in one set
@@ -12,6 +13,7 @@ namespace SharpQuill
     private Sequence sequence; //the sequence where you'll be adding the new vfx
     private LayerPaint startLayer; //typically, a static paint layer with one small object
 
+    private int secondsConversion = 12600;//why this is true in Quill I have no idea, but this is equiv of 1 sec in Quill time in Quill.json
     //the quillGridDict represents a cubic area based off length of the grid, that sits atop the grid. It is used as the basis for resizing the desired output area
     private Dictionary<string, int> quillGridDict = new Dictionary<string, int>
     {
@@ -37,7 +39,7 @@ namespace SharpQuill
       this.xFact = xFact;
       this.yFact = yFact;
       this.zFact = zFact;
-      this.loopTime = loopTime;
+      this.loopTime = loopTime*secondsConversion;//converting from seconds to Quill units
       this.rotate = rotate;
     }
 
