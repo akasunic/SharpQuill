@@ -11,7 +11,6 @@ namespace SharpQuill
     private int numDups; //how many times over to duplicate the area of random particles
     private Sequence sequence; //the sequence where you'll be adding the new vfx
     private LayerPaint startLayer; //typically, a static paint layer with one small object
-    private LayerPaint targetLayer; //typically, an empty layer, based off the start layer. This is where the actual vfx setup will go
 
     //the quillGridDict represents a cubic area based off length of the grid, that sits atop the grid. It is used as the basis for resizing the desired output area
     private Dictionary<string, int> quillGridDict = new Dictionary<string, int>
@@ -23,11 +22,13 @@ namespace SharpQuill
       {"zMin", -10},
       {"zMax", 10}
     };
-    private int xFact; //multiplier for size of output area x length in relation to cube above. Same for the next two 
-    private int yFact;
-    private int zFact;
+    private float xFact; //multiplier for size of output area x length in relation to cube above. Same for the next two 
+    private float yFact;
+    private float zFact;
+    private float loopTime;
+    private bool rotate;
 
-    public SteadyParticles(int numObjs, int numDups, Sequence sequence, LayerPaint startLayer, int xFact, int yFact, int zFact)
+    public SteadyParticles(int numObjs, int numDups, Sequence sequence, LayerPaint startLayer, float xFact, float yFact, float zFact, float loopTime, bool rotate)
     {
       this.numObjs = numObjs;
       this.numDups = numDups;
@@ -36,6 +37,8 @@ namespace SharpQuill
       this.xFact = xFact;
       this.yFact = yFact;
       this.zFact = zFact;
+      this.loopTime = loopTime;
+      this.rotate = rotate;
     }
 
     public void GenerateSteadyParticles()
@@ -59,13 +62,13 @@ namespace SharpQuill
       Transform transform2 = new Transform(new SharpQuill.Quaternion(0, 0, 0, 1), 1.0f, "N", new SharpQuill.Vector3(xFact * (quillGridDict["xMax"] - quillGridDict["xMin"]), 0, 0));
       //add 2 key transforms to layerParent, setting to 1 second for now [HARD CODE NOW< MAKE AN OPTION LATER]
       Keyframe<Transform> initialKey = new Keyframe<Transform>(0, transform1, Interpolation.Linear);
-      Keyframe<Transform> endKey = new Keyframe<Transform>(12600, transform2, Interpolation.Linear);//using milliseconds I think! ACTUALLY 12600 is 1 second i have no idea why???
+      Keyframe<Transform> endKey = new Keyframe<Transform>((int)loopTime, transform2, Interpolation.Linear);//using milliseconds I think! ACTUALLY 12600 is 1 second i have no idea why???
                                                                                                     //want to move it by gridSize*xFactor for x; y and z remain the same
       layerParent.Animation.Keys.Transform.Add(initialKey);
       layerParent.Animation.Keys.Transform.Add(endKey);
 
       //to loop sequence at a specific point, i think it's just the duration?
-      seqGroup.Animation.Duration = 12600; //again, won't hard code this for this version
+      seqGroup.Animation.Duration = (int)loopTime; //again, won't hard code this for this version
       Console.WriteLine(layerParent.Animation.Keys.Transform);
 
       //can we set animation to seqGroup and add paint layer after??
@@ -120,11 +123,15 @@ namespace SharpQuill
           float Y = vertex.Position.Y;
           float Z = vertex.Position.Z;
 
-          //now apply randomized rotation
-          //Note: using ref so that the orinal values get changed
-          RotateVertex(angleX, "X", ref X, ref Y, ref Z);
-          RotateVertex(angleY, "Y", ref X, ref Y, ref Z);
-          RotateVertex(angleZ, "Z", ref X, ref Y, ref Z);
+          if (rotate)//if chose to rotate via checkbox, then randomly rotate
+          {
+            //now apply randomized rotation
+            //Note: using ref so that the orinal values get changed
+            RotateVertex(angleX, "X", ref X, ref Y, ref Z);
+            RotateVertex(angleY, "Y", ref X, ref Y, ref Z);
+            RotateVertex(angleZ, "Z", ref X, ref Y, ref Z);
+          }
+          
 
           //apply offset after have rotated?
           X += randXOffset;
