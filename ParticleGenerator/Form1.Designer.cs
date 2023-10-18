@@ -34,15 +34,15 @@
             this.saveQuillProjectDialog = new System.Windows.Forms.SaveFileDialog();
             this.selectQuillButton = new System.Windows.Forms.Button();
             this.layersComboBox = new System.Windows.Forms.ComboBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.objChoice = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.dupChoice = new System.Windows.Forms.NumericUpDown();
+            this.xChoice = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.yChoice = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
-            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.zChoice = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -52,24 +52,35 @@
             this.label11 = new System.Windows.Forms.Label();
             this.readMeLink = new System.Windows.Forms.LinkLabel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.warningText = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.secondsChoice = new System.Windows.Forms.NumericUpDown();
             this.checkBox_rotate = new System.Windows.Forms.CheckBox();
             this.quillErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.readPathChoice = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
+            this.saveFileErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.noPaintLayersErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.noLayerChosenErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.noStrokesErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.noProjectChosenErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.objChoice)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dupChoice)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xChoice)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.yChoice)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.zChoice)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.secondsChoice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.saveFileErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noPaintLayersErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noLayerChosenErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noStrokesErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noProjectChosenErrorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // genSteadyParts
             // 
-            this.genSteadyParts.Location = new System.Drawing.Point(206, 304);
+            this.genSteadyParts.Location = new System.Drawing.Point(217, 331);
             this.genSteadyParts.Name = "genSteadyParts";
             this.genSteadyParts.Size = new System.Drawing.Size(174, 23);
             this.genSteadyParts.TabIndex = 0;
@@ -95,23 +106,23 @@
             this.layersComboBox.Size = new System.Drawing.Size(221, 23);
             this.layersComboBox.TabIndex = 2;
             // 
-            // numericUpDown1
+            // objChoice
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(217, 159);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.objChoice.Location = new System.Drawing.Point(217, 159);
+            this.objChoice.Maximum = new decimal(new int[] {
             1000,
             0,
             0,
             0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.objChoice.Minimum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 23);
-            this.numericUpDown1.TabIndex = 3;
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.objChoice.Name = "objChoice";
+            this.objChoice.Size = new System.Drawing.Size(120, 23);
+            this.objChoice.TabIndex = 3;
+            this.objChoice.Value = new decimal(new int[] {
             50,
             0,
             0,
@@ -137,56 +148,58 @@
             this.label2.Text = "Number of particle offsets (duplicates)";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
-            // numericUpDown2
+            // dupChoice
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(217, 232);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
+            this.dupChoice.Location = new System.Drawing.Point(217, 232);
+            this.dupChoice.Maximum = new decimal(new int[] {
             20,
             0,
             0,
             0});
-            this.numericUpDown2.Minimum = new decimal(new int[] {
+            this.dupChoice.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 23);
-            this.numericUpDown2.TabIndex = 6;
-            this.numericUpDown2.Value = new decimal(new int[] {
+            this.dupChoice.Name = "dupChoice";
+            this.dupChoice.Size = new System.Drawing.Size(120, 23);
+            this.dupChoice.TabIndex = 6;
+            this.dupChoice.Value = new decimal(new int[] {
             4,
             0,
             0,
             0});
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            this.dupChoice.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
             // 
-            // numericUpDown3
+            // xChoice
             // 
-            this.numericUpDown3.Increment = new decimal(new int[] {
+            this.xChoice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.xChoice.DecimalPlaces = 2;
+            this.xChoice.Increment = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            this.numericUpDown3.Location = new System.Drawing.Point(217, 42);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
+            this.xChoice.Location = new System.Drawing.Point(217, 42);
+            this.xChoice.Maximum = new decimal(new int[] {
             20,
             0,
             0,
             0});
-            this.numericUpDown3.Minimum = new decimal(new int[] {
+            this.xChoice.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(120, 23);
-            this.numericUpDown3.TabIndex = 8;
-            this.numericUpDown3.Value = new decimal(new int[] {
+            this.xChoice.Name = "xChoice";
+            this.xChoice.Size = new System.Drawing.Size(120, 23);
+            this.xChoice.TabIndex = 8;
+            this.xChoice.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
+            this.xChoice.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
             // 
             // label3
             // 
@@ -198,28 +211,29 @@
             this.label3.Text = "X-axis/length, as scale of Quill grid";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
-            // numericUpDown4
+            // yChoice
             // 
-            this.numericUpDown4.Increment = new decimal(new int[] {
+            this.yChoice.DecimalPlaces = 2;
+            this.yChoice.Increment = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            this.numericUpDown4.Location = new System.Drawing.Point(217, 71);
-            this.numericUpDown4.Maximum = new decimal(new int[] {
+            this.yChoice.Location = new System.Drawing.Point(217, 71);
+            this.yChoice.Maximum = new decimal(new int[] {
             20,
             0,
             0,
             0});
-            this.numericUpDown4.Minimum = new decimal(new int[] {
+            this.yChoice.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(120, 23);
-            this.numericUpDown4.TabIndex = 10;
-            this.numericUpDown4.Value = new decimal(new int[] {
+            this.yChoice.Name = "yChoice";
+            this.yChoice.Size = new System.Drawing.Size(120, 23);
+            this.yChoice.TabIndex = 10;
+            this.yChoice.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -234,28 +248,29 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "Y-axis/height, as scale of Quill grid";
             // 
-            // numericUpDown5
+            // zChoice
             // 
-            this.numericUpDown5.Increment = new decimal(new int[] {
+            this.zChoice.DecimalPlaces = 2;
+            this.zChoice.Increment = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            this.numericUpDown5.Location = new System.Drawing.Point(217, 100);
-            this.numericUpDown5.Maximum = new decimal(new int[] {
+            this.zChoice.Location = new System.Drawing.Point(217, 100);
+            this.zChoice.Maximum = new decimal(new int[] {
             20,
             0,
             0,
             0});
-            this.numericUpDown5.Minimum = new decimal(new int[] {
+            this.zChoice.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             131072});
-            this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.Size = new System.Drawing.Size(120, 23);
-            this.numericUpDown5.TabIndex = 12;
-            this.numericUpDown5.Value = new decimal(new int[] {
+            this.zChoice.Name = "zChoice";
+            this.zChoice.Size = new System.Drawing.Size(120, 23);
+            this.zChoice.TabIndex = 12;
+            this.zChoice.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -341,33 +356,46 @@
             this.readMeLink.Size = new System.Drawing.Size(223, 15);
             this.readMeLink.TabIndex = 19;
             this.readMeLink.TabStop = true;
-            this.readMeLink.Text = "Need help? See instructions and tips here";
+            this.readMeLink.Text = "For more info and instructions, click here";
             this.readMeLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.readMeLink_Clicked);
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.warningText);
             this.panel1.Controls.Add(this.label12);
-            this.panel1.Controls.Add(this.numericUpDown6);
+            this.panel1.Controls.Add(this.secondsChoice);
             this.panel1.Controls.Add(this.checkBox_rotate);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.genSteadyParts);
-            this.panel1.Controls.Add(this.numericUpDown3);
-            this.panel1.Controls.Add(this.numericUpDown1);
-            this.panel1.Controls.Add(this.numericUpDown4);
+            this.panel1.Controls.Add(this.xChoice);
+            this.panel1.Controls.Add(this.objChoice);
+            this.panel1.Controls.Add(this.yChoice);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.numericUpDown5);
+            this.panel1.Controls.Add(this.zChoice);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.numericUpDown2);
+            this.panel1.Controls.Add(this.dupChoice);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Location = new System.Drawing.Point(30, 131);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(639, 330);
+            this.panel1.Size = new System.Drawing.Size(639, 357);
             this.panel1.TabIndex = 21;
+            // 
+            // warningText
+            // 
+            this.warningText.AutoSize = true;
+            this.warningText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.warningText.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.warningText.Location = new System.Drawing.Point(151, 313);
+            this.warningText.Name = "warningText";
+            this.warningText.Size = new System.Drawing.Size(326, 15);
+            this.warningText.TabIndex = 20;
+            this.warningText.Text = "Correct errors before you can generate the new Quill project.";
+            this.warningText.Visible = false;
             // 
             // label12
             // 
@@ -379,33 +407,34 @@
             this.label12.Text = "Time in seconds at which to loop ";
             this.label12.Click += new System.EventHandler(this.label12_Click);
             // 
-            // numericUpDown6
+            // secondsChoice
             // 
-            this.numericUpDown6.Increment = new decimal(new int[] {
+            this.secondsChoice.DecimalPlaces = 1;
+            this.secondsChoice.Increment = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.numericUpDown6.Location = new System.Drawing.Point(217, 261);
-            this.numericUpDown6.Maximum = new decimal(new int[] {
+            this.secondsChoice.Location = new System.Drawing.Point(217, 261);
+            this.secondsChoice.Maximum = new decimal(new int[] {
             60,
             0,
             0,
             0});
-            this.numericUpDown6.Minimum = new decimal(new int[] {
+            this.secondsChoice.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(120, 23);
-            this.numericUpDown6.TabIndex = 19;
-            this.numericUpDown6.Value = new decimal(new int[] {
+            this.secondsChoice.Name = "secondsChoice";
+            this.secondsChoice.Size = new System.Drawing.Size(120, 23);
+            this.secondsChoice.TabIndex = 19;
+            this.secondsChoice.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown6.ValueChanged += new System.EventHandler(this.numericUpDown6_ValueChanged);
+            this.secondsChoice.ValueChanged += new System.EventHandler(this.numericUpDown6_ValueChanged);
             // 
             // checkBox_rotate
             // 
@@ -434,6 +463,26 @@
             this.readPathChoice.TabIndex = 22;
             this.readPathChoice.Click += new System.EventHandler(this.label13_Click);
             // 
+            // saveFileErrorProvider
+            // 
+            this.saveFileErrorProvider.ContainerControl = this;
+            // 
+            // noPaintLayersErrorProvider
+            // 
+            this.noPaintLayersErrorProvider.ContainerControl = this;
+            // 
+            // noLayerChosenErrorProvider
+            // 
+            this.noLayerChosenErrorProvider.ContainerControl = this;
+            // 
+            // noStrokesErrorProvider
+            // 
+            this.noStrokesErrorProvider.ContainerControl = this;
+            // 
+            // noProjectChosenErrorProvider
+            // 
+            this.noProjectChosenErrorProvider.ContainerControl = this;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -449,15 +498,20 @@
             this.Name = "Form1";
             this.Text = "Steady Particles Generator";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.objChoice)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dupChoice)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.xChoice)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.yChoice)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.zChoice)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.secondsChoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.saveFileErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noPaintLayersErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noLayerChosenErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noStrokesErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noProjectChosenErrorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -470,15 +524,15 @@
     private SaveFileDialog saveQuillProjectDialog;
     private Button selectQuillButton;
     private ComboBox layersComboBox;
-    private NumericUpDown numericUpDown1;
+    private NumericUpDown objChoice;
     private Label label1;
     private Label label2;
-    private NumericUpDown numericUpDown2;
-    private NumericUpDown numericUpDown3;
+    private NumericUpDown dupChoice;
+    private NumericUpDown xChoice;
     private Label label3;
-    private NumericUpDown numericUpDown4;
+    private NumericUpDown yChoice;
     private Label label4;
-    private NumericUpDown numericUpDown5;
+    private NumericUpDown zChoice;
     private Label label5;
     private Label label6;
     private Label label7;
@@ -489,9 +543,15 @@
     private LinkLabel readMeLink;
     private Panel panel1;
     private Label label12;
-    private NumericUpDown numericUpDown6;
+    private NumericUpDown secondsChoice;
     private CheckBox checkBox_rotate;
     private ErrorProvider quillErrorProvider;
     private Label readPathChoice;
+    private ErrorProvider saveFileErrorProvider;
+    private ErrorProvider noPaintLayersErrorProvider;
+    private ErrorProvider noLayerChosenErrorProvider;
+    private ErrorProvider noStrokesErrorProvider;
+    private Label warningText;
+    private ErrorProvider noProjectChosenErrorProvider;
   }
 }
