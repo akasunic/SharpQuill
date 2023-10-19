@@ -26,16 +26,17 @@ namespace ParticleGenerator
     //this is so that you can remove any errors after changing values
     private void ErrorRemovingChangeHandler(object sender, EventArgs e)
     {
+      warningText.Visible = false;//this is lazy bc you could have more than one error but... .eh
       //may want to change this from a list later!!
       List<ErrorProvider> errorProviders = new List<ErrorProvider>
       {
         //quillErrorProvider; //not including this bc gets caught at the 
         
         //saveFileErrorProvider,
-        //noPaintLayersErrorProvider,
+        noPaintLayersErrorProvider,
         noLayerChosenErrorProvider,
-        //noStrokesErrorProvider,
-        //noProjectChosenErrorProvider
+        noStrokesErrorProvider,
+        noProjectChosenErrorProvider
       };
       // Your event handling logic here
       // You can access the control that triggered the event using 'sender'
@@ -56,9 +57,12 @@ namespace ParticleGenerator
     private void genParts_click(object sender, EventArgs e)
     {
 
-    
 
 
+      //clear the projectCreatedText
+      projectCreatedText.Text = "";
+      //hide the warning text
+      warningText.Visible = false;
       //THE FOLLOWING CHANGED TO FORM CHOICE!!!
       int numObjs = (int)objChoice.Value;//have a dropdown/forced numerical entry-- use tooltips
       int numDups = (int)dupChoice.Value;//have a dropdown/forced numerical entry-- use tooltips
@@ -76,8 +80,9 @@ namespace ParticleGenerator
       //NEST THESE CHECKS!!!!
       //first make sure a Quill project is selected
       //NOY WORKING AS EXPECTED
-      if(readPath == null || readPath ==String.Empty || readPath == "" || quillErrorProvider.GetError(readPathChoice)!=null || noPaintLayersErrorProvider.GetError(readPathChoice)!=null)
+      if(readPath == null || readPath ==String.Empty || readPath == "" || sequence == null )
       {
+        warningText.Visible = true;
         noProjectChosenErrorProvider.SetError(selectQuillButton, "You must select a valid Quill project folder containing at least one paint layer");
         return;
       }
@@ -85,27 +90,42 @@ namespace ParticleGenerator
       {
         noProjectChosenErrorProvider.SetError(selectQuillButton, String.Empty);
         string startLayerName = layersComboBox.Text;
-        if (startLayerName == "" || startLayerName == null)
+        if(layersComboBox.Items.Count == 0)
         {
-          noLayerChosenErrorProvider.SetError(layersComboBox, "You must select a paint layer from the dropdown");
-          return; //to stop rest of function
+          noPaintLayersErrorProvider.SetError(selectQuillButton, String.Empty);
+          warningText.Visible = true;
+          return;
         }
         else
         {
-          startLayer = (LayerPaint)sequence.RootLayer.FindChild(startLayerName);
-          noLayerChosenErrorProvider.SetError(layersComboBox, String.Empty);
-
-          //check that startLayer contains strokes
-          if (startLayer.Drawings[0].Data.Strokes.Count == 0)
+          noPaintLayersErrorProvider.SetError(selectQuillButton, String.Empty);
+          if (startLayerName == "" || startLayerName == null)
           {
-            noStrokesErrorProvider.SetError(layersComboBox, "No strokes found in the layer (or first frame of the layer). Please inspect your Quill project file and try again.");
-            return;
+            noLayerChosenErrorProvider.SetError(layersComboBox, "You must select a paint layer from the dropdown");
+            warningText.Visible = true;
+            return; //to stop rest of function
           }
           else
           {
-            noStrokesErrorProvider.SetError(layersComboBox, String.Empty);
+            startLayer = (LayerPaint)sequence.RootLayer.FindChild(startLayerName);
+            noLayerChosenErrorProvider.SetError(layersComboBox, String.Empty);
+
+
+            //check that startLayer contains strokes
+            if (startLayer.Drawings[0].Data.Strokes.Count == 0)
+            {
+              warningText.Visible = true;
+              noStrokesErrorProvider.SetError(layersComboBox, "No strokes found in the layer (or first frame of the layer). Please inspect your Quill project file and try again.");
+              return;
+            }
+            else
+            {
+              noStrokesErrorProvider.SetError(layersComboBox, String.Empty);
+            }
           }
+
         }
+       
       }
       
       
@@ -119,15 +139,13 @@ namespace ParticleGenerator
       if (sfd.ShowDialog() == DialogResult.OK)
       {
         writePath = Path.GetFullPath(sfd.FileName);
-        //null out error provider
-        saveFileErrorProvider.SetError(genSteadyParts, String.Empty);
-
       }
       else
       {
-        saveFileErrorProvider.SetError(genSteadyParts, "Issue with saving the project. Please try again or reach out via Discord/Google doc (above).");
+        //break out of function didn't save
         return;
       }
+    
 
       float yFact = (float)yChoice.Value;
       float zFact = (float)zChoice.Value;
@@ -145,6 +163,8 @@ namespace ParticleGenerator
       steadyParticles = new SteadyParticles(numObjs, numDups, sequence, startLayer, xFact, yFact, zFact, loopTime, rotate);
       steadyParticles.GenerateSteadyParticles();
       QuillSequenceWriter.Write(sequence, writePath);
+      projectCreatedText.Text = "Project successfully created at " + writePath;
+
     }
 
   
@@ -153,6 +173,11 @@ namespace ParticleGenerator
       //clear out items in current dropdown list and reset text
       layersComboBox.Items.Clear();
       layersComboBox.Text = String.Empty;
+
+      //see if error messages on this, and reset if so
+      ErrorRemovingChangeHandler(sender, e);
+
+
       if (chooseProjectFileDialog.ShowDialog() == DialogResult.OK)
       {
         string selectedFolder = chooseProjectFileDialog.SelectedPath;
@@ -277,6 +302,14 @@ namespace ParticleGenerator
 
     }
 
-    
+    private void panel1_Paint(object sender, PaintEventArgs e)
+    {
+
+    }
+
+    private void label13_Click_1(object sender, EventArgs e)
+    {
+
+    }
   }
 }
