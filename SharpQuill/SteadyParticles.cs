@@ -46,14 +46,28 @@ namespace SharpQuill
     public void GenerateSteadyParticles()
     {
       LayerPaint startCopy = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(this.startLayer));
-      startCopy.Name = "startCopy";
-      LayerPaint targetLayer = new LayerPaint("randomized particles", true);
-
-      for (int i = 0; i < numObjs; i++)
+      startCopy.Name = "looping images";// playing around with how to portray
+      LayerPaint targetLayer = new LayerPaint("randomized particles", true); //this would be to start with an empty layer
+      //LayerPaint targetLayer = startCopy;//this will keep the original drawing in there-- should help for moving backgrounds
+      if (numObjs < 1)
       {
-        //hard coding heartLayer for now! Redo later!
-        CopyReposObj(targetLayer);
+        //not going to generate a random array
+        //this can be useful for hacky purposes (image loops)
+        //or for those who want to do this in a 2-step process (eg, to manually edit the particle array first)
+        targetLayer = startCopy;
+        OffsetOnly(targetLayer);
       }
+      else
+      {
+        for (int i = 0; i < numObjs; i++)
+        {
+          //first generate the random array of particles
+          CopyReposObj(targetLayer);
+        }
+
+
+      }
+    
 
       //put the new layer in a folder
       LayerGroup layerParent = new LayerGroup("layerParent", false);
@@ -71,15 +85,49 @@ namespace SharpQuill
 
       //to loop sequence at a specific point, i think it's just the duration?
       seqGroup.Animation.Duration = (int)loopTime; //again, won't hard code this for this version
-      Console.WriteLine(layerParent.Animation.Keys.Transform);
+     
 
       //can we set animation to seqGroup and add paint layer after??
       sequence.InsertLayerAt(seqGroup, "");
       sequence.InsertLayerAt(layerParent, "/seqGroup");
       sequence.InsertLayerAt(targetLayer, "/seqGroup/layerParent");
-      Console.WriteLine("finding group: " + sequence.RootLayer.FindChild("layerParent"));
+      
       
 
+    }
+
+    public void OffsetOnly(LayerPaint newLayer)
+    {
+      
+      //I know I should just refactor so this is included in other function, but... this is so much easier to do
+      var bboxOffset = newLayer.Drawings[0].BoundingBox.MaxX- newLayer.Drawings[0].BoundingBox.MinX;
+      List<List<Vertex>> dupVertices = new List<List<Vertex>>();
+
+      //for number of duplicates, traverse all vertices in the paint layer, and duplicate with an X offset
+      for (int dups = 0; dups < numDups; dups++)
+      {
+        dupVertices.Add(new List<Vertex>());
+
+        //for each stroke in drawing
+        for (int s=0; s<startLayer.Drawings[0].Data.Strokes.Count; s++)
+        {
+          Stroke stroke = startLayer.Drawings[0].Data.Strokes[s];
+          //for each vertex in stroke
+          for (int v=0; v < stroke.Vertices.Count; v++)
+          {
+            Vertex vertex = stroke.Vertices[v];
+            var fact = dups + 1;
+            SharpQuill.Vector3 transXPos = new SharpQuill.Vector3(vertex.Position.X + bboxOffset*fact, vertex.Position.Y, vertex.Position.Z);
+            Vertex newDupVert = new Vertex(transXPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
+            dupVertices[dups].Add(newDupVert);
+          }
+
+          Stroke dupStroke = stroke.NewPosStroke(dupVertices[dups]);
+          dupStroke.UpdateBoundingBox();
+          newLayer.Drawings[0].Data.Strokes.Add(dupStroke);
+        }
+        newLayer.Drawings[0].UpdateBoundingBox(false);
+      }
     }
 
     //output the angleInRandians-- should do this at the drawing layer, though!!

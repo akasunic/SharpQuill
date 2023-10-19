@@ -22,6 +22,8 @@
       base.Dispose(disposing);
     }
 
+    
+
     #region Windows Form Designer generated code
 
     /// <summary>
@@ -62,13 +64,12 @@
             this.checkBox_rotate = new System.Windows.Forms.CheckBox();
             this.secondsChoice = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
-            this.projectCreatedText = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label13 = new System.Windows.Forms.Label();
+            this.timeAllowRangeText = new System.Windows.Forms.Label();
+            this.offsetDupsAllowRangeText = new System.Windows.Forms.Label();
+            this.drawDupRangeAllowText = new System.Windows.Forms.Label();
+            this.gridScaleRangeAllowText = new System.Windows.Forms.Label();
             this.warningText = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
+            this.projectCreatedText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.noPaintLayersErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.noLayerChosenErrorProvider)).BeginInit();
@@ -80,13 +81,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.objChoice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xChoice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.secondsChoice)).BeginInit();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // selectQuillButton
             // 
             this.selectQuillButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.selectQuillButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.selectQuillButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.selectQuillButton.Location = new System.Drawing.Point(26, 72);
             this.selectQuillButton.Name = "selectQuillButton";
             this.selectQuillButton.Size = new System.Drawing.Size(176, 24);
@@ -168,7 +168,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(2, 44);
+            this.label3.Location = new System.Drawing.Point(24, 180);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(190, 15);
             this.label3.TabIndex = 7;
@@ -178,7 +178,7 @@
             // 
             // dupChoice
             // 
-            this.dupChoice.Location = new System.Drawing.Point(217, 232);
+            this.dupChoice.Location = new System.Drawing.Point(239, 368);
             this.dupChoice.Maximum = new decimal(new int[] {
             50,
             0,
@@ -198,7 +198,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 240);
+            this.label2.Location = new System.Drawing.Point(26, 376);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(210, 15);
             this.label2.TabIndex = 5;
@@ -210,7 +210,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label8.Location = new System.Drawing.Point(3, 137);
+            this.label8.Location = new System.Drawing.Point(25, 273);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(377, 19);
             this.label8.TabIndex = 15;
@@ -221,7 +221,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(2, 100);
+            this.label5.Location = new System.Drawing.Point(24, 236);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(187, 15);
             this.label5.TabIndex = 11;
@@ -236,7 +236,7 @@
             0,
             0,
             131072});
-            this.zChoice.Location = new System.Drawing.Point(217, 100);
+            this.zChoice.Location = new System.Drawing.Point(239, 236);
             this.zChoice.Maximum = new decimal(new int[] {
             20,
             0,
@@ -260,7 +260,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 161);
+            this.label1.Location = new System.Drawing.Point(26, 297);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(168, 15);
             this.label1.TabIndex = 4;
@@ -272,7 +272,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label9.Location = new System.Drawing.Point(3, 210);
+            this.label9.Location = new System.Drawing.Point(25, 346);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(412, 19);
             this.label9.TabIndex = 16;
@@ -283,7 +283,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(2, 73);
+            this.label4.Location = new System.Drawing.Point(24, 209);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(190, 15);
             this.label4.TabIndex = 9;
@@ -298,7 +298,7 @@
             0,
             0,
             131072});
-            this.yChoice.Location = new System.Drawing.Point(217, 71);
+            this.yChoice.Location = new System.Drawing.Point(239, 207);
             this.yChoice.Maximum = new decimal(new int[] {
             20,
             0,
@@ -321,7 +321,7 @@
             // 
             // objChoice
             // 
-            this.objChoice.Location = new System.Drawing.Point(217, 159);
+            this.objChoice.Location = new System.Drawing.Point(239, 295);
             this.objChoice.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -346,7 +346,7 @@
             0,
             0,
             131072});
-            this.xChoice.Location = new System.Drawing.Point(217, 42);
+            this.xChoice.Location = new System.Drawing.Point(239, 178);
             this.xChoice.Maximum = new decimal(new int[] {
             20,
             0,
@@ -371,8 +371,8 @@
             // genSteadyParts
             // 
             this.genSteadyParts.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.genSteadyParts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.genSteadyParts.Location = new System.Drawing.Point(12, 331);
+            this.genSteadyParts.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.genSteadyParts.Location = new System.Drawing.Point(34, 467);
             this.genSteadyParts.Name = "genSteadyParts";
             this.genSteadyParts.Size = new System.Drawing.Size(174, 23);
             this.genSteadyParts.TabIndex = 0;
@@ -384,7 +384,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(249, 16);
+            this.label7.Location = new System.Drawing.Point(271, 152);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(384, 15);
             this.label7.TabIndex = 14;
@@ -396,7 +396,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label6.Location = new System.Drawing.Point(4, 12);
+            this.label6.Location = new System.Drawing.Point(26, 148);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(239, 19);
             this.label6.TabIndex = 13;
@@ -409,7 +409,7 @@
             this.checkBox_rotate.AutoSize = true;
             this.checkBox_rotate.Checked = true;
             this.checkBox_rotate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_rotate.Location = new System.Drawing.Point(12, 184);
+            this.checkBox_rotate.Location = new System.Drawing.Point(26, 324);
             this.checkBox_rotate.Name = "checkBox_rotate";
             this.checkBox_rotate.Size = new System.Drawing.Size(465, 19);
             this.checkBox_rotate.TabIndex = 17;
@@ -426,7 +426,7 @@
             0,
             0,
             65536});
-            this.secondsChoice.Location = new System.Drawing.Point(217, 261);
+            this.secondsChoice.Location = new System.Drawing.Point(239, 397);
             this.secondsChoice.Maximum = new decimal(new int[] {
             60,
             0,
@@ -451,7 +451,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(4, 269);
+            this.label12.Location = new System.Drawing.Point(26, 405);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(184, 15);
             this.label12.TabIndex = 18;
@@ -459,68 +459,53 @@
             this.label12.UseWaitCursor = true;
             this.label12.Click += new System.EventHandler(this.label12_Click);
             // 
-            // projectCreatedText
+            // timeAllowRangeText
             // 
-            this.projectCreatedText.AutoSize = true;
-            this.projectCreatedText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.projectCreatedText.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.projectCreatedText.Location = new System.Drawing.Point(194, 335);
-            this.projectCreatedText.Name = "projectCreatedText";
-            this.projectCreatedText.Size = new System.Drawing.Size(19, 15);
-            this.projectCreatedText.TabIndex = 20;
-            this.projectCreatedText.Text = "    ";
-            this.projectCreatedText.UseWaitCursor = true;
+            this.timeAllowRangeText.AutoSize = true;
+            this.timeAllowRangeText.Location = new System.Drawing.Point(378, 405);
+            this.timeAllowRangeText.Name = "timeAllowRangeText";
+            this.timeAllowRangeText.Size = new System.Drawing.Size(87, 15);
+            this.timeAllowRangeText.TabIndex = 25;
+            this.timeAllowRangeText.Text = "allowed range: ";
+            this.timeAllowRangeText.UseWaitCursor = true;
             // 
-            // panel1
+            // offsetDupsAllowRangeText
             // 
-            this.panel1.Controls.Add(this.label16);
-            this.panel1.Controls.Add(this.label15);
-            this.panel1.Controls.Add(this.label14);
-            this.panel1.Controls.Add(this.label13);
-            this.panel1.Controls.Add(this.warningText);
-            this.panel1.Controls.Add(this.projectCreatedText);
-            this.panel1.Controls.Add(this.label12);
-            this.panel1.Controls.Add(this.secondsChoice);
-            this.panel1.Controls.Add(this.checkBox_rotate);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.label7);
-            this.panel1.Controls.Add(this.genSteadyParts);
-            this.panel1.Controls.Add(this.xChoice);
-            this.panel1.Controls.Add(this.objChoice);
-            this.panel1.Controls.Add(this.yChoice);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.label9);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.zChoice);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.label8);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.dupChoice);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Location = new System.Drawing.Point(30, 131);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(639, 357);
-            this.panel1.TabIndex = 21;
-            this.panel1.UseWaitCursor = true;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.offsetDupsAllowRangeText.AutoSize = true;
+            this.offsetDupsAllowRangeText.Location = new System.Drawing.Point(378, 376);
+            this.offsetDupsAllowRangeText.Name = "offsetDupsAllowRangeText";
+            this.offsetDupsAllowRangeText.Size = new System.Drawing.Size(87, 15);
+            this.offsetDupsAllowRangeText.TabIndex = 24;
+            this.offsetDupsAllowRangeText.Text = "allowed range: ";
+            this.offsetDupsAllowRangeText.UseWaitCursor = true;
             // 
-            // label13
+            // drawDupRangeAllowText
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(356, 44);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(145, 15);
-            this.label13.TabIndex = 22;
-            this.label13.Text = "(allowed range: 0.01 to 20)";
-            this.label13.UseWaitCursor = true;
-            this.label13.Click += new System.EventHandler(this.label13_Click_1);
+            this.drawDupRangeAllowText.AutoSize = true;
+            this.drawDupRangeAllowText.Location = new System.Drawing.Point(378, 297);
+            this.drawDupRangeAllowText.Name = "drawDupRangeAllowText";
+            this.drawDupRangeAllowText.Size = new System.Drawing.Size(87, 15);
+            this.drawDupRangeAllowText.TabIndex = 23;
+            this.drawDupRangeAllowText.Text = "allowed range: ";
+            this.drawDupRangeAllowText.UseWaitCursor = true;
+            // 
+            // gridScaleRangeAllowText
+            // 
+            this.gridScaleRangeAllowText.AutoSize = true;
+            this.gridScaleRangeAllowText.Location = new System.Drawing.Point(378, 180);
+            this.gridScaleRangeAllowText.Name = "gridScaleRangeAllowText";
+            this.gridScaleRangeAllowText.Size = new System.Drawing.Size(87, 15);
+            this.gridScaleRangeAllowText.TabIndex = 22;
+            this.gridScaleRangeAllowText.Text = "allowed range: ";
+            this.gridScaleRangeAllowText.UseWaitCursor = true;
+            this.gridScaleRangeAllowText.Click += new System.EventHandler(this.label13_Click_1);
             // 
             // warningText
             // 
             this.warningText.AutoSize = true;
             this.warningText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.warningText.ForeColor = System.Drawing.Color.Red;
-            this.warningText.Location = new System.Drawing.Point(12, 313);
+            this.warningText.Location = new System.Drawing.Point(34, 449);
             this.warningText.Name = "warningText";
             this.warningText.Size = new System.Drawing.Size(352, 15);
             this.warningText.TabIndex = 21;
@@ -528,35 +513,17 @@
             this.warningText.UseWaitCursor = true;
             this.warningText.Visible = false;
             // 
-            // label14
+            // projectCreatedText
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(356, 161);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(148, 15);
-            this.label14.TabIndex = 23;
-            this.label14.Text = "(allowed range: 10 to 1000)";
-            this.label14.UseWaitCursor = true;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(356, 240);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(142, 15);
-            this.label15.TabIndex = 24;
-            this.label15.Text = "(allowed range: 0 to 1000)";
-            this.label15.UseWaitCursor = true;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(356, 269);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(145, 15);
-            this.label16.TabIndex = 25;
-            this.label16.Text = "(allowed range: 0.1 to 100)";
-            this.label16.UseWaitCursor = true;
+            this.projectCreatedText.AutoSize = true;
+            this.projectCreatedText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.projectCreatedText.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.projectCreatedText.Location = new System.Drawing.Point(214, 471);
+            this.projectCreatedText.Name = "projectCreatedText";
+            this.projectCreatedText.Size = new System.Drawing.Size(19, 15);
+            this.projectCreatedText.TabIndex = 20;
+            this.projectCreatedText.Text = "    ";
+            this.projectCreatedText.UseWaitCursor = true;
             // 
             // Form1
             // 
@@ -564,13 +531,36 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(733, 520);
+            this.Controls.Add(this.timeAllowRangeText);
             this.Controls.Add(this.readPathChoice);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.offsetDupsAllowRangeText);
+            this.Controls.Add(this.drawDupRangeAllowText);
             this.Controls.Add(this.readMeLink);
+            this.Controls.Add(this.gridScaleRangeAllowText);
             this.Controls.Add(this.label11);
+            this.Controls.Add(this.warningText);
             this.Controls.Add(this.label10);
+            this.Controls.Add(this.projectCreatedText);
             this.Controls.Add(this.layersComboBox);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.selectQuillButton);
+            this.Controls.Add(this.secondsChoice);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.checkBox_rotate);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.dupChoice);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.genSteadyParts);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.xChoice);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.objChoice);
+            this.Controls.Add(this.zChoice);
+            this.Controls.Add(this.yChoice);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label9);
             this.Name = "Form1";
             this.Text = "Steady Particles Generator";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -585,8 +575,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.objChoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xChoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.secondsChoice)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -606,8 +594,6 @@
     private ErrorProvider noLayerChosenErrorProvider;
     private ErrorProvider noStrokesErrorProvider;
     private ErrorProvider noProjectChosenErrorProvider;
-    private Panel panel1;
-    private Label projectCreatedText;
     private Label label12;
     private NumericUpDown secondsChoice;
     private CheckBox checkBox_rotate;
@@ -627,9 +613,10 @@
     private NumericUpDown dupChoice;
     private Label label3;
     private Label warningText;
-    private Label label13;
-    private Label label14;
-    private Label label16;
-    private Label label15;
+    private Label gridScaleRangeAllowText;
+    private Label drawDupRangeAllowText;
+    private Label timeAllowRangeText;
+    private Label offsetDupsAllowRangeText;
+    private Label projectCreatedText;
   }
 }

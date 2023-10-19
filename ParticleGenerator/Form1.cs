@@ -2,6 +2,8 @@ using SharpQuill;
 using Newtonsoft.Json;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Security.Policy;
+using static System.Net.WebRequestMethods;
 
 namespace ParticleGenerator
 {
@@ -10,6 +12,7 @@ namespace ParticleGenerator
     private SteadyParticles? steadyParticles;//making nullable
     private string readPath;
     private Sequence sequence;
+    
 
     
 
@@ -19,8 +22,12 @@ namespace ParticleGenerator
 
 
       InitializeComponent();
+      gridScaleRangeAllowText.Text += xChoice.Minimum + " to " + xChoice.Maximum;
+      drawDupRangeAllowText.Text += objChoice.Minimum + " to " + objChoice.Maximum;
+      timeAllowRangeText.Text += secondsChoice.Minimum + " to " + secondsChoice.Maximum;
+      offsetDupsAllowRangeText.Text += dupChoice.Minimum + " to " + dupChoice.Maximum;
 
-    }
+  }
 
 
     //this is so that you can remove any errors after changing values
@@ -109,7 +116,11 @@ namespace ParticleGenerator
           {
             startLayer = (LayerPaint)sequence.RootLayer.FindChild(startLayerName);
             noLayerChosenErrorProvider.SetError(layersComboBox, String.Empty);
-
+            if (startLayer == null)
+            {
+              noLayerChosenErrorProvider.SetError(layersComboBox, "Chosen layer could not be found. Please try saving and closing out Quill, if open, and try again.");
+              return;
+            }
 
             //check that startLayer contains strokes
             if (startLayer.Drawings[0].Data.Strokes.Count == 0)
@@ -259,7 +270,32 @@ namespace ParticleGenerator
       readMeLink.LinkVisited = true;
 
       // Navigate to Google doc
-      System.Diagnostics.Process.Start("https://docs.google.com/document/d/1ZPfIfOvj81pkl_Q7Olp57M56XbjWi44Dg2UFQq3_-FI/edit?usp=sharing");
+      string url = "https://docs.google.com/document/d/1ZPfIfOvj81pkl_Q7Olp57M56XbjWi44Dg2UFQq3_-FI/edit?usp=sharing";
+
+      //Should be able to just do the following, but caused errors and wouldn't work on my system. So doing the long way:
+      ////System.Diagnostics.Process.Start(url);
+      ProcessStartInfo psi = new ProcessStartInfo
+      {
+        FileName = "cmd",
+        RedirectStandardInput = true,
+        UseShellExecute = false,
+        CreateNoWindow = true
+      };
+
+      Process process = new Process { StartInfo = psi };
+      process.Start();
+
+      using (StreamWriter sw = process.StandardInput)
+      {
+        if (sw.BaseStream.CanWrite)
+        {
+          sw.WriteLine("start " + url);
+        }
+      }
+      
+
+      process.WaitForExit();
+      process.Close();
     }
 
     private void Form1_Load(object sender, EventArgs e)
