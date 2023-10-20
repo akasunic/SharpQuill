@@ -85,12 +85,25 @@ namespace SharpQuill
 
       //to loop sequence at a specific point, i think it's just the duration?
       seqGroup.Animation.Duration = (int)loopTime; //again, won't hard code this for this version
-     
 
+      //lazy way to ensure not overwriting layers-- just add timestamp...
+      var timestamp = DateTime.Now.ToFileTime();
+
+    /*  seqGroup.Name += timestamp;
+      layerParent.Name += timestamp;
+      targetLayer.Name += timestamp;*/
       //can we set animation to seqGroup and add paint layer after??
-      sequence.InsertLayerAt(seqGroup, "");
-      sequence.InsertLayerAt(layerParent, "/seqGroup");
-      sequence.InsertLayerAt(targetLayer, "/seqGroup/layerParent");
+      if(numDups > 0)
+      {
+        sequence.InsertLayerAt(seqGroup, "");
+        sequence.InsertLayerAt(layerParent, "/seqGroup");
+        sequence.InsertLayerAt(targetLayer, "/seqGroup/layerParent");
+      }
+      else
+      {
+        sequence.InsertLayerAt(targetLayer, "");
+      }
+      
       
       
 
@@ -100,34 +113,37 @@ namespace SharpQuill
     {
       
       //I know I should just refactor so this is included in other function, but... this is so much easier to do
-      var bboxOffset = newLayer.Drawings[0].BoundingBox.MaxX- newLayer.Drawings[0].BoundingBox.MinX;
-      List<List<Vertex>> dupVertices = new List<List<Vertex>>();
+      var bboxOffset = startLayer.Drawings[0].BoundingBox.MaxX- startLayer.Drawings[0].BoundingBox.MinX;
+      
 
       //for number of duplicates, traverse all vertices in the paint layer, and duplicate with an X offset
       for (int dups = 0; dups < numDups; dups++)
       {
-        dupVertices.Add(new List<Vertex>());
-
+        
+        bboxOffset *= (dups + 1);
         //for each stroke in drawing
         for (int s=0; s<startLayer.Drawings[0].Data.Strokes.Count; s++)
         {
+          List<Vertex> vertices = new List<Vertex>();
           Stroke stroke = startLayer.Drawings[0].Data.Strokes[s];
           //for each vertex in stroke
           for (int v=0; v < stroke.Vertices.Count; v++)
           {
             Vertex vertex = stroke.Vertices[v];
-            var fact = dups + 1;
-            SharpQuill.Vector3 transXPos = new SharpQuill.Vector3(vertex.Position.X + bboxOffset*fact, vertex.Position.Y, vertex.Position.Z);
+            
+            SharpQuill.Vector3 transXPos = new SharpQuill.Vector3(vertex.Position.X + bboxOffset, vertex.Position.Y, vertex.Position.Z);
             Vertex newDupVert = new Vertex(transXPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
-            dupVertices[dups].Add(newDupVert);
+            vertices.Add(newDupVert);
           }
 
-          Stroke dupStroke = stroke.NewPosStroke(dupVertices[dups]);
+          Stroke dupStroke = stroke.NewPosStroke(vertices);
           dupStroke.UpdateBoundingBox();
           newLayer.Drawings[0].Data.Strokes.Add(dupStroke);
+          newLayer.Drawings[0].UpdateBoundingBox(false);
         }
-        newLayer.Drawings[0].UpdateBoundingBox(false);
+        
       }
+      
     }
 
     //output the angleInRandians-- should do this at the drawing layer, though!!
@@ -219,13 +235,14 @@ namespace SharpQuill
           Stroke dupStroke = stroke.NewPosStroke(dupVertices[d]);
           dupStroke.UpdateBoundingBox();
           newLayer.Drawings[0].Data.Strokes.Add(dupStroke);
+          newLayer.Drawings[0].UpdateBoundingBox(false);//i dunno, maybe i gotta update bbox everytime I add a stroke??
         }
 
 
 
       }
       //update drawing bbox here?? double check where it's stored
-      newLayer.Drawings[0].UpdateBoundingBox(false);//setting to false bc already updated stroke bbox above-- can play around with this if not working
+      //setting to false bc already updated stroke bbox above-- can play around with this if not working
     }
 
     public static double GenAngleInRadians()

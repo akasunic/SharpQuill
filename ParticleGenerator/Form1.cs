@@ -67,7 +67,7 @@ namespace ParticleGenerator
 
 
       //clear the projectCreatedText
-      projectCreatedText.Text = "";
+      projectCreatedText.Text = "Working on it...";
       //hide the warning text
       warningText.Visible = false;
       //THE FOLLOWING CHANGED TO FORM CHOICE!!!
@@ -89,6 +89,7 @@ namespace ParticleGenerator
       //NOY WORKING AS EXPECTED
       if(readPath == null || readPath ==String.Empty || readPath == "" || sequence == null )
       {
+        projectCreatedText.Text = "";
         warningText.Visible = true;
         noProjectChosenErrorProvider.SetError(selectQuillButton, "You must select a valid Quill project folder containing at least one paint layer");
         return;
@@ -99,6 +100,7 @@ namespace ParticleGenerator
         string startLayerName = layersComboBox.Text;
         if(layersComboBox.Items.Count == 0)
         {
+          projectCreatedText.Text = "";
           noPaintLayersErrorProvider.SetError(selectQuillButton, String.Empty);
           warningText.Visible = true;
           return;
@@ -108,6 +110,7 @@ namespace ParticleGenerator
           noPaintLayersErrorProvider.SetError(selectQuillButton, String.Empty);
           if (startLayerName == "" || startLayerName == null)
           {
+            projectCreatedText.Text = "";
             noLayerChosenErrorProvider.SetError(layersComboBox, "You must select a paint layer from the dropdown");
             warningText.Visible = true;
             return; //to stop rest of function
@@ -118,6 +121,7 @@ namespace ParticleGenerator
             noLayerChosenErrorProvider.SetError(layersComboBox, String.Empty);
             if (startLayer == null)
             {
+              projectCreatedText.Text = "";
               noLayerChosenErrorProvider.SetError(layersComboBox, "Chosen layer could not be found. Please try saving and closing out Quill, if open, and try again.");
               return;
             }
@@ -125,6 +129,7 @@ namespace ParticleGenerator
             //check that startLayer contains strokes
             if (startLayer.Drawings[0].Data.Strokes.Count == 0)
             {
+              projectCreatedText.Text = "";
               warningText.Visible = true;
               noStrokesErrorProvider.SetError(layersComboBox, "No strokes found in the layer (or first frame of the layer). Please inspect your Quill project file and try again.");
               return;
@@ -153,6 +158,7 @@ namespace ParticleGenerator
       }
       else
       {
+        projectCreatedText.Text = "";
         //break out of function didn't save
         return;
       }
@@ -181,6 +187,7 @@ namespace ParticleGenerator
   
     private void selectQuillButton_Click(object sender, EventArgs e)
     {
+      readPathChoice.Text = "Loading and analyzing file...";
       //clear out items in current dropdown list and reset text
       layersComboBox.Items.Clear();
       layersComboBox.Text = String.Empty;
