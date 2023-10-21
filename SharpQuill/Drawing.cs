@@ -52,9 +52,11 @@ namespace SharpQuill
       foreach (Stroke s in Data.Strokes)
       {
         if (updateStrokes)
+        {
           s.UpdateBoundingBox();
-
+        }
         BoundingBox.Expand(s.BoundingBox);
+        
       }
     }
   }

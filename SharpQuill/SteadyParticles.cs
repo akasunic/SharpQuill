@@ -67,9 +67,8 @@ namespace SharpQuill
 
 
       }
-    
 
-      //put the new layer in a folder
+      //Create folders for animation
       LayerGroup layerParent = new LayerGroup("layerParent", false);
       LayerGroup seqGroup = new LayerGroup("seqGroup", true);//set to true to mark as a sequence
 
@@ -78,21 +77,15 @@ namespace SharpQuill
       Transform transform2 = new Transform(new SharpQuill.Quaternion(0, 0, 0, 1), 1.0f, "N", new SharpQuill.Vector3(xFact * (quillGridDict["xMax"] - quillGridDict["xMin"]), 0, 0));
       //add 2 key transforms to layerParent, setting to 1 second for now [HARD CODE NOW< MAKE AN OPTION LATER]
       Keyframe<Transform> initialKey = new Keyframe<Transform>(0, transform1, Interpolation.Linear);
-      Keyframe<Transform> endKey = new Keyframe<Transform>((int)loopTime, transform2, Interpolation.Linear);//using milliseconds I think! ACTUALLY 12600 is 1 second i have no idea why???
-                                                                                                    //want to move it by gridSize*xFactor for x; y and z remain the same
+      Keyframe<Transform> endKey = new Keyframe<Transform>((int)loopTime, transform2, Interpolation.Linear);//not using milliseconds as original SharpQuill suggestion! ACTUALLY 12600 is 1 second i have no idea why???
+
+      //want to move it by gridSize*xFactor for x; y and z remain the same
       layerParent.Animation.Keys.Transform.Add(initialKey);
       layerParent.Animation.Keys.Transform.Add(endKey);
 
-      //to loop sequence at a specific point, i think it's just the duration?
-      seqGroup.Animation.Duration = (int)loopTime; //again, won't hard code this for this version
+      //to loop sequence at a specific point, it's just the duration
+      seqGroup.Animation.Duration = (int)loopTime;
 
-      //lazy way to ensure not overwriting layers-- just add timestamp...
-      var timestamp = DateTime.Now.ToFileTime();
-
-    /*  seqGroup.Name += timestamp;
-      layerParent.Name += timestamp;
-      targetLayer.Name += timestamp;*/
-      //can we set animation to seqGroup and add paint layer after??
       if(numDups > 0)
       {
         sequence.InsertLayerAt(seqGroup, "");
@@ -103,12 +96,11 @@ namespace SharpQuill
       {
         sequence.InsertLayerAt(targetLayer, "");
       }
-      
-      
-      
 
     }
 
+    //This is a workaround bc I encountered issues with the bounding boxes! Used for offset only, in case the bounding boxes are not accurate
+    //Basically, just finds xBounds of a drawing (using vertices), so that this value can be used to copy and displace
     public static float FindXBounds(LayerPaint layer)
     {
       float Xmin = 0;
@@ -132,10 +124,13 @@ namespace SharpQuill
       return Xmax - Xmin;
     }
 
+    //This method used if not duplicating/randomizing, but only doing the displace/animating part
+    //might be useful if doing a moving background (skipped the particle array part)
+    //or if 
     public void OffsetOnly(LayerPaint newLayer)
     {
 
-      //I know I should just refactor so this is included in other function, but... this is so much easier to do
+      //I know I should just refactor so this is included in other function, but... this is so much easier to do right now
       float xBounds = FindXBounds(startLayer);
       float bboxOffset;
       
@@ -163,22 +158,22 @@ namespace SharpQuill
           Stroke dupStroke = stroke.NewPosStroke(vertices);
           dupStroke.UpdateBoundingBox();
           newLayer.Drawings[0].Data.Strokes.Add(dupStroke);
-          newLayer.Drawings[0].UpdateBoundingBox(false);
+          
         }
         
       }
-      
+      //this is not working as expected-- the bounding box is set to {0,0,0,0,0,0}! will edit later if I figure out issue. but using workarounds for now
+      newLayer.Drawings[0].UpdateBoundingBox(false);
     }
 
-    //output the angleInRandians-- should do this at the drawing layer, though!!
-    //will do this 3 times at the drawing level when making a new copy of object, store
 
+
+    //This is for copying and repositioning the original object
+    //It automates everything here, including the keyframe animation
+    //numDups can be 0, in which case the animation part isn't created (eg, just creating a particle array, static)
     public void CopyReposObj(LayerPaint newLayer)
     {
-      //want the same randomization across all vertices of all strokes, so apply here, at the drawing level
-      //note that these values may be exclusive, need to double check documentation
-      //CenterObject(startLayer); //maybe make a ftn for this and add in later
-      //hm, maybe need a new seed each time? otherwise it's looking kinda strange. Let me see. Before I had this outside of the function
+      
       var randXseed = new Random();
       var randYseed = new Random();
       var randZseed = new Random();
@@ -222,20 +217,18 @@ namespace SharpQuill
             RotateVertex(angleZ, "Z", ref X, ref Y, ref Z);
           }
           
-
-          //apply offset after have rotated?
+          //apply offset after have rotated
           X += randXOffset;
           Y += randYOffset;
           Z += randZOffset;
 
-          //agh, maybe this won't work, need to understand SharpQuill.Vector3 vs the built in Vector3... why is there a new Vector3 in SharpQuill??
           SharpQuill.Vector3 newPos = new SharpQuill.Vector3(X, Y, Z);
 
           Vertex newRandV = new Vertex(newPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
           newVertices.Add(newRandV);
 
           // now you want to take this stroke, and clone offset and for numDups, offset it gridX * Xfactor (but at vertex level)
-          //also re-do this for original strokes, too!
+         
           for (int dups = 0; dups < numDups; dups++)
           {
             var fact = dups + 1;
@@ -243,32 +236,30 @@ namespace SharpQuill
             Vertex newDupVert = new Vertex(transXPos, vertex.Normal, vertex.Tangent, vertex.Color, vertex.Opacity, vertex.Width);
             dupVertices[dups].Add(newDupVert);
           }
-          //then add this new vertex to the copied layer's vertices list
-          //OHHH you want a new stroke, though... okay
-
-
         }
         //add new stroke to drawing here, add in vertices, reset bounding boxes!
         Stroke newStroke = stroke.NewPosStroke(newVertices);
+        //note: I believe updating Bboxes may be working at stroke level. I need to confirm, though.
         newStroke.UpdateBoundingBox();
         newLayer.Drawings[0].Data.Strokes.Add(newStroke);
-        newLayer.Drawings[0].BoundingBox.Expand(newStroke.BoundingBox);
-
+  
         //for the dups
         for (int d = 0; d < numDups; d++)
         {
           Stroke dupStroke = stroke.NewPosStroke(dupVertices[d]);
           dupStroke.UpdateBoundingBox();
           newLayer.Drawings[0].Data.Strokes.Add(dupStroke);
-          newLayer.Drawings[0].UpdateBoundingBox(false);//i dunno, maybe i gotta update bbox everytime I add a stroke??
+          
         }
 
 
 
       }
-     
+      newLayer.Drawings[0].UpdateBoundingBox(false);//agh, still doesn't work, but keeping here in case I find a solution later.
+
     }
 
+    //chatgpt helped me because i didn't know how to rotate...
     public static double GenAngleInRadians()
     {
       // Generate a random angle in degrees within a desired range
@@ -282,13 +273,11 @@ namespace SharpQuill
 
       return angleInRadians;
 
-
     }
 
     //going to randomly rotate all vertices in a drawing along all 3 axes
     //place so X Y Z are at same level, so you can mod directly
-    //use ref so original values change-- may need to look up more on this to understand later...
-    //I also like, don't understand rotation in gen. will look into later
+    //use ref so original values change
     public static void RotateVertex(double angleInRadians, string axis, ref float X, ref float Y, ref float Z)
     {
       double sinTheta = Math.Sin(angleInRadians);

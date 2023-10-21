@@ -12,23 +12,15 @@ namespace ParticleGenerator
     private SteadyParticles? steadyParticles;//making nullable
     private string readPath;
     private Sequence sequence;
-    
-
-    
-
 
     public Form1()
     {
-
-
       InitializeComponent();
       gridScaleRangeAllowText.Text += xChoice.Minimum + " to " + xChoice.Maximum;
       drawDupRangeAllowText.Text += objChoice.Minimum + " to " + objChoice.Maximum;
       timeAllowRangeText.Text += secondsChoice.Minimum + " to " + secondsChoice.Maximum;
       offsetDupsAllowRangeText.Text += dupChoice.Minimum + " to " + dupChoice.Maximum;
-
   }
-
 
     //this is so that you can remove any errors after changing values
     private void ErrorRemovingChangeHandler(object sender, EventArgs e)
@@ -144,11 +136,6 @@ namespace ParticleGenerator
        
       }
       
-      
-
-      
-
-
       string writePath = "";
       //get writepath from the saveas dialog-- see blendshape starters for example
       SaveFileDialog sfd = new SaveFileDialog();
@@ -237,41 +224,14 @@ namespace ParticleGenerator
       }
     }
 
-    private void label1_Click(object sender, EventArgs e)
-    {
 
-    }
-
-    private void label2_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void label3_Click(object sender, EventArgs e)
-    {
-
-    }
 
     private void numericUpDown3_ValueChanged(object sender, EventArgs e)
     {
 
     }
 
-    private void label7_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void label8_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void label11_Click(object sender, EventArgs e)
-    {
-
-    }
-
+ 
     private void readMeLink_Clicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
       readMeLink.LinkVisited = true;
@@ -315,44 +275,19 @@ namespace ParticleGenerator
 
     }
 
-    private void label6_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void label9_Click(object sender, EventArgs e)
-    {
-
-    }
+    
 
     private void numericUpDown2_ValueChanged(object sender, EventArgs e)
     {
 
     }
 
-    private void label12_Click(object sender, EventArgs e)
-    {
-
-    }
-
+   
     private void numericUpDown6_ValueChanged(object sender, EventArgs e)
     {
 
     }
 
-    private void label13_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void panel1_Paint(object sender, PaintEventArgs e)
-    {
-
-    }
-
-    private void label13_Click_1(object sender, EventArgs e)
-    {
-
-    }
+    
   }
 }

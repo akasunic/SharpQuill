@@ -76,6 +76,8 @@ namespace SharpQuill
     /// </summary>
     public void Expand(BoundingBox b)
     {
+      var test_del_bbox = this;
+      var test_del =b;
       MinX = Math.Min(MinX, b.MinX);
       MinY = Math.Min(MinY, b.MinY);
       MinZ = Math.Min(MinZ, b.MinZ);

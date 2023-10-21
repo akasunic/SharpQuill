@@ -122,7 +122,6 @@
             this.label11.Size = new System.Drawing.Size(314, 25);
             this.label11.TabIndex = 18;
             this.label11.Text = "Steady Particles Generator for Quill";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // readMeLink
             // 
@@ -147,7 +146,6 @@
             this.readPathChoice.Name = "readPathChoice";
             this.readPathChoice.Size = new System.Drawing.Size(0, 15);
             this.readPathChoice.TabIndex = 22;
-            this.readPathChoice.Click += new System.EventHandler(this.label13_Click);
             // 
             // noPaintLayersErrorProvider
             // 
@@ -174,7 +172,6 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "X-axis/length, as scale of Quill grid";
             this.label3.UseWaitCursor = true;
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // dupChoice
             // 
@@ -204,7 +201,6 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Number of particle offsets (duplicates)";
             this.label2.UseWaitCursor = true;
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label8
             // 
@@ -216,7 +212,6 @@
             this.label8.TabIndex = 15;
             this.label8.Text = "Duplicate and randomly reposition and rotate particles";
             this.label8.UseWaitCursor = true;
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // label5
             // 
@@ -266,7 +261,6 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Number of drawing duplicates";
             this.label1.UseWaitCursor = true;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label9
             // 
@@ -278,7 +272,6 @@
             this.label9.TabIndex = 16;
             this.label9.Text = "Animation: Duplicate and offset particles, and loop at a time";
             this.label9.UseWaitCursor = true;
-            this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
             // label4
             // 
@@ -390,7 +383,6 @@
             this.label7.TabIndex = 14;
             this.label7.Text = "Default values of 1 produce a cubic area with faces the size of Quill grid.";
             this.label7.UseWaitCursor = true;
-            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // label6
             // 
@@ -402,7 +394,6 @@
             this.label6.TabIndex = 13;
             this.label6.Text = "Set scale of base area for particles";
             this.label6.UseWaitCursor = true;
-            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // checkBox_rotate
             // 
@@ -457,7 +448,6 @@
             this.label12.TabIndex = 18;
             this.label12.Text = "Time in seconds at which to loop ";
             this.label12.UseWaitCursor = true;
-            this.label12.Click += new System.EventHandler(this.label12_Click);
             // 
             // timeAllowRangeText
             // 
@@ -498,7 +488,6 @@
             this.gridScaleRangeAllowText.TabIndex = 22;
             this.gridScaleRangeAllowText.Text = "allowed range: ";
             this.gridScaleRangeAllowText.UseWaitCursor = true;
-            this.gridScaleRangeAllowText.Click += new System.EventHandler(this.label13_Click_1);
             // 
             // warningText
             // 
