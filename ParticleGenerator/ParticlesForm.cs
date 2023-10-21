@@ -7,15 +7,16 @@ using static System.Net.WebRequestMethods;
 
 namespace ParticleGenerator
 {
-  public partial class Form1 : Form
+  public partial class ParticlesForm : Form
   {
     private SteadyParticles? steadyParticles;//making nullable
     private string readPath;
     private Sequence sequence;
 
-    public Form1()
+    public ParticlesForm()
     {
       InitializeComponent();
+      //showing allowed range for certain values for uesr
       gridScaleRangeAllowText.Text += xChoice.Minimum + " to " + xChoice.Maximum;
       drawDupRangeAllowText.Text += objChoice.Minimum + " to " + objChoice.Maximum;
       timeAllowRangeText.Text += secondsChoice.Minimum + " to " + secondsChoice.Maximum;
@@ -29,16 +30,14 @@ namespace ParticleGenerator
       //may want to change this from a list later!!
       List<ErrorProvider> errorProviders = new List<ErrorProvider>
       {
-        //quillErrorProvider; //not including this bc gets caught at the 
+        //quillErrorProvider; //not including this bc gets caught and handled via QuillSelect
         
-        //saveFileErrorProvider,
+        //saveFileErrorProvider,//this often comes up when you decide to cancel saving, so not needed
         noPaintLayersErrorProvider,
         noLayerChosenErrorProvider,
         noStrokesErrorProvider,
         noProjectChosenErrorProvider
       };
-      // Your event handling logic here
-      // You can access the control that triggered the event using 'sender'
       Control control = sender as Control;
       if (control != null)
       {
@@ -53,32 +52,21 @@ namespace ParticleGenerator
     }
 
 
+    //
     private void genParts_click(object sender, EventArgs e)
     {
-
-
-
       //clear the projectCreatedText
+      //Shouldn't be needed as shouldn't be that slow-- but may be if high values or high vertex layers are used
       projectCreatedText.Text = "Working on it...";
-      //hide the warning text
+      //hide the warning text 
       warningText.Visible = false;
-      //THE FOLLOWING CHANGED TO FORM CHOICE!!!
-      int numObjs = (int)objChoice.Value;//have a dropdown/forced numerical entry-- use tooltips
-      int numDups = (int)dupChoice.Value;//have a dropdown/forced numerical entry-- use tooltips
+      
+      int numObjs = (int)objChoice.Value;//have a dropdown/
+      int numDups = (int)dupChoice.Value;//have a dropdown/
       LayerPaint startLayer;
       //sequence from file dialog, write path from save dialog-- see blendshape starter for ideas
-      //readPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\Grid-test";
-
-      //Sequence sequence = QuillSequenceReader.Read(readPath);
-      //string writePath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\randomizedParticles";
-      //use dropdown to choose layer-- see blendshape app for ideas
-      //get start layer
-
-      //CHECK IF THERE ARE ALREADY ERROR PROVIDERS ON ANY CONTROLS!! IF THERE ARE, REMOVE FIRST BEFORE SUBMITTING!!!
-
-      //NEST THESE CHECKS!!!!
+     
       //first make sure a Quill project is selected
-      //NOY WORKING AS EXPECTED
       if(readPath == null || readPath ==String.Empty || readPath == "" || sequence == null )
       {
         projectCreatedText.Text = "";
@@ -86,10 +74,11 @@ namespace ParticleGenerator
         noProjectChosenErrorProvider.SetError(selectQuillButton, "You must select a valid Quill project folder containing at least one paint layer");
         return;
       }
-      else
+      else//then check that a paint layer is selected from the dropdown
       {
         noProjectChosenErrorProvider.SetError(selectQuillButton, String.Empty);
         string startLayerName = layersComboBox.Text;
+        //a double check that the project contains paint layers
         if(layersComboBox.Items.Count == 0)
         {
           projectCreatedText.Text = "";
@@ -100,6 +89,7 @@ namespace ParticleGenerator
         else
         {
           noPaintLayersErrorProvider.SetError(selectQuillButton, String.Empty);
+          //check that a layer is selected (this is in the case that there are several paint layers to choose from)
           if (startLayerName == "" || startLayerName == null)
           {
             projectCreatedText.Text = "";
@@ -107,14 +97,15 @@ namespace ParticleGenerator
             warningText.Visible = true;
             return; //to stop rest of function
           }
-          else
+          else//then set the start layer
           {
             startLayer = (LayerPaint)sequence.RootLayer.FindChild(startLayerName);
             noLayerChosenErrorProvider.SetError(layersComboBox, String.Empty);
+            //not really sure why this could be null-- could be a lag issue? may need to look into if it happens often
             if (startLayer == null)
             {
               projectCreatedText.Text = "";
-              noLayerChosenErrorProvider.SetError(layersComboBox, "Chosen layer could not be found. Please try saving and closing out Quill, if open, and try again.");
+              noLayerChosenErrorProvider.SetError(layersComboBox, "Chosen layer could not be found. Please try saving and closing out Quill, if open, or closing and restarting this program.");
               return;
             }
 
@@ -131,11 +122,9 @@ namespace ParticleGenerator
               noStrokesErrorProvider.SetError(layersComboBox, String.Empty);
             }
           }
-
-        }
-       
+        } 
       }
-      
+      //set writePath to empty to start
       string writePath = "";
       //get writepath from the saveas dialog-- see blendshape starters for example
       SaveFileDialog sfd = new SaveFileDialog();
@@ -150,7 +139,7 @@ namespace ParticleGenerator
         return;
       }
     
-
+      //get your grid size factors from the dropdowns
       float yFact = (float)yChoice.Value;
       float zFact = (float)zChoice.Value;
       float xFact = (float)xChoice.Value;
@@ -158,12 +147,10 @@ namespace ParticleGenerator
       //get value from form and then multiplay by 12600 (done later in code-- in steady particles)
       float loopTime = (float)secondsChoice.Value;
 
+      //whether or not to randomly rotate as well as reposition the particles
       bool rotate = checkBox_rotate.Checked;
 
-
-      // Initialize the ParticleGenerator
-      //particleGenerator = new ParticleGenerator();
-      //public SteadyParticles(int numObjs, int numDups, Sequence sequence, LayerPaint startLayer, LayerPaint targetLayer, int xFact, int yFact, int zFact)
+      // Initialize the SteadyParticle instance
       steadyParticles = new SteadyParticles(numObjs, numDups, sequence, startLayer, xFact, yFact, zFact, loopTime, rotate);
       steadyParticles.GenerateSteadyParticles();
       QuillSequenceWriter.Write(sequence, writePath);
@@ -171,7 +158,8 @@ namespace ParticleGenerator
 
     }
 
-  
+    //Selects a Quill project file, checks to make sure it's actually is a Quill project
+    //If it's valid, populates dropdown-- but gives an error if contains no paint layers
     private void selectQuillButton_Click(object sender, EventArgs e)
     {
       readPathChoice.Text = "Loading and analyzing file...";
@@ -208,7 +196,8 @@ namespace ParticleGenerator
       }     
     }
 
-
+    //recursive method, goes through all layers of selected project
+    // if a group layer, keeps recursively calling, if paint layer, adds to comboxbox
     private void populateLayerDropdown(Layer layer, ComboBox dropdown)
     {
       if(layer.Type.ToString() == "Group")
@@ -226,12 +215,7 @@ namespace ParticleGenerator
 
 
 
-    private void numericUpDown3_ValueChanged(object sender, EventArgs e)
-    {
-
-    }
-
- 
+    //Go to the README/instructions doc (just a Google doc)
     private void readMeLink_Clicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
       readMeLink.LinkVisited = true;
@@ -259,8 +243,6 @@ namespace ParticleGenerator
           sw.WriteLine("start " + url);
         }
       }
-      
-
       process.WaitForExit();
       process.Close();
     }
@@ -269,25 +251,5 @@ namespace ParticleGenerator
     {
 
     }
-
-    private void checkBox1_CheckedChanged(object sender, EventArgs e)
-    {
-
-    }
-
-    
-
-    private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-    {
-
-    }
-
-   
-    private void numericUpDown6_ValueChanged(object sender, EventArgs e)
-    {
-
-    }
-
-    
   }
 }

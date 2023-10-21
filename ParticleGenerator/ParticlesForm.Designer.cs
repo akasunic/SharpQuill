@@ -1,6 +1,6 @@
 ﻿namespace ParticleGenerator
 {
-  partial class Form1
+  partial class ParticlesForm
   {
     /// <summary>
     ///  Required designer variable.
@@ -190,7 +190,6 @@
             0,
             0,
             0});
-            this.dupChoice.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
             // 
             // label2
             // 
@@ -359,7 +358,6 @@
             0,
             0,
             0});
-            this.xChoice.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
             // 
             // genSteadyParts
             // 
@@ -437,7 +435,6 @@
             0,
             0,
             0});
-            this.secondsChoice.ValueChanged += new System.EventHandler(this.numericUpDown6_ValueChanged);
             // 
             // label12
             // 
