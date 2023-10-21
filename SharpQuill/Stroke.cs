@@ -89,7 +89,7 @@ namespace SharpQuill
     /// </summary>
     public void UpdateBoundingBox()
     {
-      BoundingBox.Reset();
+      BoundingBox.Reset(); //uh... but now how will it expand?? 
       foreach (Vertex v in Vertices)
         BoundingBox.Expand(v.Position);
     }

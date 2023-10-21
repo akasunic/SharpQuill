@@ -109,18 +109,42 @@ namespace SharpQuill
 
     }
 
+    public static float FindXBounds(LayerPaint layer)
+    {
+      float Xmin = 0;
+      float Xmax = 0;
+      for (int s= 0; s< layer.Drawings[0].Data.Strokes.Count; s++)
+      {
+        Stroke stroke = layer.Drawings[0].Data.Strokes[s];
+        for (int v= 0; v<stroke.Vertices.Count; v++)
+        {
+          Vertex vert = stroke.Vertices[v];
+          if (Xmin > vert.Position.X)
+          {
+            Xmin = vert.Position.X;
+          }
+          else if (Xmax < vert.Position.X)
+          {
+            Xmax = vert.Position.X;
+          }
+        }
+      }
+      return Xmax - Xmin;
+    }
+
     public void OffsetOnly(LayerPaint newLayer)
     {
-      
+
       //I know I should just refactor so this is included in other function, but... this is so much easier to do
-      var bboxOffset = startLayer.Drawings[0].BoundingBox.MaxX- startLayer.Drawings[0].BoundingBox.MinX;
+      float xBounds = FindXBounds(startLayer);
+      float bboxOffset;
       
 
       //for number of duplicates, traverse all vertices in the paint layer, and duplicate with an X offset
       for (int dups = 0; dups < numDups; dups++)
       {
         
-        bboxOffset *= (dups + 1);
+        bboxOffset = xBounds * (dups + 1);
         //for each stroke in drawing
         for (int s=0; s<startLayer.Drawings[0].Data.Strokes.Count; s++)
         {
@@ -228,6 +252,7 @@ namespace SharpQuill
         Stroke newStroke = stroke.NewPosStroke(newVertices);
         newStroke.UpdateBoundingBox();
         newLayer.Drawings[0].Data.Strokes.Add(newStroke);
+        newLayer.Drawings[0].BoundingBox.Expand(newStroke.BoundingBox);
 
         //for the dups
         for (int d = 0; d < numDups; d++)
@@ -241,8 +266,7 @@ namespace SharpQuill
 
 
       }
-      //update drawing bbox here?? double check where it's stored
-      //setting to false bc already updated stroke bbox above-- can play around with this if not working
+     
     }
 
     public static double GenAngleInRadians()
