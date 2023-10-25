@@ -103,7 +103,7 @@ public class VisemesGenerator
     //now go through each layer, see earliest visibility start, and if greater than 0, set a visibility start key frame to 0
     foreach (var key in visemeMap.Keys)
     {
-
+      visemeMap[key].Visible = true;
       if (key != startingViseme)
       {
         List<Keyframe<bool>> visibilityKeys = visemeMap[key].Animation.Keys.Visibility;
@@ -117,10 +117,7 @@ public class VisemesGenerator
           }
         }
       }
-
-
     }
-
   }
 
 

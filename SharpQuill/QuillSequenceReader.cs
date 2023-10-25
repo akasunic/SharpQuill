@@ -243,6 +243,18 @@ namespace SharpQuill
 
       return drawing;
     }
+
+    //Anna added, to get sound
+    private static SoundModifier ParseSoundModifier(dynamic s)
+    {
+      SoundModifier modifier = new SoundModifier();
+      if (s == null)
+        return modifier;
+
+      modifier.Type = SoundModifierType.None;
+
+      return modifier;
+    }
     
     private static KeepAlive ParseKeepAlive(dynamic ka)
     {
@@ -423,6 +435,28 @@ namespace SharpQuill
         case LayerType.Model:
         case LayerType.Picture:
         case LayerType.Sound:
+          {
+            Console.WriteLine("I'm here");
+            layer = new LayerSound();
+            LayerSound ls = layer as LayerSound;
+            ls.DataFileOffset= l.Implementation.DataFileOffset;
+            ls.ImportFilePath= l.Implementation.ImportFilePath;
+            ls.SoundType= l.Implementation.SoundType;
+            ls.Gain = ParseFloat(l.Implementation.Gain);
+            ls.Loop = ParseBool(l.Implementation.Loop);
+            //ls.SoundAttenuation= l.Implementation.Attenuation;
+            
+            //BEING LAZY AND EXLUDING MODIFIERS FOR NOW!
+            if (l.Implementation.SoundModifiers != null){
+              foreach(var s in l.Implementation.SoundModifiers)
+              {
+                SoundModifier modifier = ParseSoundModifier(s);
+                ls.Modifiers.Add(modifier);
+              }
+            }
+          
+            break;
+          }
         case LayerType.Unknown:
         default:
           layer = null;

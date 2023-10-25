@@ -122,6 +122,7 @@ namespace SharpQuill
           return WriteLayerImplementationGroup(layer as LayerGroup);
 
         case LayerType.Paint:
+          
           return WriteLayerImplementationPaint(layer as LayerPaint);
 
         case LayerType.Viewpoint:
@@ -132,6 +133,8 @@ namespace SharpQuill
 
         case LayerType.Model:
         case LayerType.Sound:
+          
+          return WriteLayerImplementationSound(layer as LayerSound);
         case LayerType.Picture:
         case LayerType.Unknown:
         default:
@@ -187,6 +190,32 @@ namespace SharpQuill
       
       return jLayer;
     }
+
+    //Anna added, based of existing layers
+    private static JObject WriteLayerImplementationSound(LayerSound layer)
+    {
+      JObject jLayer = new JObject();
+
+      jLayer.Add(new JProperty("DataFileOffset", layer.DataFileOffset));
+      jLayer.Add(new JProperty("ImportFilePath", layer.ImportFilePath));
+      jLayer.Add(new JProperty("SoundType", layer.SoundType));
+      jLayer.Add(new JProperty("Gain", layer.Gain));
+      jLayer.Add(new JProperty("Loop", layer.Loop));
+      //jLayer.Add(new JProperty("Attentuation", layer.Attenuation));
+
+      //BEING LAZY AND EXCLDUING SOUND MODIFIERS FOR NOW!!!
+      JArray jModifiers = new JArray();
+      SoundModifier modifier = new SoundModifier();
+      modifier.Type = SoundModifierType.None;
+      jModifiers.Add(modifier);
+      //commenting out to add an empty modifier, for now
+      /* foreach (SoundModifier modifier in layer.Modifiers)
+         jModifiers.Add(WriteDrawing(drawing));*/
+      jLayer.Add(new JProperty("Modifiers", jModifiers));
+
+      return jLayer;
+    }
+
 
     private static JObject WriteLayerImplementationCamera(LayerCamera layer)
     {
@@ -397,7 +426,7 @@ namespace SharpQuill
       JObject jQuill = new JObject();
 
       JObject jRulers = new JObject();
-      jRulers.Add(new JProperty("ShowGrid", false));
+      jRulers.Add(new JProperty("ShowGrid", true));
       jQuill.Add(new JProperty("Rulers", jRulers));
 
       JObject jSurface = new JObject();
