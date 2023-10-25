@@ -75,7 +75,7 @@ namespace SharpQuill
       Transform transform1 = new Transform(new SharpQuill.Quaternion(0, 0, 0, 1), 1.0f, "N", new SharpQuill.Vector3(0, 0, 0));
 
       Transform transform2 = new Transform(new SharpQuill.Quaternion(0, 0, 0, 1), 1.0f, "N", new SharpQuill.Vector3(xFact * (quillGridDict["xMax"] - quillGridDict["xMin"]), 0, 0));
-      //add 2 key transforms to layerParent, setting to 1 second for now [HARD CODE NOW< MAKE AN OPTION LATER]
+      //add 2 key transforms to layerParent, setting to 1 second for now 
       Keyframe<Transform> initialKey = new Keyframe<Transform>(0, transform1, Interpolation.Linear);
       Keyframe<Transform> endKey = new Keyframe<Transform>((int)loopTime, transform2, Interpolation.Linear);//not using milliseconds as original SharpQuill suggestion! ACTUALLY 12600 is 1 second i have no idea why???
 

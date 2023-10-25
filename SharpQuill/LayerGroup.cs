@@ -85,6 +85,8 @@ namespace SharpQuill
       return null;
     }
 
+  
+
     public LayerGroup DeepCopy()
     {
       LayerGroup copy = new LayerGroup

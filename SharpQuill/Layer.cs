@@ -79,6 +79,33 @@ namespace SharpQuill
       other.Name = name;
       return other;
     }
+
+
+    //Finds and returns (as a list) all group layers nested within the group layer (at any level)
+
+    public void GetGroupChildren(List<LayerGroup> children)
+    {
+      
+      if (this.Type.ToString() == "Group")
+      {
+        //Console.WriteLine(this.Name + " is at the top level if");
+        foreach (Layer child in ((LayerGroup)this).Children)
+        {
+          if(child.Type.ToString() == "Group"){
+            Console.WriteLine("adding this group child to list: " + child.Name);
+            children.Add((LayerGroup)child);
+            child.GetGroupChildren(children);
+         };
+          
+        }
+      }
+     /* Console.WriteLine("all children: ");
+      foreach(LayerGroup child in children)
+      {
+        Console.WriteLine(child.Name);
+      }*/
+    }
+
   }
 
   
