@@ -244,6 +244,15 @@ namespace SharpQuill
       return drawing;
     }
 
+    private static SoundAttenuation ParseSoundAttentuation(dynamic a)
+    {
+      SoundAttenuation atten = new SoundAttenuation();
+      atten.Mode = SoundAttenuationMode.None;
+      atten.Minimum = 0;
+      atten.Maximum = 0;
+      return atten;
+    }
+
     //Anna added, to get sound
     private static SoundModifier ParseSoundModifier(dynamic s)
     {
@@ -439,22 +448,35 @@ namespace SharpQuill
             Console.WriteLine("I'm here");
             layer = new LayerSound();
             LayerSound ls = layer as LayerSound;
-            ls.DataFileOffset= l.Implementation.DataFileOffset;
-            ls.ImportFilePath= l.Implementation.ImportFilePath;
-            ls.SoundType= l.Implementation.SoundType;
+            Console.WriteLine("I'm 451");
+            Console.WriteLine(l.Implementation.DataFileOffset);
+            long offset;
+            bool parsed = long.TryParse((string)l.Implementation.DataFileOffset.ToObject(typeof(string)), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out offset);
+            ls.DataFileOffset = parsed ? offset : -1;
+            //ls.DataFileOffset = l.Implementation.DataFileOffset;
+            Console.WriteLine("I'm 453");
+            ls.ImportFilePath = l.Implementation.ImportFilePath;
+            Console.WriteLine("I'm 454");
+            ls.SoundType =  SoundType.Flat;
+            Console.WriteLine("I'm wow");
             ls.Gain = ParseFloat(l.Implementation.Gain);
+            Console.WriteLine("I'm stupid");
             ls.Loop = ParseBool(l.Implementation.Loop);
-            //ls.SoundAttenuation= l.Implementation.Attenuation;
-            
-            //BEING LAZY AND EXLUDING MODIFIERS FOR NOW!
-            if (l.Implementation.SoundModifiers != null){
-              foreach(var s in l.Implementation.SoundModifiers)
-              {
-                SoundModifier modifier = ParseSoundModifier(s);
-                ls.Modifiers.Add(modifier);
-              }
+            Console.WriteLine("I'm 455");
+            //Console.WriteLine("mode: " + l.Implementation.Attenuation.Mode);
+           // ls.Attenuation.Mode = new
+           // Console.WriteLine("I'm 460");
+            //ls.Attenuation.Minimum = ParseFloat(l.Implementation.Attenuation.Minimum);
+            Console.WriteLine("I'm sick");
+            //ls.Attenuation.Maximum = ParseFloat(l.Implementation.Attenuation.Maximum);
+            Console.WriteLine("I'm tired");
+            //if (l.Implementation.Modifiers != null)
+            {
+              Console.WriteLine("I'm 465");
+              SoundModifier modifier = new SoundModifier();
+              modifier.Type = SoundModifierType.None;
+              ls.Modifiers.Add(modifier);
             }
-          
             break;
           }
         case LayerType.Unknown:
