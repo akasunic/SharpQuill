@@ -71,9 +71,14 @@ namespace SharpQuill
       Write(c.B);
     }
 
-    public void Write(LayerSound ls)
+    //this is wrong! I don't know how the sound data is stored in qbin, okay?
+    /*public void Write(LayerSound ls)
     {
-      Write(ls.DataFileOffset);
-    }
+     *//* Console.WriteLine("running write layersound");
+      byte[] offsetBytes = BitConverter.GetBytes(ls.DataFileOffset);
+      Array.Reverse(offsetBytes); // Convert to little-endian
+      Write(offsetBytes);
+      //Write(ls.DataFileOffset);*//*
+    }*/
   }
 }

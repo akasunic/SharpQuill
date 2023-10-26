@@ -100,11 +100,12 @@ namespace SharpQuill
       return v;
     }
 
-    public LayerSound ReadLayerSound()
+    //this is totally wrong! I should be reading the actual data, not returning the offset
+/*    public long ReadLayerSound()
     {
       LayerSound snd = new LayerSound();
       snd.DataFileOffset = ReadInt32();
-      return snd;
-    }
+      return snd.DataFileOffset;
+    }*/
   }
 }

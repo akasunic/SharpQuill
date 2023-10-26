@@ -130,6 +130,7 @@ namespace SharpQuill
 
         case LayerType.Camera:
           return WriteLayerImplementationCamera(layer as LayerCamera);
+      //NOT ACTUALLY ADDING SOUND LAYER-- DON'T KNOW HOW DATA IS STORED IN QBIN!
         case LayerType.Sound:
           Console.WriteLine("testing if this is running");
 
@@ -146,6 +147,7 @@ namespace SharpQuill
     {
       if (layer == null)
         return false;
+
 
       return layer.Type == LayerType.Group ||
              layer.Type == LayerType.Paint ||
@@ -200,11 +202,12 @@ namespace SharpQuill
       Console.WriteLine("testing");
       JObject jLayer = new JObject();
       //I think we have to convert DataFileOffset back to hexademical little endian encoded?
-      long hexOffset = layer.DataFileOffset;
+     /* long hexOffset = layer.DataFileOffset;
+    
       byte[] byteArray = BitConverter.GetBytes(hexOffset);
       Array.Reverse(byteArray);
-      string hexString = BitConverter.ToString(byteArray).Replace("-", string.Empty);
-      jLayer.Add(new JProperty("DataFileOffset", hexString));
+      string hexString = BitConverter.ToString(byteArray).Replace("-", string.Empty);*/
+      /*jLayer.Add(new JProperty("DataFileOffset", layer.DataFileOffset.ToString("X"));
       jLayer.Add(new JProperty("ImportFilePath", layer.ImportFilePath));
       jLayer.Add(new JProperty("Type", "Flat"));
       jLayer.Add(new JProperty("Gain", layer.Gain));
@@ -222,9 +225,9 @@ namespace SharpQuill
         {"Type", "None" }
       };
       jModifiers.Add(jType);
-      jLayer.Add(new JProperty("Modifiers", jModifiers));
+      jLayer.Add(new JProperty("Modifiers", jModifiers));*/
 
-    
+      
       return jLayer;
     }
 
@@ -425,11 +428,13 @@ namespace SharpQuill
           qbinWriter.Write(drawing.Data);
         }
       }
-      else if (layer.Type == LayerType.Sound)
+      //NO THIS IS WRONG!
+/*      else if (layer.Type == LayerType.Sound)
       {
         ((LayerSound)layer).DataFileOffset = qbinWriter.BaseStream.Position;
-        qbinWriter.Write((LayerSound)layer);
-      }
+        qbinWriter.Write(((LayerSound)layer).DataFileOffset);
+      }*/
+
     }
     
     private static void WriteState(string path)

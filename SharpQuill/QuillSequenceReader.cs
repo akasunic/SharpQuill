@@ -442,41 +442,42 @@ namespace SharpQuill
             break;
           }
 
+          //workaround: when reading sound files, add an empty layer group. That way, at least the position can be correct (check this)
         case LayerType.Sound:
           {
-            Console.WriteLine("I'm here");
-            layer = new LayerSound();
-            LayerSound ls = layer as LayerSound;
-            Console.WriteLine("I'm 451");
-            Console.WriteLine(l.Implementation.DataFileOffset);
-            long offset;
-            bool parsed = long.TryParse((string)l.Implementation.DataFileOffset.ToObject(typeof(string)), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out offset);
-            ls.DataFileOffset = parsed ? offset : -1;
-            Console.WriteLine("data offset: " + ls.DataFileOffset);
-            //ls.DataFileOffset = l.Implementation.DataFileOffset;
-            Console.WriteLine("I'm 453");
-            ls.ImportFilePath = l.Implementation.ImportFilePath;
-            Console.WriteLine("I'm 454");
-            ls.SoundType =  SoundType.Flat;
-            Console.WriteLine("I'm wow");
-            ls.Gain = ParseFloat(l.Implementation.Gain);
-            Console.WriteLine("I'm stupid");
-            ls.Loop = ParseBool(l.Implementation.Loop);
-            Console.WriteLine("I'm 455");
-            //Console.WriteLine("mode: " + l.Implementation.Attenuation.Mode);
-           // ls.Attenuation.Mode = new
-           // Console.WriteLine("I'm 460");
-            //ls.Attenuation.Minimum = ParseFloat(l.Implementation.Attenuation.Minimum);
-            Console.WriteLine("I'm sick");
-            //ls.Attenuation.Maximum = ParseFloat(l.Implementation.Attenuation.Maximum);
-            Console.WriteLine("I'm tired");
-            //if (l.Implementation.Modifiers != null)
-            {
-              Console.WriteLine("I'm 465");
-              SoundModifier modifier = new SoundModifier();
-              modifier.Type = SoundModifierType.None;
-              ls.Modifiers.Add(modifier);
-            }
+            layer = new LayerGroup();
+
+            /*  
+                      layer = new LayerSound();
+                      LayerSound ls = layer as LayerSound;
+                   
+                      long offset;
+                      bool parsed = long.TryParse((string)l.Implementation.DataFileOffset.ToObject(typeof(string)), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out offset);
+                      ls.DataFileOffset = parsed ? offset : -1;
+                    
+                      //ls.DataFileOffset = l.Implementation.DataFileOffset;
+                  
+                      ls.ImportFilePath = l.Implementation.ImportFilePath;
+                     
+                      ls.SoundType =  SoundType.Flat;
+                     
+                      ls.Gain = ParseFloat(l.Implementation.Gain);
+                     
+                      ls.Loop = ParseBool(l.Implementation.Loop);
+              
+                     // ls.Attenuation.Mode = new
+             
+                      //ls.Attenuation.Minimum = ParseFloat(l.Implementation.Attenuation.Minimum);
+                     
+                      //ls.Attenuation.Maximum = ParseFloat(l.Implementation.Attenuation.Maximum);
+                    
+                      //if (l.Implementation.Modifiers != null)
+                      {
+                      
+                        SoundModifier modifier = new SoundModifier();
+                        modifier.Type = SoundModifierType.None;
+                        ls.Modifiers.Add(modifier);
+                      }*/
             break;
           }
         case LayerType.Unknown:
@@ -529,11 +530,13 @@ namespace SharpQuill
           drawing.Data = qbinReader.ReadDrawingData();
         }
       }
-      else if (layer.Type == LayerType.Sound)
+      //so the beginning is fine, but then need to point that info to what actual sound data is being stored
+      //which... I don't know
+     /* else if (layer.Type == LayerType.Sound)
       {
         qbinReader.BaseStream.Seek(((LayerSound)layer).DataFileOffset, SeekOrigin.Begin);
-        layer = qbinReader.ReadLayerSound();
-      }
+        //((LayerSound)layer).DataFileOffset = qbinReader.ReadLayerSound();
+      }*/
     }
   }
 }
