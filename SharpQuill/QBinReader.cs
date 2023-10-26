@@ -99,5 +99,12 @@ namespace SharpQuill
 
       return v;
     }
+
+    public LayerSound ReadLayerSound()
+    {
+      LayerSound snd = new LayerSound();
+      snd.DataFileOffset = ReadInt32();
+      return snd;
+    }
   }
 }

@@ -441,8 +441,7 @@ namespace SharpQuill
             lc.FOV = l.Implementation.FOV;
             break;
           }
-        case LayerType.Model:
-        case LayerType.Picture:
+
         case LayerType.Sound:
           {
             Console.WriteLine("I'm here");
@@ -453,6 +452,7 @@ namespace SharpQuill
             long offset;
             bool parsed = long.TryParse((string)l.Implementation.DataFileOffset.ToObject(typeof(string)), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out offset);
             ls.DataFileOffset = parsed ? offset : -1;
+            Console.WriteLine("data offset: " + ls.DataFileOffset);
             //ls.DataFileOffset = l.Implementation.DataFileOffset;
             Console.WriteLine("I'm 453");
             ls.ImportFilePath = l.Implementation.ImportFilePath;
@@ -480,6 +480,8 @@ namespace SharpQuill
             break;
           }
         case LayerType.Unknown:
+        case LayerType.Model:
+        case LayerType.Picture:
         default:
           layer = null;
           break;
@@ -526,6 +528,11 @@ namespace SharpQuill
           qbinReader.BaseStream.Seek(drawing.DataFileOffset, SeekOrigin.Begin);
           drawing.Data = qbinReader.ReadDrawingData();
         }
+      }
+      else if (layer.Type == LayerType.Sound)
+      {
+        qbinReader.BaseStream.Seek(((LayerSound)layer).DataFileOffset, SeekOrigin.Begin);
+        layer = qbinReader.ReadLayerSound();
       }
     }
   }

@@ -70,5 +70,10 @@ namespace SharpQuill
       Write(c.G);
       Write(c.B);
     }
+
+    public void Write(LayerSound ls)
+    {
+      Write(ls.DataFileOffset);
+    }
   }
 }

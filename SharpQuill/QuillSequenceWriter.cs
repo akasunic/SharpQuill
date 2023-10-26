@@ -130,12 +130,11 @@ namespace SharpQuill
 
         case LayerType.Camera:
           return WriteLayerImplementationCamera(layer as LayerCamera);
-
-        case LayerType.Model:
         case LayerType.Sound:
           Console.WriteLine("testing if this is running");
-          
+
           return WriteLayerImplementationSound(layer as LayerSound);
+        case LayerType.Model:
         case LayerType.Picture:
         case LayerType.Unknown:
         default:
@@ -200,18 +199,23 @@ namespace SharpQuill
     {
       Console.WriteLine("testing");
       JObject jLayer = new JObject();
-
-      jLayer.Add(new JProperty("DataFileOffset", layer.DataFileOffset));
+      //I think we have to convert DataFileOffset back to hexademical little endian encoded?
+      long hexOffset = layer.DataFileOffset;
+      byte[] byteArray = BitConverter.GetBytes(hexOffset);
+      Array.Reverse(byteArray);
+      string hexString = BitConverter.ToString(byteArray).Replace("-", string.Empty);
+      jLayer.Add(new JProperty("DataFileOffset", hexString));
       jLayer.Add(new JProperty("ImportFilePath", layer.ImportFilePath));
-      jLayer.Add(new JProperty("SoundType", "Flat"));
+      jLayer.Add(new JProperty("Type", "Flat"));
+      jLayer.Add(new JProperty("Gain", layer.Gain));
+      jLayer.Add(new JProperty("Loop", layer.Loop));
      JObject jAttenuation = new JObject
       {
        { "Mode", "None" },
-       { "Minimum", 0.1 },
-       { "Maximum", 0.5 }
+       { "Minimum", 0.100000 },
+       { "Maximum", 0.500000 }
       };
-      jLayer.Add(new JProperty("Attenuation", jAttenuation));   jLayer.Add(new JProperty("Gain", layer.Gain));
-      jLayer.Add(new JProperty("Loop", layer.Loop));
+      jLayer.Add(new JProperty("Attenuation", jAttenuation)); 
       JArray jModifiers = new JArray();
       JObject jType = new JObject
       {
@@ -220,22 +224,7 @@ namespace SharpQuill
       jModifiers.Add(jType);
       jLayer.Add(new JProperty("Modifiers", jModifiers));
 
-      //BEING LAZY AND EXCLDUING SOUND MODIFIERS FOR NOW!!!
-      /*JArray jModifiers = new JArray();
-      SoundModifier modifier = new SoundModifier();
-      modifier.Type = SoundModifierType.None;
-      jModifiers.Add(modifier);
-      //commenting out to add an empty modifier, for now
-      *//* foreach (SoundModifier modifier in layer.MJArray jAttenuation = new JArray
-      {
-        new JProperty("Mode", "None"),
-        new JProperty("Minimum", 0.1),
-        new JProperty("Maximum", 0.5)
-      };
-      jLayer.Add(new JProperty("Attentuation", jAttenuation));odifiers)
-         jModifiers.Add(WriteDrawing(drawing));*//*
-      jLayer.Add(new JProperty("Modifiers", jModifiers));
-*/
+    
       return jLayer;
     }
 
@@ -435,6 +424,11 @@ namespace SharpQuill
           drawing.DataFileOffset = qbinWriter.BaseStream.Position;
           qbinWriter.Write(drawing.Data);
         }
+      }
+      else if (layer.Type == LayerType.Sound)
+      {
+        ((LayerSound)layer).DataFileOffset = qbinWriter.BaseStream.Position;
+        qbinWriter.Write((LayerSound)layer);
       }
     }
     
