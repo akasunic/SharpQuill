@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
+using System.Runtime.CompilerServices;
 
 public class Program
 {
@@ -19,8 +20,13 @@ public class Program
     string writePath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\Viseme-test_EDITED";
     Sequence sequence = QuillSequenceReader.Read(quillReadPath);
     LayerGroup root = sequence.RootLayer;
+    LayerGroup head = (LayerGroup)(sequence.RootLayer.FindChild("Head"));
+    LayerGroup mouth = (LayerGroup )head.FindChild("Mouth");
+    Layer sound = root.FindChild("saya_thanking_uncleBob(mp3).mp3");
+    //vg.SetAudioOffset(sound, mouth);
     vg.SetVisemeMap(root);
     vg.SetVisemeAnims(jsonReadPath);
+    vg.SetAudioOffset(sound, mouth);
     QuillSequenceWriter.Write(sequence, writePath);
     
   }
@@ -31,9 +37,10 @@ public class Program
 
 }
 public class VisemesGenerator
-{
+{ 
 
   public int timeConversion = 12600;
+  public int offset;//this is the offset for the audio file in Quill. Apply offset to mouth layer
   //may not be needed
   public List<string> visemes = new List<string>
   {
@@ -48,9 +55,34 @@ public class VisemesGenerator
     "X"
   };
 
+
+
   //have a dictionary that maps layers to visemes
   private Dictionary<string, LayerGroup> visemeMap = new Dictionary<string, LayerGroup>();
 
+  public void SetAudioOffset(Layer soundLayer, Layer mainMouthLayer)
+  {
+    offset = soundLayer.Animation.Keys.Offset[0].Time;
+
+    OffsetHelperWalkdown(mainMouthLayer);
+  }
+
+  public void OffsetHelperWalkdown(Layer layer)
+  {
+    layer.Animation.Keys.Offset[0].Time = offset;
+    foreach (Keyframe<bool> visKey in layer.Animation.Keys.Visibility)
+    {
+      //layer.Animation.Keys.Visibility[0].Time = offset;
+      visKey.Time += offset;
+    }
+    if (layer.Type.ToString() == "Group")
+    {
+      foreach(Layer child in ((LayerGroup)layer).Children)
+      {
+        OffsetHelperWalkdown(child);
+      }
+    }
+  }
   //for form: set when enter. try to autofill when possible-- so like, have a dropdown, set dropdown value to letter if it exists (do lower case and upper case)
   public void SetVisemeMap(LayerGroup root)
 {
@@ -82,16 +114,25 @@ public class VisemesGenerator
 
 
     string startingViseme = "";
-    string visemeJson = File.ReadAllText(readPath);
+    string visemeJson = File.ReadAllText(readPath);//reading rhubarb output
     dynamic doc = JsonConvert.DeserializeObject(visemeJson);
-    dynamic mouthCues = doc.mouthCues; //based off how it's organized by Rhubarb 
+    dynamic mouthCues = doc.mouthCues; //based off how it's organized by Rhubarb
+    float endTime = 0;
+    string lastViseme = "";
     foreach (var item in mouthCues)
     {
-      //check at each one, just in case they're ever out of time order (default is that they're in time order)
+      //Console.WriteLine("item.value: " + item.value + "; item.end: " + item.end);//check at each one, just in case they're ever out of time order (default is that they're in time order)
       if((int)(item.start * timeConversion) == 0)
       {
         startingViseme = item.value;
       }
+      if ((float)(item.end) > endTime)
+      {
+        endTime = item.end;
+        lastViseme = item.value;
+        //Console.WriteLine("current endtine: " + endTime + "; current last viseme: " + lastViseme);
+      }
+     
       Keyframe<bool> startVis = new SharpQuill.Keyframe<bool>((int)(item.start * timeConversion), true, Interpolation.None);//add a visibility key frame
       Keyframe<bool> endVis = new SharpQuill.Keyframe<bool>((int)(item.end * timeConversion), false, Interpolation.None);
      
@@ -100,7 +141,32 @@ public class VisemesGenerator
       visemeMap[(string)item.value].Animation.Keys.Visibility.Add(endVis);
  
     }
+    //Console.WriteLine("end of visemes json is: " + endTime*timeConversion + " for viseme: " + lastViseme);
+    //set visibility animation for the end time, to start the resting mouth position
+    Keyframe<bool> restAtEnd = new Keyframe<bool>((int)(endTime*timeConversion), true, Interpolation.None);
+    //first see if a key with this value exists\\
+    bool seeIfIncl = false;
+    foreach (var item in visemeMap["X"].Animation.Keys.Visibility)
+     
+    {
+      //Console.WriteLine("time is: " + item.Time);
+      if ((int)item.Time == (int)restAtEnd.Time)
+      {
+        //Console.WriteLine("end time is: " + item.Time);
+        item.Value = true;
+        seeIfIncl = true;
+
+      }
+    }
+    if (seeIfIncl == false)
+    {
+      visemeMap["X"].Animation.Keys.Visibility.Add(restAtEnd);
+    }
+  
+
+
     //now go through each layer, see earliest visibility start, and if greater than 0, set a visibility start key frame to 0
+    //um i should do this more efficiently. but like, i like to think in steps so... idk
     foreach (var key in visemeMap.Keys)
     {
       visemeMap[key].Visible = true;
