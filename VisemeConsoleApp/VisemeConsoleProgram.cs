@@ -5,19 +5,37 @@ using System.IO;
 using System.Runtime;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Runtime.CompilerServices;
+using Microsoft.Win32;
+using Microsoft.VisualBasic;
+using static System.Net.Mime.MediaTypeNames;
 
+
+//STEPS NEEDED IN FORM!!
+/*//PRE-STEP!!! Still didnt change the offset thing for audio-- should do that [just commenting out for now, that's fine]
+ * 1. select quill project containing characters (and mouths!) you want to animate
+ * 2. populate dropdown with layers-- use formatting (and be able to reverse formatting?? or map to real layer?) for choosing Characters involved in dialogue
+ * 
+ * LATER: helper tool, select mouth layers, will prepopulate with a folder at the same level containing a copy of mouth, contained in folders X A B C etc* 
+ 3. For each character, separate dropdown to select the top level mouth layer
+4. then i guess to the rhubarb and viseme matcher at once, per your picture? watch out for danger of overwriting files-- oh, but it's fine if you use save as, so nvm*
+so basically, select all your audio files. and then for each one, save the output json, and choose the character to apply it to.
+
+ */
 public class Program
 {
   public static void Main(string[] args)
   {
+    //EDIT CODE!!!!!!! VisemesGenerator should take arguments, jsonReadPath, quillReadPath, etc.
     VisemesGenerator vg = new VisemesGenerator();
     string jsonReadPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb_samples\\sayaThanking.json";
     string quillReadPath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\Viseme-test";
     string writePath = "C:\\Users\\amkas\\OneDrive\\Documents\\Quill\\Viseme-test_EDITED";
+    vg.deleteLaterTestingRhubarbCLI();
     Sequence sequence = QuillSequenceReader.Read(quillReadPath);
     LayerGroup root = sequence.RootLayer;
     LayerGroup head = (LayerGroup)(sequence.RootLayer.FindChild("Head"));
@@ -55,7 +73,61 @@ public class VisemesGenerator
     "X"
   };
 
+  //making sure I can properly run rhubarb from here-- put in a winforms later
+  //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
+  public void deleteLaterTestingRhubarbCLI()
+  {
+    Console.WriteLine("in rhubarb");
+    Process rhubarbCli = new Process();
+    //so these files all chosen via FileDialog in WinForms
 
+    //NOTE: later update to save the exec path so you don't have to save each time
+    //make a note of the current version-- may not work with most recent-- could be updated to most recent, though
+    //When the application starts, check the registry for the saved Rhubarb executable path.If it exists, prepopulate the UI element with this path.
+
+    //Allow users to change the Rhubarb executable path in your application, and when they do, update the registry with the new path.
+
+
+    //sing Microsoft.Win32;
+
+    // Write a value to the registry
+    //Registry.SetValue(@"HKEY_CURRENT_USER\Software\YourAppName", "RhubarbPath", "C:\Path\to\Rhubarb.exe");
+
+    // Read a value from the registry
+    //string rhubarbPath = Registry.GetValue(@"HKEY_CURRENT_USER\Software\YourAppName", "RhubarbPath", "") as string;
+
+
+    string rhubarbExecPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb.exe";//complete path to rhubarb executable-- I think it should be folder that contains .exe, double check -- basically, where you need to be "cd" into to run
+    string? audioPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb_samples\\saya_thanking_uncleBob_ogg.ogg";//full path to audio file-- must be .wav, .ogg, etc (see rhubarb rules)
+    string? textScriptPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb_samples\\sayaThankingScript.txt";// full path to text script-- this is optional
+    string? jsonOutputPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb_samples\\newoutput.json"; //allow user to choose where to save/output-- save as, and that will run it-- give errors if not selected, etc
+    rhubarbCli.StartInfo.FileName = rhubarbExecPath;
+    //IF textScriptPath is null, then you omit -d + textScriptPath part-- change later
+    rhubarbCli.StartInfo.Arguments = "-o " + jsonOutputPath + " -f json -d " + textScriptPath + " " + audioPath;
+    rhubarbCli.StartInfo.RedirectStandardError = true;
+    rhubarbCli.StartInfo.UseShellExecute = false;
+    rhubarbCli.StartInfo.CreateNoWindow = true;
+
+    try
+    {
+      rhubarbCli.Start();
+      Console.WriteLine("running rhubarb");
+
+    }
+    catch (Exception e)
+    {
+      Console.WriteLine("Error: " + e.Message);
+    }
+    /*
+    rhubarbCli.Start();
+
+    string errors = rhubarbCli.StandardError.ReadToEnd();
+
+    if (!string.IsNullOrWhiteSpace(errors))
+    {
+      Console.WriteLine("Error Output:\n" + errors);
+    }*/
+  }
 
   //have a dictionary that maps layers to visemes
   private Dictionary<string, LayerGroup> visemeMap = new Dictionary<string, LayerGroup>();
@@ -155,7 +227,6 @@ public class VisemesGenerator
         //Console.WriteLine("end time is: " + item.Time);
         item.Value = true;
         seeIfIncl = true;
-
       }
     }
     if (seeIfIncl == false)
@@ -163,8 +234,6 @@ public class VisemesGenerator
       visemeMap["X"].Animation.Keys.Visibility.Add(restAtEnd);
     }
   
-
-
     //now go through each layer, see earliest visibility start, and if greater than 0, set a visibility start key frame to 0
     //um i should do this more efficiently. but like, i like to think in steps so... idk
     foreach (var key in visemeMap.Keys)
