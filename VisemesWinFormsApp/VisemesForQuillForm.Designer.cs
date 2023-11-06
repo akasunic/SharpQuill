@@ -31,273 +31,233 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VisemesForQuillForm));
             this.selectQuill_browserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.button1 = new System.Windows.Forms.Button();
-            this.charLabel = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.selectQuill = new System.Windows.Forms.Button();
+            this.step2 = new System.Windows.Forms.Label();
+        
+            this.step3_character = new System.Windows.Forms.Label();
+            this.step3_mouth = new System.Windows.Forms.Label();
+            this.step4 = new System.Windows.Forms.Label();
+            this.step3 = new System.Windows.Forms.Label();
+            this.step5_audioTitle = new System.Windows.Forms.Label();
+            this.step5_audioFile = new System.Windows.Forms.Label();
+            this.step5_charDropdown = new System.Windows.Forms.ComboBox();
+            this.step5 = new System.Windows.Forms.Label();
+            this.step1 = new System.Windows.Forms.Label();
+            this.step4_audioTitle = new System.Windows.Forms.Label();
+            this.delAudioButton = new System.Windows.Forms.Button();
+            this.step4_attachButton = new System.Windows.Forms.Button();
+            this.submitButton = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip3 = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
-            this.tableLayoutPanel4.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel5.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.panel4.SuspendLayout();
+            this.step3_line = new System.Windows.Forms.Label();
+            this.step5_line = new System.Windows.Forms.Label();
+            this.step3_mouthDropdown = new System.Windows.Forms.ComboBox();
+            this.step4_line = new System.Windows.Forms.Label();
+            this.step3panel = new System.Windows.Forms.Panel();
+            this.step3_innerPanel = new System.Windows.Forms.Panel();
+            this.step3_charName = new System.Windows.Forms.Label();
+            this.step4panel = new System.Windows.Forms.Panel();
+            this.step4_addDelPanel = new System.Windows.Forms.Panel();
+            this.addAudioButton = new System.Windows.Forms.Button();
+            this.addAudioLabel = new System.Windows.Forms.Label();
+            this.delAudioLabel = new System.Windows.Forms.Label();
+            this.step4_filePanel = new System.Windows.Forms.Panel();
+            this.step4_attachLabel = new System.Windows.Forms.Label();
+            this.step4_audioCheckbox = new System.Windows.Forms.CheckBox();
+            this.step4_optionalLabel = new System.Windows.Forms.Label();
+            this.step4_textTitle = new System.Windows.Forms.Label();
+            this.step5panel = new System.Windows.Forms.Panel();
+            this.step5_innerPanel = new System.Windows.Forms.Panel();
+            this.quillFolders_checklistBox = new System.Windows.Forms.CheckedListBox();
+            this.selectRhubarb = new System.Windows.Forms.Button();
+            this.rhubarbLoc = new System.Windows.Forms.Label();
+            this.infoLink = new System.Windows.Forms.LinkLabel();
+            this.step2_checkOnlyOneLabel = new System.Windows.Forms.Label();
+            this.step3_mouthContainerReminder = new System.Windows.Forms.Label();
+            this.step3panel.SuspendLayout();
+            this.step3_innerPanel.SuspendLayout();
+            this.step4panel.SuspendLayout();
+            this.step4_addDelPanel.SuspendLayout();
+            this.step4_filePanel.SuspendLayout();
+            this.step5panel.SuspendLayout();
+            this.step5_innerPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // selectQuill
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(212)))), ((int)(((byte)(17)))));
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(89, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(124, 24);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Select Quill project";
-            this.button1.UseVisualStyleBackColor = false;
+            this.selectQuill.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(212)))), ((int)(((byte)(17)))));
+            this.selectQuill.FlatAppearance.BorderSize = 0;
+            this.selectQuill.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.selectQuill.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.selectQuill.ForeColor = System.Drawing.Color.Black;
+            this.selectQuill.Location = new System.Drawing.Point(87, 79);
+            this.selectQuill.Name = "selectQuill";
+            this.selectQuill.Size = new System.Drawing.Size(124, 24);
+            this.selectQuill.TabIndex = 0;
+            this.selectQuill.Text = "Select Quill project";
+            this.selectQuill.UseVisualStyleBackColor = false;
+            this.selectQuill.Click += new System.EventHandler(this.selectQuill_Click);
             // 
-            // charLabel
+            // step2
             // 
-            this.charLabel.AutoSize = true;
-            this.charLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.charLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
-            this.charLabel.Location = new System.Drawing.Point(35, 53);
-            this.charLabel.Name = "charLabel";
-            this.charLabel.Size = new System.Drawing.Size(286, 16);
-            this.charLabel.TabIndex = 1;
-            this.charLabel.Text = "Step 2:  Select your top-level Character folder(s)";
-            this.charLabel.Click += new System.EventHandler(this.charLabel_Click);
+            this.step2.AutoSize = true;
+            this.step2.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
+            this.step2.Location = new System.Drawing.Point(33, 120);
+            this.step2.Name = "step2";
+            this.step2.Size = new System.Drawing.Size(286, 16);
+            this.step2.TabIndex = 1;
+            this.step2.Text = "Step 2:  Select your top-level Character folder(s)";
+          
             // 
-            // tableLayoutPanel1
+            // step3_character
             // 
-            this.tableLayoutPanel1.AutoScroll = true;
-            this.tableLayoutPanel1.AutoSize = true;
-            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(0, 0);
-            this.tableLayoutPanel1.TabIndex = 3;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
+            this.step3_character.AutoSize = true;
+            this.step3_character.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step3_character.Location = new System.Drawing.Point(36, 35);
+            this.step3_character.Name = "step3_character";
+            this.step3_character.Size = new System.Drawing.Size(61, 15);
+            this.step3_character.TabIndex = 1;
+            this.step3_character.Text = "Character";
             // 
-            // label1
+            // step3_mouth
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(18, 32);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Character";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.step3_mouth.AutoSize = true;
+            this.step3_mouth.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step3_mouth.Location = new System.Drawing.Point(407, 35);
+            this.step3_mouth.Name = "step3_mouth";
+            this.step3_mouth.Size = new System.Drawing.Size(71, 15);
+            this.step3_mouth.TabIndex = 2;
+            this.step3_mouth.Text = "Mouth layer";
             // 
-            // label2
+            // step4
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(396, 32);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 15);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Mouth layer";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+            this.step4.AutoSize = true;
+            this.step4.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
+            this.step4.Location = new System.Drawing.Point(3, 10);
+            this.step4.Name = "step4";
+            this.step4.Size = new System.Drawing.Size(286, 16);
+            this.step4.TabIndex = 4;
+            this.step4.Text = "Step 4:  Select Audio file(s) and (optional) scripts";
             // 
-            // label3
+            // step3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
-            this.label3.Location = new System.Drawing.Point(3, 10);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(286, 16);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Step 4:  Select Audio file(s) and (optional) scripts";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
+            this.step3.AutoSize = true;
+            this.step3.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
+            this.step3.Location = new System.Drawing.Point(3, 5);
+            this.step3.Name = "step3";
+            this.step3.Size = new System.Drawing.Size(319, 16);
+            this.step3.TabIndex = 5;
+            this.step3.Text = "Step 3: Match Character(s) to top-level Mouth layer(s)";
             // 
-            // label4
+            // step5_audioTitle
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
-            this.label4.Location = new System.Drawing.Point(3, 5);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(319, 16);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Step 3: Match Character(s) to top-level Mouth layer(s)";
+            this.step5_audioTitle.AutoSize = true;
+            this.step5_audioTitle.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step5_audioTitle.Location = new System.Drawing.Point(37, 39);
+            this.step5_audioTitle.Name = "step5_audioTitle";
+            this.step5_audioTitle.Size = new System.Drawing.Size(39, 15);
+            this.step5_audioTitle.TabIndex = 0;
+            this.step5_audioTitle.Text = "Audio";
             // 
-            // label11
+            // step5_audioFile
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label11.Location = new System.Drawing.Point(17, 36);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(39, 15);
-            this.label11.TabIndex = 0;
-            this.label11.Text = "Audio";
+            this.step5_audioFile.AutoSize = true;
+            this.step5_audioFile.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.step5_audioFile.Location = new System.Drawing.Point(-1, 11);
+            this.step5_audioFile.Name = "step5_audioFile";
+            this.step5_audioFile.Size = new System.Drawing.Size(191, 16);
+            this.step5_audioFile.TabIndex = 2;
+            this.step5_audioFile.Text = "sample.wav (do last part of string)";
             // 
-            // label12
+            // step5_charDropdown
             // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label12.Location = new System.Drawing.Point(393, 39);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(61, 15);
-            this.label12.TabIndex = 1;
-            this.label12.Text = "Character";
+            this.step5_charDropdown.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.step5_charDropdown.FormattingEnabled = true;
+            this.step5_charDropdown.Location = new System.Drawing.Point(371, 3);
+            this.step5_charDropdown.Name = "step5_charDropdown";
+            this.step5_charDropdown.Size = new System.Drawing.Size(331, 24);
+            this.step5_charDropdown.TabIndex = 3;
             // 
-            // label13
+            // step5
             // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label13.Location = new System.Drawing.Point(15, 71);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(191, 16);
-            this.label13.TabIndex = 2;
-            this.label13.Text = "sample.wav (do last part of string)";
+            this.step5.AutoSize = true;
+            this.step5.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
+            this.step5.Location = new System.Drawing.Point(3, 13);
+            this.step5.Name = "step5";
+            this.step5.Size = new System.Drawing.Size(203, 16);
+            this.step5.TabIndex = 7;
+            this.step5.Text = "Step 5: Match Audio to characters";
             // 
-            // comboBox2
+            // step1
             // 
-            this.comboBox2.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(391, 68);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(331, 24);
-            this.comboBox2.TabIndex = 3;
+            this.step1.AutoSize = true;
+            this.step1.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
+            this.step1.Location = new System.Drawing.Point(33, 82);
+            this.step1.Name = "step1";
+            this.step1.Size = new System.Drawing.Size(48, 16);
+            this.step1.TabIndex = 8;
+            this.step1.Text = "Step 1: ";
             // 
-            // label5
+            // step4_audioTitle
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
-            this.label5.Location = new System.Drawing.Point(3, 13);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(203, 16);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Step 5: Match Audio to characters";
+            this.step4_audioTitle.AutoSize = true;
+            this.step4_audioTitle.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step4_audioTitle.Location = new System.Drawing.Point(35, 80);
+            this.step4_audioTitle.Name = "step4_audioTitle";
+            this.step4_audioTitle.Size = new System.Drawing.Size(135, 15);
+            this.step4_audioTitle.TabIndex = 0;
+            this.step4_audioTitle.Text = "Audio file (.wav or .ogg)";
             // 
-            // label6
+            // delAudioButton
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
-            this.label6.Location = new System.Drawing.Point(35, 15);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(48, 16);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "Step 1: ";
+            this.delAudioButton.BackColor = System.Drawing.Color.White;
+            this.delAudioButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("delAudioButton.BackgroundImage")));
+            this.delAudioButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.delAudioButton.FlatAppearance.BorderSize = 0;
+            this.delAudioButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.delAudioButton.Font = new System.Drawing.Font("Yet R", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.delAudioButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(94)))), ((int)(((byte)(255)))));
+            this.delAudioButton.Location = new System.Drawing.Point(179, 3);
+            this.delAudioButton.Name = "delAudioButton";
+            this.delAudioButton.Size = new System.Drawing.Size(35, 34);
+            this.delAudioButton.TabIndex = 6;
+            this.delAudioButton.UseVisualStyleBackColor = false;
             // 
-            // checkedListBox1
+            // step4_attachButton
             // 
-            this.checkedListBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.checkedListBox1.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(36, 183);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.ScrollAlwaysVisible = true;
-            this.checkedListBox1.Size = new System.Drawing.Size(363, 50);
-            this.checkedListBox1.TabIndex = 2;
+            this.step4_attachButton.BackColor = System.Drawing.Color.White;
+            this.step4_attachButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("step4_attachButton.BackgroundImage")));
+            this.step4_attachButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.step4_attachButton.FlatAppearance.BorderSize = 0;
+            this.step4_attachButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.step4_attachButton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.step4_attachButton.ForeColor = System.Drawing.Color.Black;
+            this.step4_attachButton.Location = new System.Drawing.Point(346, 1);
+            this.step4_attachButton.Name = "step4_attachButton";
+            this.step4_attachButton.Size = new System.Drawing.Size(29, 30);
+            this.step4_attachButton.TabIndex = 5;
+            this.step4_attachButton.UseVisualStyleBackColor = false;
             // 
-            // label7
+            // submitButton
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label7.Location = new System.Drawing.Point(16, 32);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(135, 15);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "Audio file (.wav or .ogg)";
-            // 
-            // button5
-            // 
-            this.button5.BackColor = System.Drawing.Color.White;
-            this.button5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button5.BackgroundImage")));
-            this.button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button5.FlatAppearance.BorderSize = 0;
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Font = new System.Drawing.Font("Yet R", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(94)))), ((int)(((byte)(255)))));
-            this.button5.Location = new System.Drawing.Point(215, 102);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(35, 34);
-            this.button5.TabIndex = 6;
-            this.button5.UseVisualStyleBackColor = false;
-            // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.Color.White;
-            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
-            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Location = new System.Drawing.Point(346, 1);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(29, 30);
-            this.button3.TabIndex = 5;
-            this.button3.UseVisualStyleBackColor = false;
-            // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(191)))), ((int)(((byte)(255)))));
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button4.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button4.Location = new System.Drawing.Point(3, 110);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(84, 34);
-            this.button4.TabIndex = 10;
-            this.button4.Text = "Create";
-            this.button4.UseVisualStyleBackColor = false;
+            this.submitButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(191)))), ((int)(((byte)(255)))));
+            this.submitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.submitButton.Font = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.submitButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.submitButton.Location = new System.Drawing.Point(3, 110);
+            this.submitButton.Name = "submitButton";
+            this.submitButton.Size = new System.Drawing.Size(84, 34);
+            this.submitButton.TabIndex = 10;
+            this.submitButton.Text = "Create";
+            this.submitButton.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel4
             // 
@@ -307,31 +267,11 @@
             this.tableLayoutPanel4.ColumnCount = 2;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Controls.Add(this.comboBox3, 1, 1);
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.Size = new System.Drawing.Size(200, 100);
             this.tableLayoutPanel4.TabIndex = 0;
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(103, 3);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(94, 22);
-            this.comboBox3.TabIndex = 0;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label9.Location = new System.Drawing.Point(3, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(59, 14);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "Character";
             // 
             // tableLayoutPanel5
             // 
@@ -341,217 +281,279 @@
             this.tableLayoutPanel5.ColumnCount = 2;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Controls.Add(this.comboBox4, 1, 1);
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.Size = new System.Drawing.Size(200, 100);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
-            // comboBox4
+            // step3_line
             // 
-            this.comboBox4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(103, 3);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(94, 22);
-            this.comboBox4.TabIndex = 0;
+            this.step3_line.BackColor = System.Drawing.Color.Black;
+            this.step3_line.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.step3_line.Location = new System.Drawing.Point(36, 50);
+            this.step3_line.Name = "step3_line";
+            this.step3_line.Size = new System.Drawing.Size(707, 2);
+            this.step3_line.TabIndex = 12;
             // 
-            // label14
+            // step5_line
             // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label14.Location = new System.Drawing.Point(3, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(59, 14);
-            this.label14.TabIndex = 1;
-            this.label14.Text = "Character";
+            this.step5_line.BackColor = System.Drawing.Color.Black;
+            this.step5_line.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.step5_line.Location = new System.Drawing.Point(36, 54);
+            this.step5_line.Name = "step5_line";
+            this.step5_line.Size = new System.Drawing.Size(707, 2);
+            this.step5_line.TabIndex = 13;
             // 
-            // label16
+            // step3_mouthDropdown
             // 
-            this.label16.BackColor = System.Drawing.Color.Black;
-            this.label16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label16.Location = new System.Drawing.Point(18, 47);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(707, 2);
-            this.label16.TabIndex = 12;
+            this.step3_mouthDropdown.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.step3_mouthDropdown.FormattingEnabled = true;
+            this.step3_mouthDropdown.Location = new System.Drawing.Point(373, 8);
+            this.step3_mouthDropdown.Name = "step3_mouthDropdown";
+            this.step3_mouthDropdown.Size = new System.Drawing.Size(329, 24);
+            this.step3_mouthDropdown.TabIndex = 14;
             // 
-            // label17
+            // step4_line
             // 
-            this.label17.BackColor = System.Drawing.Color.Black;
-            this.label17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label17.Location = new System.Drawing.Point(16, 58);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(707, 2);
-            this.label17.TabIndex = 13;
+            this.step4_line.BackColor = System.Drawing.Color.Black;
+            this.step4_line.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.step4_line.Location = new System.Drawing.Point(35, 98);
+            this.step4_line.Name = "step4_line";
+            this.step4_line.Size = new System.Drawing.Size(707, 2);
+            this.step4_line.TabIndex = 15;
             // 
-            // comboBox5
+            // step3panel
             // 
-            this.comboBox5.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(373, 8);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(329, 24);
-            this.comboBox5.TabIndex = 14;
-            this.comboBox5.SelectedIndexChanged += new System.EventHandler(this.comboBox5_SelectedIndexChanged);
+            this.step3panel.Controls.Add(this.step3_mouthContainerReminder);
+            this.step3panel.Controls.Add(this.step3_innerPanel);
+            this.step3panel.Controls.Add(this.step3_character);
+            this.step3panel.Controls.Add(this.step3);
+            this.step3panel.Controls.Add(this.step3_mouth);
+            this.step3panel.Controls.Add(this.step3_line);
+            this.step3panel.Location = new System.Drawing.Point(36, 234);
+            this.step3panel.Name = "step3panel";
+            this.step3panel.Size = new System.Drawing.Size(756, 98);
+            this.step3panel.TabIndex = 17;
             // 
-            // label18
+            // step3_innerPanel
             // 
-            this.label18.BackColor = System.Drawing.Color.Black;
-            this.label18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label18.Location = new System.Drawing.Point(16, 50);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(707, 2);
-            this.label18.TabIndex = 15;
+            this.step3_innerPanel.Controls.Add(this.step3_charName);
+            this.step3_innerPanel.Controls.Add(this.step3_mouthDropdown);
+            this.step3_innerPanel.Location = new System.Drawing.Point(39, 55);
+            this.step3_innerPanel.Name = "step3_innerPanel";
+            this.step3_innerPanel.Size = new System.Drawing.Size(704, 35);
+            this.step3_innerPanel.TabIndex = 15;
             // 
-            // panel2
+            // step3_charName
             // 
-            this.panel2.Controls.Add(this.panel5);
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.label16);
-            this.panel2.Location = new System.Drawing.Point(35, 183);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(756, 98);
-            this.panel2.TabIndex = 17;
+            this.step3_charName.AutoSize = true;
+            this.step3_charName.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.step3_charName.Location = new System.Drawing.Point(0, 11);
+            this.step3_charName.Name = "step3_charName";
+            this.step3_charName.Size = new System.Drawing.Size(195, 16);
+            this.step3_charName.TabIndex = 23;
+            this.step3_charName.Text = "Sample Character (autopopulate)";
             // 
-            // panel5
+            // step4panel
             // 
-            this.panel5.Controls.Add(this.comboBox5);
-            this.panel5.Location = new System.Drawing.Point(21, 52);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(704, 35);
-            this.panel5.TabIndex = 15;
+            this.step4panel.Controls.Add(this.step4_addDelPanel);
+            this.step4panel.Controls.Add(this.step4_filePanel);
+            this.step4panel.Controls.Add(this.step4_optionalLabel);
+            this.step4panel.Controls.Add(this.step4);
+            this.step4panel.Controls.Add(this.step4_audioTitle);
+            this.step4panel.Controls.Add(this.step4_line);
+            this.step4panel.Controls.Add(this.step4_textTitle);
+            this.step4panel.Location = new System.Drawing.Point(36, 338);
+            this.step4panel.Name = "step4panel";
+            this.step4panel.Size = new System.Drawing.Size(752, 155);
+            this.step4panel.TabIndex = 18;
             // 
-            // panel3
+            // step4_addDelPanel
             // 
-            this.panel3.Controls.Add(this.panel1);
-            this.panel3.Controls.Add(this.label20);
-            this.panel3.Controls.Add(this.label19);
-            this.panel3.Controls.Add(this.label15);
-            this.panel3.Controls.Add(this.button2);
-            this.panel3.Controls.Add(this.label3);
-            this.panel3.Controls.Add(this.button5);
-            this.panel3.Controls.Add(this.label7);
-            this.panel3.Controls.Add(this.label18);
-            this.panel3.Controls.Add(this.label8);
-            this.panel3.Location = new System.Drawing.Point(35, 287);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(755, 146);
-            this.panel3.TabIndex = 18;
+            this.step4_addDelPanel.Controls.Add(this.addAudioButton);
+            this.step4_addDelPanel.Controls.Add(this.delAudioButton);
+            this.step4_addDelPanel.Controls.Add(this.addAudioLabel);
+            this.step4_addDelPanel.Controls.Add(this.delAudioLabel);
+            this.step4_addDelPanel.Location = new System.Drawing.Point(36, 29);
+            this.step4_addDelPanel.Name = "step4_addDelPanel";
+            this.step4_addDelPanel.Size = new System.Drawing.Size(704, 48);
+            this.step4_addDelPanel.TabIndex = 21;
             // 
-            // panel1
+            // addAudioButton
             // 
-            this.panel1.Controls.Add(this.label10);
-            this.panel1.Controls.Add(this.checkBox1);
-            this.panel1.Controls.Add(this.button3);
-            this.panel1.Location = new System.Drawing.Point(18, 62);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(701, 34);
-            this.panel1.TabIndex = 21;
+            this.addAudioButton.BackColor = System.Drawing.Color.White;
+            this.addAudioButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("addAudioButton.BackgroundImage")));
+            this.addAudioButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.addAudioButton.FlatAppearance.BorderSize = 0;
+            this.addAudioButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addAudioButton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.addAudioButton.ForeColor = System.Drawing.Color.Black;
+            this.addAudioButton.Location = new System.Drawing.Point(2, 4);
+            this.addAudioButton.Name = "addAudioButton";
+            this.addAudioButton.Size = new System.Drawing.Size(44, 32);
+            this.addAudioButton.TabIndex = 16;
+            this.addAudioButton.UseVisualStyleBackColor = false;
             // 
-            // label10
+            // addAudioLabel
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label10.Location = new System.Drawing.Point(381, 8);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(93, 16);
-            this.label10.TabIndex = 22;
-            this.label10.Text = "sampleScript.txt";
+            this.addAudioLabel.AutoSize = true;
+            this.addAudioLabel.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.addAudioLabel.Location = new System.Drawing.Point(51, 12);
+            this.addAudioLabel.Name = "addAudioLabel";
+            this.addAudioLabel.Size = new System.Drawing.Size(108, 15);
+            this.addAudioLabel.TabIndex = 17;
+            this.addAudioLabel.Text = "Add new audio file";
             // 
-            // checkBox1
+            // delAudioLabel
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.checkBox1.Location = new System.Drawing.Point(3, 3);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(133, 21);
-            this.checkBox1.TabIndex = 20;
-            this.checkBox1.Text = "sampleaudio.wav";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.delAudioLabel.AutoSize = true;
+            this.delAudioLabel.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.delAudioLabel.Location = new System.Drawing.Point(220, 12);
+            this.delAudioLabel.Name = "delAudioLabel";
+            this.delAudioLabel.Size = new System.Drawing.Size(149, 15);
+            this.delAudioLabel.TabIndex = 18;
+            this.delAudioLabel.Text = "Delete selected audio files";
             // 
-            // label20
+            // step4_filePanel
             // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label20.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(59)))), ((int)(((byte)(186)))));
-            this.label20.Location = new System.Drawing.Point(525, 32);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(61, 15);
-            this.label20.TabIndex = 19;
-            this.label20.Text = "*optional*";
+            this.step4_filePanel.Controls.Add(this.step4_attachLabel);
+            this.step4_filePanel.Controls.Add(this.step4_audioCheckbox);
+            this.step4_filePanel.Controls.Add(this.step4_attachButton);
+            this.step4_filePanel.Location = new System.Drawing.Point(37, 103);
+            this.step4_filePanel.Name = "step4_filePanel";
+            this.step4_filePanel.Size = new System.Drawing.Size(701, 34);
+            this.step4_filePanel.TabIndex = 21;
             // 
-            // label19
+            // step4_attachLabel
             // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label19.Location = new System.Drawing.Point(256, 111);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(149, 15);
-            this.label19.TabIndex = 18;
-            this.label19.Text = "Delete selected audio files";
+            this.step4_attachLabel.AutoSize = true;
+            this.step4_attachLabel.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.step4_attachLabel.Location = new System.Drawing.Point(381, 8);
+            this.step4_attachLabel.Name = "step4_attachLabel";
+            this.step4_attachLabel.Size = new System.Drawing.Size(92, 16);
+            this.step4_attachLabel.TabIndex = 22;
+            this.step4_attachLabel.Text = "None attached";
             // 
-            // label15
+            // step4_audioCheckbox
             // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label15.Location = new System.Drawing.Point(71, 110);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(108, 15);
-            this.label15.TabIndex = 17;
-            this.label15.Text = "Add new audio file";
+            this.step4_audioCheckbox.AutoSize = true;
+            this.step4_audioCheckbox.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.step4_audioCheckbox.Location = new System.Drawing.Point(3, 10);
+            this.step4_audioCheckbox.Name = "step4_audioCheckbox";
+            this.step4_audioCheckbox.Size = new System.Drawing.Size(133, 21);
+            this.step4_audioCheckbox.TabIndex = 20;
+            this.step4_audioCheckbox.Text = "sampleaudio.wav";
+            this.step4_audioCheckbox.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // step4_optionalLabel
             // 
-            this.button2.BackColor = System.Drawing.Color.White;
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(21, 102);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(44, 32);
-            this.button2.TabIndex = 16;
-            this.button2.UseVisualStyleBackColor = false;
+            this.step4_optionalLabel.AutoSize = true;
+            this.step4_optionalLabel.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step4_optionalLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(59)))), ((int)(((byte)(186)))));
+            this.step4_optionalLabel.Location = new System.Drawing.Point(549, 80);
+            this.step4_optionalLabel.Name = "step4_optionalLabel";
+            this.step4_optionalLabel.Size = new System.Drawing.Size(61, 15);
+            this.step4_optionalLabel.TabIndex = 19;
+            this.step4_optionalLabel.Text = "*optional*";
             // 
-            // label8
+            // step4_textTitle
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label8.Location = new System.Drawing.Point(393, 32);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(135, 15);
-            this.label8.TabIndex = 1;
-            this.label8.Text = "Text Script of Audio (.txt)";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
+            this.step4_textTitle.AutoSize = true;
+            this.step4_textTitle.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step4_textTitle.Location = new System.Drawing.Point(408, 80);
+            this.step4_textTitle.Name = "step4_textTitle";
+            this.step4_textTitle.Size = new System.Drawing.Size(135, 15);
+            this.step4_textTitle.TabIndex = 1;
+            this.step4_textTitle.Text = "Text Script of Audio (.txt)";
             // 
-            // panel4
+            // step5panel
             // 
-            this.panel4.Controls.Add(this.label5);
-            this.panel4.Controls.Add(this.button4);
-            this.panel4.Controls.Add(this.label13);
-            this.panel4.Controls.Add(this.label17);
-            this.panel4.Controls.Add(this.comboBox2);
-            this.panel4.Controls.Add(this.label11);
-            this.panel4.Controls.Add(this.label12);
-            this.panel4.Location = new System.Drawing.Point(35, 439);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(755, 147);
-            this.panel4.TabIndex = 19;
+            this.step5panel.Controls.Add(this.step5_innerPanel);
+            this.step5panel.Controls.Add(this.step5);
+            this.step5panel.Controls.Add(this.submitButton);
+            this.step5panel.Controls.Add(this.step5_line);
+            this.step5panel.Controls.Add(this.step5_audioTitle);
+            this.step5panel.Location = new System.Drawing.Point(36, 499);
+            this.step5panel.Name = "step5panel";
+            this.step5panel.Size = new System.Drawing.Size(755, 147);
+            this.step5panel.TabIndex = 19;
             // 
-            // checkedListBox2
+            // step5_innerPanel
             // 
-            this.checkedListBox2.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.checkedListBox2.FormattingEnabled = true;
-            this.checkedListBox2.Location = new System.Drawing.Point(56, 77);
-            this.checkedListBox2.Name = "checkedListBox2";
-            this.checkedListBox2.ScrollAlwaysVisible = true;
-            this.checkedListBox2.Size = new System.Drawing.Size(732, 89);
-            this.checkedListBox2.TabIndex = 20;
+            this.step5_innerPanel.Controls.Add(this.step5_charDropdown);
+            this.step5_innerPanel.Controls.Add(this.step5_audioFile);
+            this.step5_innerPanel.Location = new System.Drawing.Point(37, 57);
+            this.step5_innerPanel.Name = "step5_innerPanel";
+            this.step5_innerPanel.Size = new System.Drawing.Size(707, 35);
+            this.step5_innerPanel.TabIndex = 16;
+            // 
+            // quillFolders_checklistBox
+            // 
+            this.quillFolders_checklistBox.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.quillFolders_checklistBox.FormattingEnabled = true;
+            this.quillFolders_checklistBox.Location = new System.Drawing.Point(72, 139);
+            this.quillFolders_checklistBox.Name = "quillFolders_checklistBox";
+            this.quillFolders_checklistBox.ScrollAlwaysVisible = true;
+            this.quillFolders_checklistBox.Size = new System.Drawing.Size(704, 72);
+            this.quillFolders_checklistBox.TabIndex = 20;
+            // 
+            // selectRhubarb
+            // 
+            this.selectRhubarb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(168)))), ((int)(((byte)(40)))), ((int)(((byte)(127)))));
+            this.selectRhubarb.FlatAppearance.BorderSize = 0;
+            this.selectRhubarb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.selectRhubarb.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.selectRhubarb.ForeColor = System.Drawing.Color.White;
+            this.selectRhubarb.Location = new System.Drawing.Point(33, 43);
+            this.selectRhubarb.Name = "selectRhubarb";
+            this.selectRhubarb.Size = new System.Drawing.Size(209, 24);
+            this.selectRhubarb.TabIndex = 22;
+            this.selectRhubarb.Text = "Set or change Rhubarb location";
+            this.selectRhubarb.UseVisualStyleBackColor = false;
+            // 
+            // rhubarbLoc
+            // 
+            this.rhubarbLoc.AutoSize = true;
+            this.rhubarbLoc.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.rhubarbLoc.Location = new System.Drawing.Point(255, 47);
+            this.rhubarbLoc.Name = "rhubarbLoc";
+            this.rhubarbLoc.Size = new System.Drawing.Size(308, 16);
+            this.rhubarbLoc.TabIndex = 23;
+            this.rhubarbLoc.Text = "C://aewrioij//oaihajewoirj//oaeworijawier//rhubarb.exe";
+            // 
+            // infoLink
+            // 
+            this.infoLink.AutoSize = true;
+            this.infoLink.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.infoLink.Location = new System.Drawing.Point(33, 9);
+            this.infoLink.Name = "infoLink";
+            this.infoLink.Size = new System.Drawing.Size(145, 17);
+            this.infoLink.TabIndex = 24;
+            this.infoLink.TabStop = true;
+            this.infoLink.Text = "Click here for more info";
+            // 
+            // step2_checkOnlyOneLabel
+            // 
+            this.step2_checkOnlyOneLabel.AutoSize = true;
+            this.step2_checkOnlyOneLabel.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step2_checkOnlyOneLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(59)))), ((int)(((byte)(186)))));
+            this.step2_checkOnlyOneLabel.Location = new System.Drawing.Point(325, 120);
+            this.step2_checkOnlyOneLabel.Name = "step2_checkOnlyOneLabel";
+            this.step2_checkOnlyOneLabel.Size = new System.Drawing.Size(202, 15);
+            this.step2_checkOnlyOneLabel.TabIndex = 25;
+            this.step2_checkOnlyOneLabel.Text = "check only one folder per character";
+            // 
+            // step3_mouthContainerReminder
+            // 
+            this.step3_mouthContainerReminder.AutoSize = true;
+            this.step3_mouthContainerReminder.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step3_mouthContainerReminder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(59)))), ((int)(((byte)(186)))));
+            this.step3_mouthContainerReminder.Location = new System.Drawing.Point(475, 35);
+            this.step3_mouthContainerReminder.Name = "step3_mouthContainerReminder";
+            this.step3_mouthContainerReminder.Size = new System.Drawing.Size(278, 15);
+            this.step3_mouthContainerReminder.TabIndex = 26;
+            this.step3_mouthContainerReminder.Text = "must contain viseme folders: A, B, C, D, E, F, G, H, X ";
             // 
             // VisemesForQuillForm
             // 
@@ -560,32 +562,38 @@
             this.AutoScroll = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(827, 594);
-            this.Controls.Add(this.checkedListBox2);
-            this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.checkedListBox1);
-            this.Controls.Add(this.charLabel);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(827, 671);
+            this.Controls.Add(this.step2_checkOnlyOneLabel);
+            this.Controls.Add(this.infoLink);
+            this.Controls.Add(this.rhubarbLoc);
+            this.Controls.Add(this.selectRhubarb);
+            this.Controls.Add(this.quillFolders_checklistBox);
+            this.Controls.Add(this.step5panel);
+            this.Controls.Add(this.step4panel);
+            this.Controls.Add(this.step3panel);
+            this.Controls.Add(this.step1);
+        
+            this.Controls.Add(this.step2);
+            this.Controls.Add(this.selectQuill);
             this.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "VisemesForQuillForm";
             this.Text = "Viseme Automator for Quill";
             this.Load += new System.EventHandler(this.VisemesForQuillForm_Load_1);
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel5.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
+            this.step3panel.ResumeLayout(false);
+            this.step3panel.PerformLayout();
+            this.step3_innerPanel.ResumeLayout(false);
+            this.step3_innerPanel.PerformLayout();
+            this.step4panel.ResumeLayout(false);
+            this.step4panel.PerformLayout();
+            this.step4_addDelPanel.ResumeLayout(false);
+            this.step4_addDelPanel.PerformLayout();
+            this.step4_filePanel.ResumeLayout(false);
+            this.step4_filePanel.PerformLayout();
+            this.step5panel.ResumeLayout(false);
+            this.step5panel.PerformLayout();
+            this.step5_innerPanel.ResumeLayout(false);
+            this.step5_innerPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -594,50 +602,52 @@
     #endregion
 
     private FolderBrowserDialog selectQuill_browserDialog;
-    private Button button1;
-    private Label charLabel;
-    private TableLayoutPanel tableLayoutPanel1;
-    private Label label3;
-    private Label label4;
-    private Label label5;
-    private Label label6;
-    private CheckedListBox checkedListBox1;
-    private Label label11;
-    private Label label12;
-    private Label label13;
-    private ComboBox comboBox2;
-    private Label label7;
-    private Button button3;
-    private Button button4;
+    private Button selectQuill;
+    private Label step2;
+    private Label step4;
+    private Label step3;
+    private Label step5;
+    private Label step1;
+    private Label step5_audioTitle;
+    private Label step5_audioFile;
+    private ComboBox step5_charDropdown;
+    private Label step4_audioTitle;
+    private Button step4_attachButton;
+    private Button submitButton;
     private ToolTip toolTip1;
     private ToolTip toolTip2;
     private ToolTip toolTip3;
     private TableLayoutPanel tableLayoutPanel4;
-    private ComboBox comboBox3;
-    private Label label9;
+
     private TableLayoutPanel tableLayoutPanel5;
-    private Label label14;
-    private Label label1;
-    private Label label2;
-    private ComboBox comboBox4;
-    private System.ComponentModel.BackgroundWorker backgroundWorker1;
-    private Button button5;
-    private Label label16;
-    private Label label17;
-    private ComboBox comboBox5;
-    private Label label18;
-    private Panel panel2;
-    private Panel panel3;
-    private Panel panel4;
-    private Button button2;
-    private Label label20;
-    private Label label19;
-    private Label label15;
-    private Label label8;
-    private CheckBox checkBox1;
-    private Panel panel5;
-    private Panel panel1;
-    private Label label10;
-    private CheckedListBox checkedListBox2;
+
+    private Label step3_character;
+    private Label step3_mouth;
+    private Button delAudioButton;
+    private Label step3_line;
+    private Label step5_line;
+    private ComboBox step3_mouthDropdown;
+    private Label step4_line;
+    private Panel step3panel;
+    private Panel step4panel;
+    private Panel step5panel;
+    private Button addAudioButton;
+    private Label delAudioLabel;
+    private Label addAudioLabel;
+    private Label step4_textTitle;
+    private CheckBox step4_audioCheckbox;
+    private Panel step3_innerPanel;
+    private Panel step4_filePanel;
+    private Label step4_attachLabel;
+    private CheckedListBox quillFolders_checklistBox;
+    private Panel step4_addDelPanel;
+    private Panel step5_innerPanel;
+    private Button selectRhubarb;
+    private Label rhubarbLoc;
+    private LinkLabel infoLink;
+    private Label step3_charName;
+    private Label step4_optionalLabel;
+    private Label step2_checkOnlyOneLabel;
+    private Label step3_mouthContainerReminder;
   }
 }
