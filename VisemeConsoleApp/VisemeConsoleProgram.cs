@@ -38,8 +38,10 @@ public class Program
     vg.deleteLaterTestingRhubarbCLI();
     Sequence sequence = QuillSequenceReader.Read(quillReadPath);
     LayerGroup root = sequence.RootLayer;
+    //
     LayerGroup head = (LayerGroup)(sequence.RootLayer.FindChild("Head"));
     LayerGroup mouth = (LayerGroup )head.FindChild("Mouth");
+    //for winforms app, should be able to comment out sound, setaudiooffset
     Layer sound = root.FindChild("saya_thanking_uncleBob(mp3).mp3");
     //vg.SetAudioOffset(sound, mouth);
     vg.SetVisemeMap(root);

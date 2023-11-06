@@ -30,10 +30,9 @@
     {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VisemesForQuillForm));
-            this.selectQuill_browserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.selectQuill_folderDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.selectQuill = new System.Windows.Forms.Button();
             this.step2 = new System.Windows.Forms.Label();
-        
             this.step3_character = new System.Windows.Forms.Label();
             this.step3_mouth = new System.Windows.Forms.Label();
             this.step4 = new System.Windows.Forms.Label();
@@ -57,6 +56,7 @@
             this.step3_mouthDropdown = new System.Windows.Forms.ComboBox();
             this.step4_line = new System.Windows.Forms.Label();
             this.step3panel = new System.Windows.Forms.Panel();
+            this.step3_mouthContainerReminder = new System.Windows.Forms.Label();
             this.step3_innerPanel = new System.Windows.Forms.Panel();
             this.step3_charName = new System.Windows.Forms.Label();
             this.step4panel = new System.Windows.Forms.Panel();
@@ -76,7 +76,7 @@
             this.rhubarbLoc = new System.Windows.Forms.Label();
             this.infoLink = new System.Windows.Forms.LinkLabel();
             this.step2_checkOnlyOneLabel = new System.Windows.Forms.Label();
-            this.step3_mouthContainerReminder = new System.Windows.Forms.Label();
+            this.setRhubarb_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.step3panel.SuspendLayout();
             this.step3_innerPanel.SuspendLayout();
             this.step4panel.SuspendLayout();
@@ -111,7 +111,6 @@
             this.step2.Size = new System.Drawing.Size(286, 16);
             this.step2.TabIndex = 1;
             this.step2.Text = "Step 2:  Select your top-level Character folder(s)";
-          
             // 
             // step3_character
             // 
@@ -336,6 +335,17 @@
             this.step3panel.Size = new System.Drawing.Size(756, 98);
             this.step3panel.TabIndex = 17;
             // 
+            // step3_mouthContainerReminder
+            // 
+            this.step3_mouthContainerReminder.AutoSize = true;
+            this.step3_mouthContainerReminder.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.step3_mouthContainerReminder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(59)))), ((int)(((byte)(186)))));
+            this.step3_mouthContainerReminder.Location = new System.Drawing.Point(475, 35);
+            this.step3_mouthContainerReminder.Name = "step3_mouthContainerReminder";
+            this.step3_mouthContainerReminder.Size = new System.Drawing.Size(278, 15);
+            this.step3_mouthContainerReminder.TabIndex = 26;
+            this.step3_mouthContainerReminder.Text = "must contain viseme folders: A, B, C, D, E, F, G, H, X ";
+            // 
             // step3_innerPanel
             // 
             this.step3_innerPanel.Controls.Add(this.step3_charName);
@@ -511,14 +521,14 @@
             this.selectRhubarb.TabIndex = 22;
             this.selectRhubarb.Text = "Set or change Rhubarb location";
             this.selectRhubarb.UseVisualStyleBackColor = false;
+            this.selectRhubarb.Click += new System.EventHandler(this.selectRhubarb_Click);
             // 
             // rhubarbLoc
             // 
-            this.rhubarbLoc.AutoSize = true;
             this.rhubarbLoc.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.rhubarbLoc.Location = new System.Drawing.Point(255, 47);
             this.rhubarbLoc.Name = "rhubarbLoc";
-            this.rhubarbLoc.Size = new System.Drawing.Size(308, 16);
+            this.rhubarbLoc.Size = new System.Drawing.Size(519, 56);
             this.rhubarbLoc.TabIndex = 23;
             this.rhubarbLoc.Text = "C://aewrioij//oaihajewoirj//oaeworijawier//rhubarb.exe";
             // 
@@ -532,6 +542,7 @@
             this.infoLink.TabIndex = 24;
             this.infoLink.TabStop = true;
             this.infoLink.Text = "Click here for more info";
+            this.infoLink.Click += new System.EventHandler(this.infoLink_Click);
             // 
             // step2_checkOnlyOneLabel
             // 
@@ -544,16 +555,9 @@
             this.step2_checkOnlyOneLabel.TabIndex = 25;
             this.step2_checkOnlyOneLabel.Text = "check only one folder per character";
             // 
-            // step3_mouthContainerReminder
+            // setRhubarb_openFileDialog
             // 
-            this.step3_mouthContainerReminder.AutoSize = true;
-            this.step3_mouthContainerReminder.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.step3_mouthContainerReminder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(59)))), ((int)(((byte)(186)))));
-            this.step3_mouthContainerReminder.Location = new System.Drawing.Point(475, 35);
-            this.step3_mouthContainerReminder.Name = "step3_mouthContainerReminder";
-            this.step3_mouthContainerReminder.Size = new System.Drawing.Size(278, 15);
-            this.step3_mouthContainerReminder.TabIndex = 26;
-            this.step3_mouthContainerReminder.Text = "must contain viseme folders: A, B, C, D, E, F, G, H, X ";
+            this.setRhubarb_openFileDialog.FileName = "setRhubarb_openFileDialog";
             // 
             // VisemesForQuillForm
             // 
@@ -572,7 +576,6 @@
             this.Controls.Add(this.step4panel);
             this.Controls.Add(this.step3panel);
             this.Controls.Add(this.step1);
-        
             this.Controls.Add(this.step2);
             this.Controls.Add(this.selectQuill);
             this.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -601,7 +604,7 @@
 
     #endregion
 
-    private FolderBrowserDialog selectQuill_browserDialog;
+    private FolderBrowserDialog selectQuill_folderDialog;
     private Button selectQuill;
     private Label step2;
     private Label step4;
@@ -649,5 +652,6 @@
     private Label step4_optionalLabel;
     private Label step2_checkOnlyOneLabel;
     private Label step3_mouthContainerReminder;
+    private OpenFileDialog setRhubarb_openFileDialog;
   }
 }

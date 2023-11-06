@@ -511,7 +511,7 @@
             this.projectCreatedText.Text = "    ";
             this.projectCreatedText.UseWaitCursor = true;
             // 
-            // Form1
+            // ParticlesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -547,7 +547,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label9);
-            this.Name = "Form1";
+            this.Name = "ParticlesForm";
             this.Text = "Steady Particles Generator";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).EndInit();
