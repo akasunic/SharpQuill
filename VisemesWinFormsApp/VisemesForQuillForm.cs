@@ -7,7 +7,9 @@ namespace VisemesWinFormsApp
   public partial class VisemesForQuillForm : Form
   {
     private string rhubarbExecPath;
-
+    private string? quillPath;
+    Sequence sequence;
+    private Dictionary<string, Layer> characterLayers= new Dictionary<string, Layer>();
 
     public VisemesForQuillForm()
     {
@@ -49,6 +51,79 @@ namespace VisemesWinFormsApp
 
     private void selectQuill_Click(object sender, EventArgs e)
     {
+      if (selectQuill_folderDialog.ShowDialog() == DialogResult.OK)
+      {
+        //clear checklist (and others-- chars and mouth layers for step3, chars for step 5
+        quillFolders_checklistBox.Items.Clear();
+
+        quillPath = selectQuill_folderDialog.SelectedPath;
+        selectedQuillPath.Text = "Selected: " + quillPath;
+        sequence = QuillSequenceReader.Read(quillPath);
+        if (sequence == null)
+        {
+          //TO DO: error provider for Quill
+          //quillErrorProvider.SetError(readPathChoice, "Not a valid Quill project folder. Should be a folder containing Quill.json, State,json, Quill.qbin");
+        }
+        else
+        {
+          populateCheckboxList(sequence.RootLayer, 0);
+        }
+      }
+    }
+
+
+
+    //recursive method, goes through all layers of selected project
+    // if a group layer, keeps recursively calling, if paint layer, adds to comboxbox
+    private void populateCheckboxList(Layer layer, int offset)
+    {
+      string spaces = new String(' ', offset*5);
+      //not including paint layers, because it should be a group layer!
+      if (layer.Type.ToString() == "Group" && offset < 3)//okay, 3 is somewhat arbitrary... maybe a better way to do this??
+      {
+        //add to checkbox list
+        if(layer.Name != "Root" )
+        {
+          quillFolders_checklistBox.Items.Add(spaces + layer.Name);
+          characterLayers.Add(spaces + layer.Name, layer);
+        }
+        
+        foreach (Layer child in ((LayerGroup)layer).Children)
+        {
+          populateCheckboxList(child, offset + 1);
+        }
+      }
+      /*else if (layer.Type.ToString() == "Paint")
+      {
+        dropdown.Items.Add(layer.Name);
+      }*/
+    }
+
+    //I THINK THIS SHOULD BE RUN WHEN YOU CLICK ON CHECKEDLIST BOX!!
+    //needs to add a new "row" (panel) for each character to Step 3, and for each of those
+    //rows, also populate the associated dropdown
+    //also then needs to move down steps 4 and 5 appropriately!
+    //other option is to use scrollbars, but... eh. maybe. see first way first
+    private void populateCharacters()
+    {
+      //suspend layout, add your changes, then resume
+      SuspendLayout();
+      int i = 0;
+      foreach (var item in quillFolders_checklistBox.CheckedItems)
+      {
+        //first check if it's already in list!! WILL ADD THAT LATER
+        i += 1;
+        Panel newStep3InnerPanel = new Panel();
+        //this.step3_innerPanel = new System.Windows.Forms.Panel();
+        newStep3InnerPanel.Location = new System.Drawing.Point(step3_innerPanel.Location.X, step3_innerPanel.Location.Y * i);
+        //new System.Drawing.Point(39, 55);
+        newStep3InnerPanel.Size = new System.Drawing.Size(step3_innerPanel.Size.Width, step3_innerPanel.Size.Height);
+        newStep3InnerPanel.Name = "test" + i.ToString();
+        this.Controls.Add(newStep3InnerPanel);
+        step3panel.Size = new System.Drawing.Size(step3panel.Size.Width, step3panel.Size.Height + step3_innerPanel.Size.Height );
+        
+      }
+      ResumeLayout();
 
     }
 
@@ -302,6 +377,11 @@ namespace VisemesWinFormsApp
           }
         }
       }
+    }
+
+    private void quillFolders_checklistBox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      populateCharacters();
     }
   }
 }

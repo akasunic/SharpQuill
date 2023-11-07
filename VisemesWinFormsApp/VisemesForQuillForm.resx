@@ -64,7 +64,7 @@
   <data name="delAudioButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vwAADr8BOAVTJAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAADqySURBVHhe7d0J
+        vAAADrwBlbxySQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAADqySURBVHhe7d0J
         nBxVuffxYRc3XEBQ36uvXrcrLlejcgOZ6pokAoPgVbGVrqoZhiABRAFxQbgqAdkEUUEkFwWXKIsgKqCC
         oLixL4ooyBL2nYRAIAvZ5nnP6X54M1SfySx1qrqr+/f/fL6fwHRPn+5azvNMd3VVDyGk/SNTZm8kM2pb
         Sm/8Vglr0yRIPihhNCSV5CCpREdJEM+VSvxT89+/MP9eqv5sXK9uNu5UjxqLUh42nr39H0bj94Lkj+bf
@@ -321,7 +321,7 @@
   <data name="step4_attachButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAArwAAAJXCAYAAABxOYcCAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DgAACw4BQL7hQQAAMYFJREFUeF7t3Qm0fVdB5/kkZKJaQgISByAEFDAiIBhBxgiCyGC0rNYqEURUBAVF
+        DAAACwwBP0AiyAAAMYFJREFUeF7t3Qm0fVdB5/kkZKJaQgISByAEFDAiIBhBxgiCyGC0rNYqEURUBAVF
         ESmGQEARaBCxqtCWkkkkYoFANdpBwWAzg1AOjSIGCJAwKLMQIOO/+rfb/nci2SFnn3fuffvc/fms9V2r
         l6sr97zDffv/+7//ffceAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         AAAAAMCKHZ6OSyekm6XvSKek75SkDfat6eoJABZzVCpD9mHp2em16dx0IP1PSdqHLkp/ku6dAKDZYel2
@@ -535,8 +535,8 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAD4yg455P8B3R+zKYmorYUAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+  <metadata name="rhubarbexe.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 20</value>
   </metadata>
   <metadata name="toolTip2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>114, 17</value>
@@ -547,7 +547,7 @@
   <data name="addAudioButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vwAADr8BOAVTJAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAFiPSURBVHhe7d0H
+        vAAADrwBlbxySQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAFiPSURBVHhe7d0H
         eBTV2gfwgKKA0iyAiA2wIFixi4qKXey5duzYL3gFUWx7rWABQUFisrvZms1sop+XXkMJPUgNvaP0DiE9
         870nvl5zJwdIluyZmd3/73n+DwpJzjtnz3tmdrMlAQBik6Zr9YbogSZJunamS89sVTHJesbFybrWQcSt
         axcZ/118j/he8TP4xwEAAIAKdPI9LlnPbPnniTrjbqee+axTz+iVooe/SNEzhtB/B+nPkSl65nT6cwll
@@ -931,6 +931,9 @@
   </data>
   <metadata name="setRhubarb_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>494, 17</value>
+  </metadata>
+  <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>114</value>

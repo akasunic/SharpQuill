@@ -46,7 +46,7 @@
             this.delAudioButton = new System.Windows.Forms.Button();
             this.step4_attachButton = new System.Windows.Forms.Button();
             this.submitButton = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.rhubarbexe = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip3 = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -77,6 +77,7 @@
             this.infoLink = new System.Windows.Forms.LinkLabel();
             this.step2_checkOnlyOneLabel = new System.Windows.Forms.Label();
             this.setRhubarb_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.selectedQuillPath = new System.Windows.Forms.Label();
             this.step3panel.SuspendLayout();
             this.step3_innerPanel.SuspendLayout();
             this.step4panel.SuspendLayout();
@@ -106,7 +107,7 @@
             this.step2.AutoSize = true;
             this.step2.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.step2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
-            this.step2.Location = new System.Drawing.Point(33, 120);
+            this.step2.Location = new System.Drawing.Point(33, 135);
             this.step2.Name = "step2";
             this.step2.Size = new System.Drawing.Size(286, 16);
             this.step2.TabIndex = 1;
@@ -334,6 +335,7 @@
             this.step3panel.Name = "step3panel";
             this.step3panel.Size = new System.Drawing.Size(756, 98);
             this.step3panel.TabIndex = 17;
+            this.step3panel.Visible = false;
             // 
             // step3_mouthContainerReminder
             // 
@@ -352,7 +354,7 @@
             this.step3_innerPanel.Controls.Add(this.step3_mouthDropdown);
             this.step3_innerPanel.Location = new System.Drawing.Point(39, 55);
             this.step3_innerPanel.Name = "step3_innerPanel";
-            this.step3_innerPanel.Size = new System.Drawing.Size(704, 35);
+            this.step3_innerPanel.Size = new System.Drawing.Size(705, 35);
             this.step3_innerPanel.TabIndex = 15;
             // 
             // step3_charName
@@ -502,11 +504,12 @@
             // 
             this.quillFolders_checklistBox.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.quillFolders_checklistBox.FormattingEnabled = true;
-            this.quillFolders_checklistBox.Location = new System.Drawing.Point(72, 139);
+            this.quillFolders_checklistBox.Location = new System.Drawing.Point(72, 154);
             this.quillFolders_checklistBox.Name = "quillFolders_checklistBox";
             this.quillFolders_checklistBox.ScrollAlwaysVisible = true;
             this.quillFolders_checklistBox.Size = new System.Drawing.Size(704, 72);
             this.quillFolders_checklistBox.TabIndex = 20;
+            this.quillFolders_checklistBox.SelectedIndexChanged += new System.EventHandler(this.quillFolders_checklistBox_SelectedIndexChanged);
             // 
             // selectRhubarb
             // 
@@ -549,7 +552,7 @@
             this.step2_checkOnlyOneLabel.AutoSize = true;
             this.step2_checkOnlyOneLabel.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.step2_checkOnlyOneLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(59)))), ((int)(((byte)(186)))));
-            this.step2_checkOnlyOneLabel.Location = new System.Drawing.Point(325, 120);
+            this.step2_checkOnlyOneLabel.Location = new System.Drawing.Point(325, 135);
             this.step2_checkOnlyOneLabel.Name = "step2_checkOnlyOneLabel";
             this.step2_checkOnlyOneLabel.Size = new System.Drawing.Size(202, 15);
             this.step2_checkOnlyOneLabel.TabIndex = 25;
@@ -559,6 +562,16 @@
             // 
             this.setRhubarb_openFileDialog.FileName = "setRhubarb_openFileDialog";
             // 
+            // selectedQuillPath
+            // 
+            this.selectedQuillPath.AutoSize = true;
+            this.selectedQuillPath.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.selectedQuillPath.Location = new System.Drawing.Point(91, 106);
+            this.selectedQuillPath.Name = "selectedQuillPath";
+            this.selectedQuillPath.Size = new System.Drawing.Size(128, 17);
+            this.selectedQuillPath.TabIndex = 27;
+            this.selectedQuillPath.Text = "No project selected";
+            // 
             // VisemesForQuillForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -567,6 +580,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(827, 671);
+            this.Controls.Add(this.selectedQuillPath);
             this.Controls.Add(this.step2_checkOnlyOneLabel);
             this.Controls.Add(this.infoLink);
             this.Controls.Add(this.rhubarbLoc);
@@ -617,7 +631,7 @@
     private Label step4_audioTitle;
     private Button step4_attachButton;
     private Button submitButton;
-    private ToolTip toolTip1;
+    private ToolTip rhubarbexe;
     private ToolTip toolTip2;
     private ToolTip toolTip3;
     private TableLayoutPanel tableLayoutPanel4;
@@ -653,5 +667,6 @@
     private Label step2_checkOnlyOneLabel;
     private Label step3_mouthContainerReminder;
     private OpenFileDialog setRhubarb_openFileDialog;
+    private Label selectedQuillPath;
   }
 }
