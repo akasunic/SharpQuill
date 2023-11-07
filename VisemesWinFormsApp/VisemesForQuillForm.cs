@@ -109,7 +109,7 @@ namespace VisemesWinFormsApp
     private void populateCharacters()
     {
       List<string> tempChars = new List<string>(characters);//suspend layout, add your changes, then resume
-      SuspendLayout();
+      //SuspendLayout();
       int i = 0;
       //add and adjust layout as needed
       List<string> checkedItems = new List<string>();
@@ -121,18 +121,18 @@ namespace VisemesWinFormsApp
         if (!characters.Contains(item.ToString()))
           {
             characters.Add(item.ToString());
- 
+          step3Flow.Controls.Add(new characterToLayerMatch());
 
             Panel newStep3InnerPanel = new Panel();
             //this.step3_innerPanel = new System.Windows.Forms.Panel();
-            newStep3InnerPanel.Location = new System.Drawing.Point(step3_innerPanel.Location.X, step3_innerPanel.Location.Y * i);
+           /* newStep3InnerPanel.Location = new System.Drawing.Point(step3_innerPanel.Location.X, step3_innerPanel.Location.Y * i);
             //new System.Drawing.Point(39, 55);
             newStep3InnerPanel.Size = new System.Drawing.Size(step3_innerPanel.Size.Width, step3_innerPanel.Size.Height);
             newStep3InnerPanel.Name = "step3innerPanel" + item.ToString();
             this.Controls.Add(newStep3InnerPanel);
             step3panel.Size = new System.Drawing.Size(step3panel.Size.Width, step3panel.Size.Height + step3_innerPanel.Size.Height);
             step4panel.Location = new System.Drawing.Point(step4panel.Location.X, step4panel.Location.Y + step3_innerPanel.Size.Height);
-            step5panel.Location = new System.Drawing.Point(step5panel.Location.X, step5panel.Location.Y + step3_innerPanel.Size.Height);
+            step5panel.Location = new System.Drawing.Point(step5panel.Location.X, step5panel.Location.Y + step3_innerPanel.Size.Height);*/
           }
           
       }
@@ -141,15 +141,15 @@ namespace VisemesWinFormsApp
       {
         if (!checkedItems.Contains(character))
         {
-          tempChars.Remove(character);
+  /*        tempChars.Remove(character);
           step3panel.Controls.Remove(step3.Controls["step3innerPanel" + character]);
           ResizePos(step3panel, -step3_innerPanel.Size.Height, 0);
           ResizePos(step4panel, 0, -step3_innerPanel.Size.Height);
-          ResizePos(step5panel, 0,  -step3_innerPanel.Size.Height);
+          ResizePos(step5panel, 0,  -step3_innerPanel.Size.Height);*/
         }
       }
       characters = tempChars;
-      ResumeLayout();
+      //ResumeLayout();
     }
 
     private void ResizePos(Control control, int heightChange, int yPosChange)
@@ -219,12 +219,16 @@ namespace VisemesWinFormsApp
       populateCharacters();
     }
 
+    private void step3panel_Paint(object sender, PaintEventArgs e)
+    {
+
+    }
   }
-    /*
-     * Not sure if this is bad practice, but keeping the class here, in the same file. Maybe it is. Idk.
-    Maybe I'll change later.
-     */
-    public class VisemesGenerator
+  /*
+   * Not sure if this is bad practice, but keeping the class here, in the same file. Maybe it is. Idk.
+  Maybe I'll change later.
+   */
+  public class VisemesGenerator
     {
 
       public int timeConversion = 12600;

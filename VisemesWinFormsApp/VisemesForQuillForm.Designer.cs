@@ -53,12 +53,9 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.step3_line = new System.Windows.Forms.Label();
             this.step5_line = new System.Windows.Forms.Label();
-            this.step3_mouthDropdown = new System.Windows.Forms.ComboBox();
             this.step4_line = new System.Windows.Forms.Label();
             this.step3panel = new System.Windows.Forms.Panel();
             this.step3_mouthContainerReminder = new System.Windows.Forms.Label();
-            this.step3_innerPanel = new System.Windows.Forms.Panel();
-            this.step3_charName = new System.Windows.Forms.Label();
             this.step4panel = new System.Windows.Forms.Panel();
             this.step4_addDelPanel = new System.Windows.Forms.Panel();
             this.addAudioButton = new System.Windows.Forms.Button();
@@ -78,13 +75,20 @@
             this.step2_checkOnlyOneLabel = new System.Windows.Forms.Label();
             this.setRhubarb_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.selectedQuillPath = new System.Windows.Forms.Label();
+            this.mainFlow = new System.Windows.Forms.FlowLayoutPanel();
+            this.step3Flow = new System.Windows.Forms.FlowLayoutPanel();
+            this.step4Flow = new System.Windows.Forms.FlowLayoutPanel();
+            this.step5Flow = new System.Windows.Forms.FlowLayoutPanel();
             this.step3panel.SuspendLayout();
-            this.step3_innerPanel.SuspendLayout();
             this.step4panel.SuspendLayout();
             this.step4_addDelPanel.SuspendLayout();
             this.step4_filePanel.SuspendLayout();
             this.step5panel.SuspendLayout();
             this.step5_innerPanel.SuspendLayout();
+            this.mainFlow.SuspendLayout();
+            this.step3Flow.SuspendLayout();
+            this.step4Flow.SuspendLayout();
+            this.step5Flow.SuspendLayout();
             this.SuspendLayout();
             // 
             // selectQuill
@@ -305,15 +309,6 @@
             this.step5_line.Size = new System.Drawing.Size(707, 2);
             this.step5_line.TabIndex = 13;
             // 
-            // step3_mouthDropdown
-            // 
-            this.step3_mouthDropdown.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.step3_mouthDropdown.FormattingEnabled = true;
-            this.step3_mouthDropdown.Location = new System.Drawing.Point(373, 8);
-            this.step3_mouthDropdown.Name = "step3_mouthDropdown";
-            this.step3_mouthDropdown.Size = new System.Drawing.Size(329, 24);
-            this.step3_mouthDropdown.TabIndex = 14;
-            // 
             // step4_line
             // 
             this.step4_line.BackColor = System.Drawing.Color.Black;
@@ -326,15 +321,15 @@
             // step3panel
             // 
             this.step3panel.Controls.Add(this.step3_mouthContainerReminder);
-            this.step3panel.Controls.Add(this.step3_innerPanel);
             this.step3panel.Controls.Add(this.step3_character);
             this.step3panel.Controls.Add(this.step3);
             this.step3panel.Controls.Add(this.step3_mouth);
             this.step3panel.Controls.Add(this.step3_line);
-            this.step3panel.Location = new System.Drawing.Point(36, 234);
+            this.step3panel.Location = new System.Drawing.Point(3, 3);
             this.step3panel.Name = "step3panel";
-            this.step3panel.Size = new System.Drawing.Size(756, 98);
+            this.step3panel.Size = new System.Drawing.Size(756, 57);
             this.step3panel.TabIndex = 17;
+            this.step3panel.Paint += new System.Windows.Forms.PaintEventHandler(this.step3panel_Paint);
             // 
             // step3_mouthContainerReminder
             // 
@@ -347,27 +342,9 @@
             this.step3_mouthContainerReminder.TabIndex = 26;
             this.step3_mouthContainerReminder.Text = "must contain viseme folders: A, B, C, D, E, F, G, H, X ";
             // 
-            // step3_innerPanel
-            // 
-            this.step3_innerPanel.Controls.Add(this.step3_charName);
-            this.step3_innerPanel.Controls.Add(this.step3_mouthDropdown);
-            this.step3_innerPanel.Location = new System.Drawing.Point(39, 55);
-            this.step3_innerPanel.Name = "step3_innerPanel";
-            this.step3_innerPanel.Size = new System.Drawing.Size(705, 35);
-            this.step3_innerPanel.TabIndex = 15;
-            // 
-            // step3_charName
-            // 
-            this.step3_charName.AutoSize = true;
-            this.step3_charName.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.step3_charName.Location = new System.Drawing.Point(0, 11);
-            this.step3_charName.Name = "step3_charName";
-            this.step3_charName.Size = new System.Drawing.Size(195, 16);
-            this.step3_charName.TabIndex = 23;
-            this.step3_charName.Text = "Sample Character (autopopulate)";
-            // 
             // step4panel
             // 
+            this.step4panel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.step4panel.Controls.Add(this.step4_addDelPanel);
             this.step4panel.Controls.Add(this.step4_filePanel);
             this.step4panel.Controls.Add(this.step4_optionalLabel);
@@ -375,7 +352,7 @@
             this.step4panel.Controls.Add(this.step4_audioTitle);
             this.step4panel.Controls.Add(this.step4_line);
             this.step4panel.Controls.Add(this.step4_textTitle);
-            this.step4panel.Location = new System.Drawing.Point(36, 338);
+            this.step4panel.Location = new System.Drawing.Point(3, 3);
             this.step4panel.Name = "step4panel";
             this.step4panel.Size = new System.Drawing.Size(752, 155);
             this.step4panel.TabIndex = 18;
@@ -480,12 +457,13 @@
             // 
             // step5panel
             // 
+            this.step5panel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.step5panel.Controls.Add(this.step5_innerPanel);
             this.step5panel.Controls.Add(this.step5);
             this.step5panel.Controls.Add(this.submitButton);
             this.step5panel.Controls.Add(this.step5_line);
             this.step5panel.Controls.Add(this.step5_audioTitle);
-            this.step5panel.Location = new System.Drawing.Point(36, 499);
+            this.step5panel.Location = new System.Drawing.Point(3, 3);
             this.step5panel.Name = "step5panel";
             this.step5panel.Size = new System.Drawing.Size(755, 147);
             this.step5panel.TabIndex = 19;
@@ -571,23 +549,64 @@
             this.selectedQuillPath.TabIndex = 27;
             this.selectedQuillPath.Text = "No project selected";
             // 
+            // mainFlow
+            // 
+            this.mainFlow.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.mainFlow.AutoSize = true;
+            this.mainFlow.Controls.Add(this.step3Flow);
+            this.mainFlow.Controls.Add(this.step4Flow);
+            this.mainFlow.Controls.Add(this.step5Flow);
+            this.mainFlow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.mainFlow.Location = new System.Drawing.Point(9, 232);
+            this.mainFlow.Name = "mainFlow";
+            this.mainFlow.Size = new System.Drawing.Size(784, 622);
+            this.mainFlow.TabIndex = 28;
+            // 
+            // step3Flow
+            // 
+            this.step3Flow.AutoSize = true;
+            this.step3Flow.Controls.Add(this.step3panel);
+            this.step3Flow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.step3Flow.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.step3Flow.Location = new System.Drawing.Point(3, 3);
+            this.step3Flow.Name = "step3Flow";
+            this.step3Flow.Size = new System.Drawing.Size(762, 63);
+            this.step3Flow.TabIndex = 20;
+            // 
+            // step4Flow
+            // 
+            this.step4Flow.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.step4Flow.Controls.Add(this.step4panel);
+            this.step4Flow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.step4Flow.Location = new System.Drawing.Point(3, 72);
+            this.step4Flow.Name = "step4Flow";
+            this.step4Flow.Size = new System.Drawing.Size(770, 169);
+            this.step4Flow.TabIndex = 21;
+            // 
+            // step5Flow
+            // 
+            this.step5Flow.AutoSize = true;
+            this.step5Flow.Controls.Add(this.step5panel);
+            this.step5Flow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.step5Flow.Location = new System.Drawing.Point(3, 247);
+            this.step5Flow.Name = "step5Flow";
+            this.step5Flow.Size = new System.Drawing.Size(761, 153);
+            this.step5Flow.TabIndex = 22;
+            // 
             // VisemesForQuillForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(827, 671);
+            this.ClientSize = new System.Drawing.Size(849, 712);
+            this.Controls.Add(this.mainFlow);
             this.Controls.Add(this.selectedQuillPath);
             this.Controls.Add(this.step2_checkOnlyOneLabel);
             this.Controls.Add(this.infoLink);
             this.Controls.Add(this.rhubarbLoc);
             this.Controls.Add(this.selectRhubarb);
             this.Controls.Add(this.quillFolders_checklistBox);
-            this.Controls.Add(this.step5panel);
-            this.Controls.Add(this.step4panel);
-            this.Controls.Add(this.step3panel);
             this.Controls.Add(this.step1);
             this.Controls.Add(this.step2);
             this.Controls.Add(this.selectQuill);
@@ -598,8 +617,6 @@
             this.Load += new System.EventHandler(this.VisemesForQuillForm_Load_1);
             this.step3panel.ResumeLayout(false);
             this.step3panel.PerformLayout();
-            this.step3_innerPanel.ResumeLayout(false);
-            this.step3_innerPanel.PerformLayout();
             this.step4panel.ResumeLayout(false);
             this.step4panel.PerformLayout();
             this.step4_addDelPanel.ResumeLayout(false);
@@ -610,6 +627,11 @@
             this.step5panel.PerformLayout();
             this.step5_innerPanel.ResumeLayout(false);
             this.step5_innerPanel.PerformLayout();
+            this.mainFlow.ResumeLayout(false);
+            this.mainFlow.PerformLayout();
+            this.step3Flow.ResumeLayout(false);
+            this.step4Flow.ResumeLayout(false);
+            this.step5Flow.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -642,7 +664,6 @@
     private Button delAudioButton;
     private Label step3_line;
     private Label step5_line;
-    private ComboBox step3_mouthDropdown;
     private Label step4_line;
     private Panel step3panel;
     private Panel step4panel;
@@ -652,7 +673,6 @@
     private Label addAudioLabel;
     private Label step4_textTitle;
     private CheckBox step4_audioCheckbox;
-    private Panel step3_innerPanel;
     private Panel step4_filePanel;
     private Label step4_attachLabel;
     private CheckedListBox quillFolders_checklistBox;
@@ -661,11 +681,14 @@
     private Button selectRhubarb;
     private Label rhubarbLoc;
     private LinkLabel infoLink;
-    private Label step3_charName;
     private Label step4_optionalLabel;
     private Label step2_checkOnlyOneLabel;
     private Label step3_mouthContainerReminder;
     private OpenFileDialog setRhubarb_openFileDialog;
     private Label selectedQuillPath;
+    private FlowLayoutPanel mainFlow;
+    private FlowLayoutPanel step3Flow;
+    private FlowLayoutPanel step4Flow;
+    private FlowLayoutPanel step5Flow;
   }
 }
