@@ -335,7 +335,6 @@
             this.step3panel.Name = "step3panel";
             this.step3panel.Size = new System.Drawing.Size(756, 98);
             this.step3panel.TabIndex = 17;
-            this.step3panel.Visible = false;
             // 
             // step3_mouthContainerReminder
             // 

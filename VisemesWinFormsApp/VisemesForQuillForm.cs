@@ -9,7 +9,9 @@ namespace VisemesWinFormsApp
     private string rhubarbExecPath;
     private string? quillPath;
     Sequence sequence;
-    private Dictionary<string, Layer> characterLayers= new Dictionary<string, Layer>();
+    private List<string> characters = new List<string>();
+    private Dictionary<string, Layer> characterLayers = new Dictionary<string, Layer>();
+    private Dictionary<string, Layer> characterMouths = new Dictionary<string, Layer>();
 
     public VisemesForQuillForm()
     {
@@ -19,7 +21,7 @@ namespace VisemesWinFormsApp
       // Load the configuration file
       // To read a setting
       string rhubarbPath = Settings1.Default.RhubarbPath;
-      if (rhubarbPath == null || rhubarbPath =="")
+      if (rhubarbPath == null || rhubarbPath == "")
       {
 
         //make sure these instructions are accurate
@@ -77,17 +79,17 @@ namespace VisemesWinFormsApp
     // if a group layer, keeps recursively calling, if paint layer, adds to comboxbox
     private void populateCheckboxList(Layer layer, int offset)
     {
-      string spaces = new String(' ', offset*5);
+      string spaces = new String(' ', offset * 5);
       //not including paint layers, because it should be a group layer!
       if (layer.Type.ToString() == "Group" && offset < 3)//okay, 3 is somewhat arbitrary... maybe a better way to do this??
       {
         //add to checkbox list
-        if(layer.Name != "Root" )
+        if (layer.Name != "Root")
         {
           quillFolders_checklistBox.Items.Add(spaces + layer.Name);
           characterLayers.Add(spaces + layer.Name, layer);
         }
-        
+
         foreach (Layer child in ((LayerGroup)layer).Children)
         {
           populateCheckboxList(child, offset + 1);
@@ -106,27 +108,55 @@ namespace VisemesWinFormsApp
     //other option is to use scrollbars, but... eh. maybe. see first way first
     private void populateCharacters()
     {
-      //suspend layout, add your changes, then resume
+      List<string> tempChars = new List<string>(characters);//suspend layout, add your changes, then resume
       SuspendLayout();
       int i = 0;
+      //add and adjust layout as needed
+      List<string> checkedItems = new List<string>();
+
       foreach (var item in quillFolders_checklistBox.CheckedItems)
       {
+        checkedItems.Add(item.ToString());
         //first check if it's already in list!! WILL ADD THAT LATER
-        i += 1;
-        Panel newStep3InnerPanel = new Panel();
-        //this.step3_innerPanel = new System.Windows.Forms.Panel();
-        newStep3InnerPanel.Location = new System.Drawing.Point(step3_innerPanel.Location.X, step3_innerPanel.Location.Y * i);
-        //new System.Drawing.Point(39, 55);
-        newStep3InnerPanel.Size = new System.Drawing.Size(step3_innerPanel.Size.Width, step3_innerPanel.Size.Height);
-        newStep3InnerPanel.Name = "test" + i.ToString();
-        this.Controls.Add(newStep3InnerPanel);
-        step3panel.Size = new System.Drawing.Size(step3panel.Size.Width, step3panel.Size.Height + step3_innerPanel.Size.Height );
-        
-      }
-      ResumeLayout();
+        if (!characters.Contains(item.ToString()))
+          {
+            characters.Add(item.ToString());
+ 
 
+            Panel newStep3InnerPanel = new Panel();
+            //this.step3_innerPanel = new System.Windows.Forms.Panel();
+            newStep3InnerPanel.Location = new System.Drawing.Point(step3_innerPanel.Location.X, step3_innerPanel.Location.Y * i);
+            //new System.Drawing.Point(39, 55);
+            newStep3InnerPanel.Size = new System.Drawing.Size(step3_innerPanel.Size.Width, step3_innerPanel.Size.Height);
+            newStep3InnerPanel.Name = "step3innerPanel" + item.ToString();
+            this.Controls.Add(newStep3InnerPanel);
+            step3panel.Size = new System.Drawing.Size(step3panel.Size.Width, step3panel.Size.Height + step3_innerPanel.Size.Height);
+            step4panel.Location = new System.Drawing.Point(step4panel.Location.X, step4panel.Location.Y + step3_innerPanel.Size.Height);
+            step5panel.Location = new System.Drawing.Point(step5panel.Location.X, step5panel.Location.Y + step3_innerPanel.Size.Height);
+          }
+          
+      }
+      //delete and adjust layout as needed
+      foreach(var character in characters)
+      {
+        if (!checkedItems.Contains(character))
+        {
+          tempChars.Remove(character);
+          step3panel.Controls.Remove(step3.Controls["step3innerPanel" + character]);
+          ResizePos(step3panel, -step3_innerPanel.Size.Height, 0);
+          ResizePos(step4panel, 0, -step3_innerPanel.Size.Height);
+          ResizePos(step5panel, 0,  -step3_innerPanel.Size.Height);
+        }
+      }
+      characters = tempChars;
+      ResumeLayout();
     }
 
+    private void ResizePos(Control control, int heightChange, int yPosChange)
+    {
+      control.Size = new System.Drawing.Size(control.Size.Width, control.Size.Height + heightChange);
+      control.Location = new System.Drawing.Point(control.Location.X, control.Location.Y + yPosChange);
+    }
     private void infoLink_Click(object sender, EventArgs e)
     {
       infoLink.LinkVisited = true;
@@ -183,6 +213,13 @@ namespace VisemesWinFormsApp
         rhubarbLoc.Text = "ERROR";
       }
     }
+
+    private void quillFolders_checklistBox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      populateCharacters();
+    }
+
+  }
     /*
      * Not sure if this is bad practice, but keeping the class here, in the same file. Maybe it is. Idk.
     Maybe I'll change later.
@@ -193,22 +230,26 @@ namespace VisemesWinFormsApp
       public int timeConversion = 12600;
       public int offset;//this is the offset for the audio file in Quill. Apply offset to mouth layer
                         //may not be needed
-      public List<string> visemes = new List<string>
-  {
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "X"
-  };
+                        //have a dictionary that maps layers to visemes
+    private Dictionary<string, LayerGroup> visemeMap = new Dictionary<string, LayerGroup>();
 
-      //making sure I can properly run rhubarb from here-- put in a winforms later
-      //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
-      public void generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
+
+    public List<string> visemes = new List<string>
+      {
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "X"
+      };
+
+    //making sure I can properly run rhubarb from here-- put in a winforms later
+    //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
+    public String generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
       {
   
         Process rhubarbCli = new Process();
@@ -237,12 +278,13 @@ namespace VisemesWinFormsApp
         try
         {
           rhubarbCli.Start();
-  
+          return jsonOutputPath;
 
         }
         catch (Exception e)
         {
           MessageBox.Show("Error: " + e.Message);
+          return "";
         }
         /*
         rhubarbCli.Start();
@@ -255,9 +297,7 @@ namespace VisemesWinFormsApp
         }*/
       }
 
-      //have a dictionary that maps layers to visemes
-      private Dictionary<string, LayerGroup> visemeMap = new Dictionary<string, LayerGroup>();
-
+      
       public void SetAudioOffset(Layer soundLayer, Layer mainMouthLayer)
       {
         offset = soundLayer.Animation.Keys.Offset[0].Time;
@@ -282,16 +322,16 @@ namespace VisemesWinFormsApp
         }
       }
       //for form: set when enter. try to autofill when possible-- so like, have a dropdown, set dropdown value to letter if it exists (do lower case and upper case)
-      public void SetVisemeMap(LayerGroup root)
+      public void SetVisemeMap(LayerGroup mouthRoot)
       {
         List<LayerGroup> groupLayers = new List<LayerGroup>();
-        root.GetGroupChildren(groupLayers);
+        mouthRoot.GetGroupChildren(groupLayers);
         foreach (var child in groupLayers)
         {
           //Console.WriteLine(child.Name);
           foreach (var item in visemes)
           {
-            if (child.Name == item)
+            if (child.Name.ToLower().Trim() == item.ToLower())
             {
               visemeMap[item] = child;
               //Console.WriteLine(item);
@@ -304,12 +344,12 @@ namespace VisemesWinFormsApp
       //read the json file in
       //later get from form, but hardcoding for now
 
-      public void SetVisemeAnims(string readPath)
+      public void SetVisemeAnims(string jsonPath)
 
       {
 
         string startingViseme = "";
-        string visemeJson = File.ReadAllText(readPath);//reading rhubarb output
+        string visemeJson = File.ReadAllText(jsonPath);//reading rhubarb output
         dynamic doc = JsonConvert.DeserializeObject(visemeJson);
         dynamic mouthCues = doc.mouthCues; //based off how it's organized by Rhubarb
         float endTime = 0;
@@ -379,9 +419,6 @@ namespace VisemesWinFormsApp
       }
     }
 
-    private void quillFolders_checklistBox_SelectedIndexChanged(object sender, EventArgs e)
-    {
-      populateCharacters();
-    }
+
   }
-}
+
