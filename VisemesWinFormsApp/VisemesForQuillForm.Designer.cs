@@ -486,7 +486,7 @@
             this.quillFolders_checklistBox.ScrollAlwaysVisible = true;
             this.quillFolders_checklistBox.Size = new System.Drawing.Size(704, 72);
             this.quillFolders_checklistBox.TabIndex = 20;
-            this.quillFolders_checklistBox.SelectedIndexChanged += new System.EventHandler(this.quillFolders_checklistBox_SelectedIndexChanged);
+            this.quillFolders_checklistBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.quillFolders_checklistBox_ItemCheckEvent);
             // 
             // selectRhubarb
             // 
@@ -557,7 +557,7 @@
             this.mainFlow.Controls.Add(this.step4Flow);
             this.mainFlow.Controls.Add(this.step5Flow);
             this.mainFlow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.mainFlow.Location = new System.Drawing.Point(9, 232);
+            this.mainFlow.Location = new System.Drawing.Point(33, 232);
             this.mainFlow.Name = "mainFlow";
             this.mainFlow.Size = new System.Drawing.Size(784, 622);
             this.mainFlow.TabIndex = 28;

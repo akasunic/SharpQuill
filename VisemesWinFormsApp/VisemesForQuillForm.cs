@@ -9,7 +9,6 @@ namespace VisemesWinFormsApp
     private string rhubarbExecPath;
     private string? quillPath;
     Sequence sequence;
-    private List<string> characters = new List<string>();
     private Dictionary<string, Layer> characterLayers = new Dictionary<string, Layer>();
     private Dictionary<string, Layer> characterMouths = new Dictionary<string, Layer>();
 
@@ -87,7 +86,7 @@ namespace VisemesWinFormsApp
         if (layer.Name != "Root")
         {
           quillFolders_checklistBox.Items.Add(spaces + layer.Name);
-          characterLayers.Add(spaces + layer.Name, layer);
+          characterLayers.Add(layer.Name, layer);
         }
 
         foreach (Layer child in ((LayerGroup)layer).Children)
@@ -106,57 +105,47 @@ namespace VisemesWinFormsApp
     //rows, also populate the associated dropdown
     //also then needs to move down steps 4 and 5 appropriately!
     //other option is to use scrollbars, but... eh. maybe. see first way first
-    private void populateCharacters()
+    private void populateCharacters(int index, CheckState value)
     {
-      List<string> tempChars = new List<string>(characters);//suspend layout, add your changes, then resume
-      //SuspendLayout();
-      int i = 0;
-      //add and adjust layout as needed
-      List<string> checkedItems = new List<string>();
 
-      foreach (var item in quillFolders_checklistBox.CheckedItems)
+      String character = quillFolders_checklistBox.Items[index].ToString().Trim();
+      if (value == CheckState.Checked)
       {
-        checkedItems.Add(item.ToString());
-        //first check if it's already in list!! WILL ADD THAT LATER
-        if (!characters.Contains(item.ToString()))
-          {
-            characters.Add(item.ToString());
-          step3Flow.Controls.Add(new characterToLayerMatch());
 
-            Panel newStep3InnerPanel = new Panel();
-            //this.step3_innerPanel = new System.Windows.Forms.Panel();
-           /* newStep3InnerPanel.Location = new System.Drawing.Point(step3_innerPanel.Location.X, step3_innerPanel.Location.Y * i);
-            //new System.Drawing.Point(39, 55);
-            newStep3InnerPanel.Size = new System.Drawing.Size(step3_innerPanel.Size.Width, step3_innerPanel.Size.Height);
-            newStep3InnerPanel.Name = "step3innerPanel" + item.ToString();
-            this.Controls.Add(newStep3InnerPanel);
-            step3panel.Size = new System.Drawing.Size(step3panel.Size.Width, step3panel.Size.Height + step3_innerPanel.Size.Height);
-            step4panel.Location = new System.Drawing.Point(step4panel.Location.X, step4panel.Location.Y + step3_innerPanel.Size.Height);
-            step5panel.Location = new System.Drawing.Point(step5panel.Location.X, step5panel.Location.Y + step3_innerPanel.Size.Height);*/
-          }
-          
+        Control charMouthPanel = new characterToLayerMatch();
+        charMouthPanel.Name = character;
+        charMouthPanel.Controls.Find("step3_charName", true)[0].Text = character;
+        step3Flow.Controls.Add(charMouthPanel);
+        //now populate the dropdown
+        Layer charLayer = characterLayers[character];
+        ComboBox mouthDropdown = ((ComboBox)(charMouthPanel.Controls.Find("step3_mouthDropdown", true)[0]));
+   
+        populateMouthDropdown(mouthDropdown, charLayer, 0);
       }
-      //delete and adjust layout as needed
-      foreach(var character in characters)
+        else if(value == CheckState.Unchecked)
       {
-        if (!checkedItems.Contains(character))
+        Control rowToDelete = step3Flow.Controls.Find(character, true)[0];
+        step3Flow.Controls.Remove(rowToDelete);
+      }
+    }
+
+    private void populateMouthDropdown(ComboBox mouthDropdown, Layer layer, int offset)
+    {
+      string spaces = new String(' ', offset * 5);
+      if (layer.Type.ToString() == "Group" && !layer.Name.ToString().ToLower().Contains("mouth"))
+      {
+        foreach(Layer child in ((LayerGroup)layer).Children)
         {
-  /*        tempChars.Remove(character);
-          step3panel.Controls.Remove(step3.Controls["step3innerPanel" + character]);
-          ResizePos(step3panel, -step3_innerPanel.Size.Height, 0);
-          ResizePos(step4panel, 0, -step3_innerPanel.Size.Height);
-          ResizePos(step5panel, 0,  -step3_innerPanel.Size.Height);*/
+          if (child.Type.ToString() == "Group")
+          {
+            mouthDropdown.Items.Add(spaces + child.Name);
+            populateMouthDropdown(mouthDropdown, child, offset + 1);
+          }
         }
       }
-      characters = tempChars;
-      //ResumeLayout();
     }
 
-    private void ResizePos(Control control, int heightChange, int yPosChange)
-    {
-      control.Size = new System.Drawing.Size(control.Size.Width, control.Size.Height + heightChange);
-      control.Location = new System.Drawing.Point(control.Location.X, control.Location.Y + yPosChange);
-    }
+  
     private void infoLink_Click(object sender, EventArgs e)
     {
       infoLink.LinkVisited = true;
@@ -210,13 +199,13 @@ namespace VisemesWinFormsApp
       else
       {
         //BUILD OUT MORE LATER
-        rhubarbLoc.Text = "ERROR";
+        //rhubarbLoc.Text = "ERROR";
       }
     }
 
-    private void quillFolders_checklistBox_SelectedIndexChanged(object sender, EventArgs e)
+    private void quillFolders_checklistBox_ItemCheckEvent(object sender, ItemCheckEventArgs e)
     {
-      populateCharacters();
+      populateCharacters(e.Index, e.NewValue);
     }
 
     private void step3panel_Paint(object sender, PaintEventArgs e)
