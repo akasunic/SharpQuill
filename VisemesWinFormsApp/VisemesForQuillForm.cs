@@ -119,10 +119,10 @@ namespace VisemesWinFormsApp
         //now populate the dropdown
         Layer charLayer = characterLayers[character];
         ComboBox mouthDropdown = ((ComboBox)(charMouthPanel.Controls.Find("step3_mouthDropdown", true)[0]));
-   
+
         populateMouthDropdown(mouthDropdown, charLayer, 0);
       }
-        else if(value == CheckState.Unchecked)
+      else if (value == CheckState.Unchecked)
       {
         Control rowToDelete = step3Flow.Controls.Find(character, true)[0];
         step3Flow.Controls.Remove(rowToDelete);
@@ -134,7 +134,7 @@ namespace VisemesWinFormsApp
       string spaces = new String(' ', offset * 5);
       if (layer.Type.ToString() == "Group" && !layer.Name.ToString().ToLower().Contains("mouth"))
       {
-        foreach(Layer child in ((LayerGroup)layer).Children)
+        foreach (Layer child in ((LayerGroup)layer).Children)
         {
           if (child.Type.ToString() == "Group")
           {
@@ -145,7 +145,7 @@ namespace VisemesWinFormsApp
       }
     }
 
-  
+
     private void infoLink_Click(object sender, EventArgs e)
     {
       infoLink.LinkVisited = true;
@@ -212,22 +212,59 @@ namespace VisemesWinFormsApp
     {
 
     }
-  }
-  /*
-   * Not sure if this is bad practice, but keeping the class here, in the same file. Maybe it is. Idk.
-  Maybe I'll change later.
-   */
-  public class VisemesGenerator
+
+    private void addAudioButton_Click(object sender, EventArgs e)
+    {
+      if (setAudio_openFileDialog.ShowDialog() == DialogResult.OK)
+      {
+        //updated front end form
+        string audioPath = setAudio_openFileDialog.FileName;
+        Control audioRow = new audioRow();
+        audioRow.Name = audioPath;
+        audioRow.Controls.Find("step4_audioCheckbox", true)[0].Text = audioPath; //or maybe just partial path
+        //add a click event to the attach icon
+        audioRow.Controls.Find("step4_attachButton", true)[0].Click += new System.EventHandler(this.addTxtScript_Click);
+        step4Flow.Controls.Add(audioRow);
+      }
+
+    }
+    //make this a checkbox reading event...
+    //find all checkboxes within the panel (so all controls of a type)
+    //and then if they are checked state, delete the enclosing audioRow control they are in
+    //so also figure out how to parent up there
+    private void deleteAudio()
+    {
+
+    }
+
+    //UPDATE THIS: for 
+    private void addTxtScript_Click(object sender, EventArgs e)
+    {
+      if (setTxt_openFileDialog.ShowDialog() == DialogResult.OK)
+      {
+        //updated front end form
+        string txtPath = setTxt_openFileDialog.FileName;
+        
+        (sender as Button).Parent.Controls.Find("txtPathLabel", true)[0].Text = txtPath;
+
+      }
+
+    }
+    /*
+     * Not sure if this is bad practice, but keeping the class here, in the same file. Maybe it is. Idk.
+    Maybe I'll change later.
+     */
+    public class VisemesGenerator
     {
 
       public int timeConversion = 12600;
       public int offset;//this is the offset for the audio file in Quill. Apply offset to mouth layer
                         //may not be needed
                         //have a dictionary that maps layers to visemes
-    private Dictionary<string, LayerGroup> visemeMap = new Dictionary<string, LayerGroup>();
+      private Dictionary<string, LayerGroup> visemeMap = new Dictionary<string, LayerGroup>();
 
 
-    public List<string> visemes = new List<string>
+      public List<string> visemes = new List<string>
       {
         "A",
         "B",
@@ -240,27 +277,27 @@ namespace VisemesWinFormsApp
         "X"
       };
 
-    //making sure I can properly run rhubarb from here-- put in a winforms later
-    //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
-    public String generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
+      //making sure I can properly run rhubarb from here-- put in a winforms later
+      //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
+      public String generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
       {
-  
+
         Process rhubarbCli = new Process();
         //the exec path is rhubarbExecPath, should be set
         //string rhubarbExecPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb.exe";//complete path to rhubarb executable-- I think it should be folder that contains .exe, double check -- basically, where you need to be "cd" into to run
-        
+
         string audioFileName = new DirectoryInfo(audioPath).Name;
         string jsonOutputPath = rhubarbExecPath + "\\jsonOutput\\" + audioFileName; //allow user to choose where to save/output-- save as, and that will run it-- give errors if not selected, etc
         rhubarbCli.StartInfo.FileName = rhubarbExecPath;
         //IF textScriptPath is null, then you omit -d + textScriptPath part-- change later
-        if(optionalTxtPath == "")
+        if (optionalTxtPath == "")
         {
           rhubarbCli.StartInfo.Arguments = "-o " + jsonOutputPath + " -f json " + audioPath;
         }
         else
         {
           rhubarbCli.StartInfo.Arguments = "-o " + jsonOutputPath + " -f json -d " + optionalTxtPath + " " + audioPath;
-          
+
         }
 
         rhubarbCli.StartInfo.RedirectStandardError = true;
@@ -290,30 +327,6 @@ namespace VisemesWinFormsApp
         }*/
       }
 
-      
-      public void SetAudioOffset(Layer soundLayer, Layer mainMouthLayer)
-      {
-        offset = soundLayer.Animation.Keys.Offset[0].Time;
-
-        OffsetHelperWalkdown(mainMouthLayer);
-      }
-
-      public void OffsetHelperWalkdown(Layer layer)
-      {
-        layer.Animation.Keys.Offset[0].Time = offset;
-        foreach (Keyframe<bool> visKey in layer.Animation.Keys.Visibility)
-        {
-          //layer.Animation.Keys.Visibility[0].Time = offset;
-          visKey.Time += offset;
-        }
-        if (layer.Type.ToString() == "Group")
-        {
-          foreach (Layer child in ((LayerGroup)layer).Children)
-          {
-            OffsetHelperWalkdown(child);
-          }
-        }
-      }
       //for form: set when enter. try to autofill when possible-- so like, have a dropdown, set dropdown value to letter if it exists (do lower case and upper case)
       public void SetVisemeMap(LayerGroup mouthRoot)
       {
@@ -414,4 +427,5 @@ namespace VisemesWinFormsApp
 
 
   }
+}
 

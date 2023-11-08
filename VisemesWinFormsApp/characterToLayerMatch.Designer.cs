@@ -68,7 +68,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.step3_innerPanel);
             this.Name = "characterToLayerMatch";
-            this.Size = new System.Drawing.Size(764, 40);
+            this.Size = new System.Drawing.Size(764, 38);
             this.step3_innerPanel.ResumeLayout(false);
             this.step3_innerPanel.PerformLayout();
             this.ResumeLayout(false);
