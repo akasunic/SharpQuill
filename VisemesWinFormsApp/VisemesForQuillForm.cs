@@ -232,8 +232,16 @@ namespace VisemesWinFormsApp
     //find all checkboxes within the panel (so all controls of a type)
     //and then if they are checked state, delete the enclosing audioRow control they are in
     //so also figure out how to parent up there
-    private void deleteAudio()
+    private void deleteAudio_Click(object sender, EventArgs e)
     {
+      //Oh. I think this just goes one level down
+      foreach (audioRow row in step4Flow.Controls.OfType<audioRow>())
+      {
+        CheckBox checkbox = row.Controls.Find("step4_audioCheckbox", true)[0] as CheckBox;
+        if (checkbox.Checked) { 
+          step4Flow.Controls.Remove(row);
+        }
+      }
 
     }
 

@@ -231,6 +231,7 @@
             this.delAudioButton.Size = new System.Drawing.Size(35, 34);
             this.delAudioButton.TabIndex = 6;
             this.delAudioButton.UseVisualStyleBackColor = false;
+            this.delAudioButton.Click += new System.EventHandler(this.deleteAudio_Click);
             // 
             // submitButton
             // 
