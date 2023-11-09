@@ -74,6 +74,7 @@
             this.step5Flow = new System.Windows.Forms.FlowLayoutPanel();
             this.setAudio_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.setTxt_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.step3panel.SuspendLayout();
             this.step4panel.SuspendLayout();
             this.step4_addDelPanel.SuspendLayout();
@@ -223,6 +224,7 @@
             this.submitButton.TabIndex = 10;
             this.submitButton.Text = "Create";
             this.submitButton.UseVisualStyleBackColor = false;
+            this.submitButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.submitButton_MouseClick);
             // 
             // tableLayoutPanel4
             // 
@@ -609,5 +611,6 @@
     private FlowLayoutPanel step5Flow;
     private OpenFileDialog setAudio_openFileDialog;
     private OpenFileDialog setTxt_openFileDialog;
+    private SaveFileDialog saveFileDialog;
   }
 }

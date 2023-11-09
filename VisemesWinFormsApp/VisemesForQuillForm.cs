@@ -10,8 +10,9 @@ namespace VisemesWinFormsApp
     private string? quillPath;
     Sequence sequence;
     private Dictionary<string, Layer> characterLayers = new Dictionary<string, Layer>();
-    private Dictionary<string, Layer> characterMouths = new Dictionary<string, Layer>();
-
+    private Dictionary<string, Audio> audios = new Dictionary<string, Audio>();
+   // private Dictionary<string, string> txtFiles = new Dictionary<string, string>();
+    private Dictionary<string, Character> chosenCharacters= new Dictionary<string, Character>();
     public VisemesForQuillForm()
     {
       InitializeComponent();
@@ -118,41 +119,56 @@ namespace VisemesWinFormsApp
         step3Flow.Controls.Add(charMouthPanel);
         //now populate the dropdown
         Layer charLayer = characterLayers[character];
+        Character thisChar = new Character();
+        thisChar.Name = character;
+        thisChar.MainLayer = charLayer;
+        chosenCharacters.Add(thisChar.Name, thisChar);
         ComboBox mouthDropdown = ((ComboBox)(charMouthPanel.Controls.Find("step3_mouthDropdown", true)[0]));
-
-        populateMouthDropdown(mouthDropdown, charLayer, 0);
-        updateAudioMatchDropdowns(true, character);
+        thisChar.mouthOptions.Clear();
+        thisChar.MouthDropDown= mouthDropdown;
+        populateMouthDropdown(mouthDropdown, charLayer,  0, thisChar);
+        updateAudioMatchDropdowns(true, thisChar);
         //also add to all the audiomatch dropdowns (step 5)
       }
       else if (value == CheckState.Unchecked)
       {
+        foreach(var charac in chosenCharacters)
+        {
+          if(charac.Value.Name == character)
+          {
+            updateAudioMatchDropdowns(false, charac.Value);
+            chosenCharacters.Remove(charac.Key);
+            break;
+          }
+        }
+        //chosenCharacters.Remove()
         Control rowToDelete = step3Flow.Controls.Find(character, true)[0];
         step3Flow.Controls.Remove(rowToDelete);
-        updateAudioMatchDropdowns(false, character);
+        
         //also remove from all the audiomatch dropdowns (step 5)
       }
     }
 
     //if bool is true, then adding, otherwise removing value
-    private void updateAudioMatchDropdowns(bool add, string charName)
+    private void updateAudioMatchDropdowns(bool add, Character character)
     {
       //first get all the rows
-      
+
       foreach (Control row in step5Flow.Controls.OfType<audioMatch>())
       {
         ComboBox charDropdown = row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
         if (add)
         {
-          charDropdown.Items.Add(charName);
+          charDropdown.Items.Add(character.Name);
         }
         else
         {
-          charDropdown.Items.Remove(charName);
+          charDropdown.Items.Remove(character.Name);
         }
       }
     }
 
-    private void populateMouthDropdown(ComboBox mouthDropdown, Layer layer, int offset)
+    private void populateMouthDropdown(ComboBox mouthDropdown, Layer layer, int offset, Character charac)
     {
       string spaces = new String(' ', offset * 5);
       if (layer.Type.ToString() == "Group" && !layer.Name.ToString().ToLower().Contains("mouth"))
@@ -162,9 +178,40 @@ namespace VisemesWinFormsApp
           if (child.Type.ToString() == "Group")
           {
             mouthDropdown.Items.Add(spaces + child.Name);
-            populateMouthDropdown(mouthDropdown, child, offset + 1);
+            charac.mouthOptions.Add(spaces + child.Name, child);
+
+            populateMouthDropdown(mouthDropdown, child, offset + 1, charac);
           }
         }
+      }
+    }
+
+    private void submitButton_MouseClick(object sender, MouseEventArgs e)
+    {
+      if (saveFileDialog.ShowDialog() == DialogResult.OK)
+      {
+
+        string writePath = saveFileDialog.FileName;
+
+        VisemesGenerator vg = new VisemesGenerator();
+
+        foreach (Control row in step5Flow.Controls.OfType<audioMatch>())
+        {
+          ComboBox charDropdown = row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
+          string charKey = charDropdown.Text;
+          Character currChar = chosenCharacters[charKey];
+          Label audioMatch = row.Controls.Find("step5_audioFile", true)[0] as Label;
+          currChar.Audio = audios[audioMatch.Text];
+          Layer mouthLayer = currChar.mouthOptions[currChar.MouthDropDown.Text];
+
+
+          string jsonPath = vg.generateRhubarbJson(rhubarbExecPath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
+          vg.SetVisemeMap((LayerGroup)mouthLayer);
+          vg.SetVisemeAnims(jsonPath);
+        }
+        QuillSequenceWriter.Write(sequence, writePath);
+
+
       }
     }
 
@@ -243,18 +290,24 @@ namespace VisemesWinFormsApp
         //updated front end form
         string audioPath = setAudio_openFileDialog.FileName;
         Control audioRow = new audioRow();
-        audioRow.Name = audioPath;
-        audioRow.Controls.Find("step4_audioCheckbox", true)[0].Text = audioPath; //or maybe just partial path
+        string shortenedPath = new DirectoryInfo(audioPath).Name;
+        audioRow.Name = shortenedPath;
+        
+        audioRow.Controls.Find("step4_audioCheckbox", true)[0].Text = shortenedPath; //or maybe just partial path
         //add a click event to the attach icon
         audioRow.Controls.Find("step4_attachButton", true)[0].Click += new System.EventHandler(this.addTxtScript_Click);
         step4Flow.Controls.Add(audioRow);
         audioMatch step5Row = new audioMatch();
-        step5Row.Name = audioPath;
-        step5Row.Controls.Find("step5_audioFile", true)[0].Text = audioPath;
+        Audio newAudio = new Audio();
+        newAudio.ShortAudio = shortenedPath;
+        newAudio.LongAudio = audioPath;
+        step5Row.Name = shortenedPath;
+        step5Row.Controls.Find("step5_audioFile", true)[0].Text = shortenedPath;
+        audios.Add(shortenedPath, newAudio);
         ComboBox charsDropdown = step5Row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
         //var charTest = characterLayers
-          //CHECK THESE!!! 
-        foreach(var character in quillFolders_checklistBox.CheckedItems)
+        //CHECK THESE!!! 
+        foreach (var character in quillFolders_checklistBox.CheckedItems)
         {
           charsDropdown.Items.Add(character.ToString().Trim());
         }
@@ -273,8 +326,14 @@ namespace VisemesWinFormsApp
       foreach (audioRow row in step4Flow.Controls.OfType<audioRow>())
       {
         CheckBox checkbox = row.Controls.Find("step4_audioCheckbox", true)[0] as CheckBox;
-        if (checkbox.Checked) { 
+        if (checkbox.Checked)
+        {
+          
+          audios.Remove(checkbox.Text);
+          Label txtLabel = row.Controls.Find("txtPathLabel", true)[0] as Label;
+          
           step4Flow.Controls.Remove(row);
+
         }
       }
 
@@ -287,188 +346,15 @@ namespace VisemesWinFormsApp
       {
         //updated front end form
         string txtPath = setTxt_openFileDialog.FileName;
-        
-        (sender as Button).Parent.Controls.Find("txtPathLabel", true)[0].Text = txtPath;
+        string shortenedPath = new DirectoryInfo(txtPath).Name;
+        //LATER, FOR OTHER DICT AS WELL-- add a check if exists, and modify name accordingly (1, 2)
 
+        (sender as Button).Parent.Controls.Find("txtPathLabel", true)[0].Text = shortenedPath;
+        string audioKey = (sender as Button).Parent.Controls.Find("step4_audioCheckbox", true)[0].Text;
+        audios[audioKey].ShortTxt= shortenedPath;
+        audios[audioKey].LongTxt = txtPath;
       }
 
     }
-    /*
-     * Not sure if this is bad practice, but keeping the class here, in the same file. Maybe it is. Idk.
-    Maybe I'll change later.
-     */
-    public class VisemesGenerator
-    {
-
-      public int timeConversion = 12600;
-      public int offset;//this is the offset for the audio file in Quill. Apply offset to mouth layer
-                        //may not be needed
-                        //have a dictionary that maps layers to visemes
-      private Dictionary<string, LayerGroup> visemeMap = new Dictionary<string, LayerGroup>();
-
-
-      public List<string> visemes = new List<string>
-      {
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "X"
-      };
-
-      //making sure I can properly run rhubarb from here-- put in a winforms later
-      //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
-      public String generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
-      {
-
-        Process rhubarbCli = new Process();
-        //the exec path is rhubarbExecPath, should be set
-        //string rhubarbExecPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb.exe";//complete path to rhubarb executable-- I think it should be folder that contains .exe, double check -- basically, where you need to be "cd" into to run
-
-        string audioFileName = new DirectoryInfo(audioPath).Name;
-        string jsonOutputPath = rhubarbExecPath + "\\jsonOutput\\" + audioFileName; //allow user to choose where to save/output-- save as, and that will run it-- give errors if not selected, etc
-        rhubarbCli.StartInfo.FileName = rhubarbExecPath;
-        //IF textScriptPath is null, then you omit -d + textScriptPath part-- change later
-        if (optionalTxtPath == "")
-        {
-          rhubarbCli.StartInfo.Arguments = "-o " + jsonOutputPath + " -f json " + audioPath;
-        }
-        else
-        {
-          rhubarbCli.StartInfo.Arguments = "-o " + jsonOutputPath + " -f json -d " + optionalTxtPath + " " + audioPath;
-
-        }
-
-        rhubarbCli.StartInfo.RedirectStandardError = true;
-        rhubarbCli.StartInfo.UseShellExecute = false;
-        rhubarbCli.StartInfo.CreateNoWindow = true;
-
-
-        try
-        {
-          rhubarbCli.Start();
-          return jsonOutputPath;
-
-        }
-        catch (Exception e)
-        {
-          MessageBox.Show("Error: " + e.Message);
-          return "";
-        }
-        /*
-        rhubarbCli.Start();
-
-        string errors = rhubarbCli.StandardError.ReadToEnd();
-
-        if (!string.IsNullOrWhiteSpace(errors))
-        {
-          Console.WriteLine("Error Output:\n" + errors);
-        }*/
-      }
-
-      //for form: set when enter. try to autofill when possible-- so like, have a dropdown, set dropdown value to letter if it exists (do lower case and upper case)
-      public void SetVisemeMap(LayerGroup mouthRoot)
-      {
-        List<LayerGroup> groupLayers = new List<LayerGroup>();
-        mouthRoot.GetGroupChildren(groupLayers);
-        foreach (var child in groupLayers)
-        {
-          //Console.WriteLine(child.Name);
-          foreach (var item in visemes)
-          {
-            if (child.Name.ToLower().Trim() == item.ToLower())
-            {
-              visemeMap[item] = child;
-              //Console.WriteLine(item);
-            }
-          }
-        }
-
-      }  // find group layers with names-- each must contain at least one paint layer (can be empty and fill out later, I suppose)
-
-      //read the json file in
-      //later get from form, but hardcoding for now
-
-      public void SetVisemeAnims(string jsonPath)
-
-      {
-
-        string startingViseme = "";
-        string visemeJson = File.ReadAllText(jsonPath);//reading rhubarb output
-        dynamic doc = JsonConvert.DeserializeObject(visemeJson);
-        dynamic mouthCues = doc.mouthCues; //based off how it's organized by Rhubarb
-        float endTime = 0;
-        string lastViseme = "";
-        foreach (var item in mouthCues)
-        {
-          //Console.WriteLine("item.value: " + item.value + "; item.end: " + item.end);//check at each one, just in case they're ever out of time order (default is that they're in time order)
-          if ((int)(item.start * timeConversion) == 0)
-          {
-            startingViseme = item.value;
-          }
-          if ((float)(item.end) > endTime)
-          {
-            endTime = item.end;
-            lastViseme = item.value;
-            //Console.WriteLine("current endtine: " + endTime + "; current last viseme: " + lastViseme);
-          }
-
-          Keyframe<bool> startVis = new SharpQuill.Keyframe<bool>((int)(item.start * timeConversion), true, Interpolation.None);//add a visibility key frame
-          Keyframe<bool> endVis = new SharpQuill.Keyframe<bool>((int)(item.end * timeConversion), false, Interpolation.None);
-
-
-          visemeMap[(string)item.value].Animation.Keys.Visibility.Add(startVis);
-          visemeMap[(string)item.value].Animation.Keys.Visibility.Add(endVis);
-
-        }
-        //Console.WriteLine("end of visemes json is: " + endTime*timeConversion + " for viseme: " + lastViseme);
-        //set visibility animation for the end time, to start the resting mouth position
-        Keyframe<bool> restAtEnd = new Keyframe<bool>((int)(endTime * timeConversion), true, Interpolation.None);
-        //first see if a key with this value exists\\
-        bool seeIfIncl = false;
-        foreach (var item in visemeMap["X"].Animation.Keys.Visibility)
-
-        {
-          //Console.WriteLine("time is: " + item.Time);
-          if ((int)item.Time == (int)restAtEnd.Time)
-          {
-            //Console.WriteLine("end time is: " + item.Time);
-            item.Value = true;
-            seeIfIncl = true;
-          }
-        }
-        if (seeIfIncl == false)
-        {
-          visemeMap["X"].Animation.Keys.Visibility.Add(restAtEnd);
-        }
-
-        //now go through each layer, see earliest visibility start, and if greater than 0, set a visibility start key frame to 0
-        //um i should do this more efficiently. but like, i like to think in steps so... idk
-        foreach (var key in visemeMap.Keys)
-        {
-          visemeMap[key].Visible = true;
-          if (key != startingViseme)
-          {
-            List<Keyframe<bool>> visibilityKeys = visemeMap[key].Animation.Keys.Visibility;
-
-            //would like to just do the first item in visibility keys, but being safe in case they could ever be out of order
-            for (int i = 0; i < visemeMap[key].Animation.Keys.Visibility.Count; i++)
-            {
-              if (visemeMap[key].Animation.Keys.Visibility[i].Time == 0)
-              {
-                visemeMap[key].Animation.Keys.Visibility[i].Value = false;
-              }
-            }
-          }
-        }
-      }
-    }
-
-
   }
 }
-
