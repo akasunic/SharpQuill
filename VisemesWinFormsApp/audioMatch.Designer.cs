@@ -57,18 +57,18 @@
             // 
             this.step5_innerPanel.Controls.Add(this.step5_charDropdown);
             this.step5_innerPanel.Controls.Add(this.step5_audioFile);
-            this.step5_innerPanel.Location = new System.Drawing.Point(24, 58);
+            this.step5_innerPanel.Location = new System.Drawing.Point(33, 3);
             this.step5_innerPanel.Name = "step5_innerPanel";
             this.step5_innerPanel.Size = new System.Drawing.Size(707, 35);
             this.step5_innerPanel.TabIndex = 17;
             // 
-            // UserControl1
+            // audioMatch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.step5_innerPanel);
-            this.Name = "UserControl1";
-            this.Size = new System.Drawing.Size(754, 150);
+            this.Name = "audioMatch";
+            this.Size = new System.Drawing.Size(754, 38);
             this.step5_innerPanel.ResumeLayout(false);
             this.step5_innerPanel.PerformLayout();
             this.ResumeLayout(false);

@@ -38,8 +38,6 @@
             this.step4 = new System.Windows.Forms.Label();
             this.step3 = new System.Windows.Forms.Label();
             this.step5_audioTitle = new System.Windows.Forms.Label();
-            this.step5_audioFile = new System.Windows.Forms.Label();
-            this.step5_charDropdown = new System.Windows.Forms.ComboBox();
             this.step5 = new System.Windows.Forms.Label();
             this.step1 = new System.Windows.Forms.Label();
             this.step4_audioTitle = new System.Windows.Forms.Label();
@@ -63,7 +61,6 @@
             this.step4_optionalLabel = new System.Windows.Forms.Label();
             this.step4_textTitle = new System.Windows.Forms.Label();
             this.step5panel = new System.Windows.Forms.Panel();
-            this.step5_innerPanel = new System.Windows.Forms.Panel();
             this.quillFolders_checklistBox = new System.Windows.Forms.CheckedListBox();
             this.selectRhubarb = new System.Windows.Forms.Button();
             this.rhubarbLoc = new System.Windows.Forms.Label();
@@ -81,7 +78,6 @@
             this.step4panel.SuspendLayout();
             this.step4_addDelPanel.SuspendLayout();
             this.step5panel.SuspendLayout();
-            this.step5_innerPanel.SuspendLayout();
             this.mainFlow.SuspendLayout();
             this.step3Flow.SuspendLayout();
             this.step4Flow.SuspendLayout();
@@ -166,25 +162,6 @@
             this.step5_audioTitle.TabIndex = 0;
             this.step5_audioTitle.Text = "Audio";
             // 
-            // step5_audioFile
-            // 
-            this.step5_audioFile.AutoSize = true;
-            this.step5_audioFile.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.step5_audioFile.Location = new System.Drawing.Point(32, 11);
-            this.step5_audioFile.Name = "step5_audioFile";
-            this.step5_audioFile.Size = new System.Drawing.Size(191, 16);
-            this.step5_audioFile.TabIndex = 2;
-            this.step5_audioFile.Text = "sample.wav (do last part of string)";
-            // 
-            // step5_charDropdown
-            // 
-            this.step5_charDropdown.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.step5_charDropdown.FormattingEnabled = true;
-            this.step5_charDropdown.Location = new System.Drawing.Point(403, 3);
-            this.step5_charDropdown.Name = "step5_charDropdown";
-            this.step5_charDropdown.Size = new System.Drawing.Size(331, 24);
-            this.step5_charDropdown.TabIndex = 3;
-            // 
             // step5
             // 
             this.step5.AutoSize = true;
@@ -239,7 +216,8 @@
             this.submitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.submitButton.Font = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.submitButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.submitButton.Location = new System.Drawing.Point(3, 110);
+            this.submitButton.Location = new System.Drawing.Point(3, 262);
+            this.submitButton.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(84, 34);
             this.submitButton.TabIndex = 10;
@@ -409,24 +387,13 @@
             // step5panel
             // 
             this.step5panel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.step5panel.Controls.Add(this.step5_innerPanel);
             this.step5panel.Controls.Add(this.step5);
-            this.step5panel.Controls.Add(this.submitButton);
             this.step5panel.Controls.Add(this.step5_line);
             this.step5panel.Controls.Add(this.step5_audioTitle);
             this.step5panel.Location = new System.Drawing.Point(3, 3);
             this.step5panel.Name = "step5panel";
-            this.step5panel.Size = new System.Drawing.Size(755, 147);
+            this.step5panel.Size = new System.Drawing.Size(755, 63);
             this.step5panel.TabIndex = 19;
-            // 
-            // step5_innerPanel
-            // 
-            this.step5_innerPanel.Controls.Add(this.step5_charDropdown);
-            this.step5_innerPanel.Controls.Add(this.step5_audioFile);
-            this.step5_innerPanel.Location = new System.Drawing.Point(3, 57);
-            this.step5_innerPanel.Name = "step5_innerPanel";
-            this.step5_innerPanel.Size = new System.Drawing.Size(741, 35);
-            this.step5_innerPanel.TabIndex = 16;
             // 
             // quillFolders_checklistBox
             // 
@@ -507,10 +474,11 @@
             this.mainFlow.Controls.Add(this.step3Flow);
             this.mainFlow.Controls.Add(this.step4Flow);
             this.mainFlow.Controls.Add(this.step5Flow);
+            this.mainFlow.Controls.Add(this.submitButton);
             this.mainFlow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.mainFlow.Location = new System.Drawing.Point(24, 232);
+            this.mainFlow.Location = new System.Drawing.Point(16, 232);
             this.mainFlow.Name = "mainFlow";
-            this.mainFlow.Size = new System.Drawing.Size(768, 360);
+            this.mainFlow.Size = new System.Drawing.Size(768, 306);
             this.mainFlow.TabIndex = 28;
             // 
             // step3Flow
@@ -542,7 +510,7 @@
             this.step5Flow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.step5Flow.Location = new System.Drawing.Point(3, 187);
             this.step5Flow.Name = "step5Flow";
-            this.step5Flow.Size = new System.Drawing.Size(761, 153);
+            this.step5Flow.Size = new System.Drawing.Size(761, 69);
             this.step5Flow.TabIndex = 22;
             // 
             // setAudio_openFileDialog
@@ -559,7 +527,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(849, 603);
+            this.ClientSize = new System.Drawing.Size(849, 793);
             this.Controls.Add(this.mainFlow);
             this.Controls.Add(this.selectedQuillPath);
             this.Controls.Add(this.step2_checkOnlyOneLabel);
@@ -583,8 +551,6 @@
             this.step4_addDelPanel.PerformLayout();
             this.step5panel.ResumeLayout(false);
             this.step5panel.PerformLayout();
-            this.step5_innerPanel.ResumeLayout(false);
-            this.step5_innerPanel.PerformLayout();
             this.mainFlow.ResumeLayout(false);
             this.mainFlow.PerformLayout();
             this.step3Flow.ResumeLayout(false);
@@ -605,8 +571,6 @@
     private Label step5;
     private Label step1;
     private Label step5_audioTitle;
-    private Label step5_audioFile;
-    private ComboBox step5_charDropdown;
     private Label step4_audioTitle;
     private Button submitButton;
     private ToolTip rhubarbexe;
@@ -631,7 +595,6 @@
     private Label step4_textTitle;
     private CheckedListBox quillFolders_checklistBox;
     private Panel step4_addDelPanel;
-    private Panel step5_innerPanel;
     private Button selectRhubarb;
     private Label rhubarbLoc;
     private LinkLabel infoLink;

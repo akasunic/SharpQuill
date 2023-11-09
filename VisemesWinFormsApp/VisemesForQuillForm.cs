@@ -121,11 +121,34 @@ namespace VisemesWinFormsApp
         ComboBox mouthDropdown = ((ComboBox)(charMouthPanel.Controls.Find("step3_mouthDropdown", true)[0]));
 
         populateMouthDropdown(mouthDropdown, charLayer, 0);
+        updateAudioMatchDropdowns(true, character);
+        //also add to all the audiomatch dropdowns (step 5)
       }
       else if (value == CheckState.Unchecked)
       {
         Control rowToDelete = step3Flow.Controls.Find(character, true)[0];
         step3Flow.Controls.Remove(rowToDelete);
+        updateAudioMatchDropdowns(false, character);
+        //also remove from all the audiomatch dropdowns (step 5)
+      }
+    }
+
+    //if bool is true, then adding, otherwise removing value
+    private void updateAudioMatchDropdowns(bool add, string charName)
+    {
+      //first get all the rows
+      
+      foreach (Control row in step5Flow.Controls.OfType<audioMatch>())
+      {
+        ComboBox charDropdown = row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
+        if (add)
+        {
+          charDropdown.Items.Add(charName);
+        }
+        else
+        {
+          charDropdown.Items.Remove(charName);
+        }
       }
     }
 
@@ -225,6 +248,18 @@ namespace VisemesWinFormsApp
         //add a click event to the attach icon
         audioRow.Controls.Find("step4_attachButton", true)[0].Click += new System.EventHandler(this.addTxtScript_Click);
         step4Flow.Controls.Add(audioRow);
+        audioMatch step5Row = new audioMatch();
+        step5Row.Name = audioPath;
+        step5Row.Controls.Find("step5_audioFile", true)[0].Text = audioPath;
+        ComboBox charsDropdown = step5Row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
+        //var charTest = characterLayers
+          //CHECK THESE!!! 
+        foreach(var character in quillFolders_checklistBox.CheckedItems)
+        {
+          charsDropdown.Items.Add(character.ToString().Trim());
+        }
+
+        step5Flow.Controls.Add(step5Row);
       }
 
     }
