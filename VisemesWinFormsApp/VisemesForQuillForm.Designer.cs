@@ -75,6 +75,7 @@
             this.setAudio_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.setTxt_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.quillErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.step3panel.SuspendLayout();
             this.step4panel.SuspendLayout();
             this.step4_addDelPanel.SuspendLayout();
@@ -83,6 +84,7 @@
             this.step3Flow.SuspendLayout();
             this.step4Flow.SuspendLayout();
             this.step5Flow.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // selectQuill
@@ -419,7 +421,7 @@
             this.selectRhubarb.Name = "selectRhubarb";
             this.selectRhubarb.Size = new System.Drawing.Size(209, 24);
             this.selectRhubarb.TabIndex = 22;
-            this.selectRhubarb.Text = "Set or change Rhubarb location";
+            this.selectRhubarb.Text = "Set or change rhubarb.exe location";
             this.selectRhubarb.UseVisualStyleBackColor = false;
             this.selectRhubarb.Click += new System.EventHandler(this.selectRhubarb_Click);
             // 
@@ -523,6 +525,10 @@
             // 
             this.setTxt_openFileDialog.FileName = "openFileDialog1";
             // 
+            // quillErrorProvider
+            // 
+            this.quillErrorProvider.ContainerControl = this;
+            // 
             // VisemesForQuillForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -558,6 +564,7 @@
             this.step3Flow.ResumeLayout(false);
             this.step4Flow.ResumeLayout(false);
             this.step5Flow.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -612,5 +619,6 @@
     private OpenFileDialog setAudio_openFileDialog;
     private OpenFileDialog setTxt_openFileDialog;
     private SaveFileDialog saveFileDialog;
+    private ErrorProvider quillErrorProvider;
   }
 }

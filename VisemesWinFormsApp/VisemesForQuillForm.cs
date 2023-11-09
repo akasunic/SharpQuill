@@ -63,8 +63,8 @@ namespace VisemesWinFormsApp
         sequence = QuillSequenceReader.Read(quillPath);
         if (sequence == null)
         {
-          //TO DO: error provider for Quill
-          //quillErrorProvider.SetError(readPathChoice, "Not a valid Quill project folder. Should be a folder containing Quill.json, State,json, Quill.qbin");
+          
+          quillErrorProvider.SetError(selectQuill, "Not a valid Quill project folder. Should be a folder containing Quill.json, State,json, Quill.qbin");
         }
         else
         {
@@ -249,7 +249,7 @@ namespace VisemesWinFormsApp
 
     private void selectRhubarb_Click(object sender, EventArgs e)
     {
-
+      setRhubarb_openFileDialog.Filter = ".exe files(*.exe) | *.exe";
       if (setRhubarb_openFileDialog.ShowDialog() == DialogResult.OK)
       {
         //updated front end form
@@ -285,6 +285,8 @@ namespace VisemesWinFormsApp
 
     private void addAudioButton_Click(object sender, EventArgs e)
     {
+
+      setAudio_openFileDialog.Filter = ".wav files (*.wav)|*.wav|.ogg files (*.ogg)|*.ogg";
       if (setAudio_openFileDialog.ShowDialog() == DialogResult.OK)
       {
         //updated front end form
@@ -342,6 +344,8 @@ namespace VisemesWinFormsApp
     //UPDATE THIS: for 
     private void addTxtScript_Click(object sender, EventArgs e)
     {
+
+      setTxt_openFileDialog.Filter = ".txt files (*.txt)|*.txt";
       if (setTxt_openFileDialog.ShowDialog() == DialogResult.OK)
       {
         //updated front end form
