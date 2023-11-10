@@ -104,10 +104,11 @@ public class VisemesGenerator
     string? textScriptPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb_samples\\sayaThankingScript.txt";// full path to text script-- this is optional
     string? jsonOutputPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb_samples\\newoutput.json"; //allow user to choose where to save/output-- save as, and that will run it-- give errors if not selected, etc
     rhubarbCli.StartInfo.FileName = rhubarbExecPath;
+    //rhubarbCli.StartInfo.RedirectStandardOutput = 
     //IF textScriptPath is null, then you omit -d + textScriptPath part-- change later
     rhubarbCli.StartInfo.Arguments = "-o " + jsonOutputPath + " -f json -d " + textScriptPath + " " + audioPath;
-    rhubarbCli.StartInfo.RedirectStandardError = true;
-    rhubarbCli.StartInfo.UseShellExecute = false;
+    rhubarbCli.StartInfo.RedirectStandardError = false;
+    rhubarbCli.StartInfo.UseShellExecute = true;
     rhubarbCli.StartInfo.CreateNoWindow = true;
 
     try

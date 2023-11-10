@@ -2,6 +2,8 @@ using System.Diagnostics;
 using SharpQuill;
 using Newtonsoft.Json;
 using System.Configuration;
+using System.Windows.Forms.Design;
+
 namespace VisemesWinFormsApp
 {
   public partial class VisemesForQuillForm : Form
@@ -57,6 +59,7 @@ namespace VisemesWinFormsApp
       {
         //clear checklist (and others-- chars and mouth layers for step3, chars for step 5
         quillFolders_checklistBox.Items.Clear();
+       
 
         quillPath = selectQuill_folderDialog.SelectedPath;
         selectedQuillPath.Text = "Selected: " + quillPath;
@@ -161,6 +164,10 @@ namespace VisemesWinFormsApp
         else
         {
           charDropdown.Items.Remove(character.Name);
+          if (charDropdown.Text == character.Name)
+          {
+            charDropdown.Text = "";
+          }
         }
       }
     }
@@ -219,6 +226,49 @@ namespace VisemesWinFormsApp
           }
          
         }
+
+      
+
+
+      foreach (Control row in step5Flow.Controls.OfType<audioMatch>())
+        {
+          ComboBox charDropdown = row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
+          string charKey = charDropdown.Text;
+          Character currChar = chosenCharacters[charKey];
+          Label audioMatch = row.Controls.Find("step5_audioFile", true)[0] as Label;
+          currChar.Audio = audios[audioMatch.Text];
+          Layer mouthLayer;
+          try
+          {
+            mouthLayer = currChar.mouthOptions[currChar.MouthDropDown.Text];
+          }
+          catch
+          {
+            chooseMouths_errorProvider.SetError(step3, "You must have a mouth layer selected for each character");
+            return;
+          }
+          List<LayerGroup> visemesLayers = new List<LayerGroup>();
+        //ALSO PUT HERE: MAKE SURE THERE ARE THE PROPER VISEMES-- iterate down the layer
+        bool val = vg.SetVisemeMap((LayerGroup)mouthLayer);
+          if (vg.SetVisemeMap((LayerGroup)mouthLayer)==false)
+          {
+            chooseMouths_errorProvider.SetError(step3, "Each mouth layer must contain folder visemes: A, B, C, D, E, F, G, H, X");
+            return;
+          }
+          //maybe add a file dialog here? could even use json and just replace it here, take it out of the method. if that's easier
+          //but i'd much rather set location automaticalluy!!!
+        vg.generateRhubarbJson(rhubarbExecPath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
+        
+          if (!string.IsNullOrWhiteSpace(vg.rhubarbErrors)){
+          MessageBox.Show(vg.rhubarbErrors);
+        }
+          
+          //rhub_errorProvider.SetError(submitButton, rhubarbOutput.Item2);
+         
+          vg.SetVisemeAnims(vg.jsonOutput);
+        
+          
+        }
       string writePath = "";
 
       if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -237,47 +287,6 @@ namespace VisemesWinFormsApp
         return;
       }
 
-
-      foreach (Control row in step5Flow.Controls.OfType<audioMatch>())
-        {
-          ComboBox charDropdown = row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
-          string charKey = charDropdown.Text;
-          Character currChar = chosenCharacters[charKey];
-          Label audioMatch = row.Controls.Find("step5_audioFile", true)[0] as Label;
-          currChar.Audio = audios[audioMatch.Text];
-          Layer mouthLayer;
-          try
-          {
-            mouthLayer = currChar.mouthOptions[currChar.MouthDropDown.Text];
-          }
-          catch
-          {
-            chooseMouths_errorProvider.SetError(row, "You must have a mouth layer selected for each character");
-            return;
-          }
-          List<LayerGroup> visemesLayers = new List<LayerGroup>();
-        //ALSO PUT HERE: MAKE SURE THERE ARE THE PROPER VISEMES-- iterate down the layer
-        bool val = vg.SetVisemeMap((LayerGroup)mouthLayer);
-          if (vg.SetVisemeMap((LayerGroup)mouthLayer)==false)
-          {
-            chooseMouths_errorProvider.SetError(row, "Each mouth layer must contain folder visemes: A, B, C, D, E, F, G, H, X");
-            return;
-          }
-          //maybe add a file dialog here? could even use json and just replace it here, take it out of the method. if that's easier
-          //but i'd much rather set location automaticalluy!!!
-        vg.generateRhubarbJson(rhubarbExecPath, writePath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
-        
-          if (!string.IsNullOrWhiteSpace(vg.rhubarbErrors)){
-          MessageBox.Show(vg.rhubarbErrors);
-        }
-          
-          //rhub_errorProvider.SetError(submitButton, rhubarbOutput.Item2);
-         
-          vg.SetVisemeAnims(vg.jsonOutput);
-        
-          
-        }
-   
       QuillSequenceWriter.Write(sequence, writePath);
     }
 
@@ -346,6 +355,11 @@ namespace VisemesWinFormsApp
 
     }
 
+    private void clearMouthErrors(object sender, EventArgs e)
+    {
+      chooseMouths_errorProvider.Clear();
+    }
+
     private void addAudioButton_Click(object sender, EventArgs e)
     {
       selectAudio_errorProvider.SetError(step4, String.Empty);
@@ -403,10 +417,20 @@ namespace VisemesWinFormsApp
         CheckBox checkbox = row.Controls.Find("step4_audioCheckbox", true)[0] as CheckBox;
         if (checkbox.Checked)
         {
-          
-          audios.Remove(checkbox.Text);
+          var step5audioMatchControls = step5Flow.Controls.OfType<audioMatch>();
+          foreach (audioMatch am in step5audioMatchControls)
+          {
+            Label label = am.Controls.Find("step5_audioFile", true)[0] as Label;
+            if(label.Text == checkbox.Text)
+            {
+              
+              audios.Remove(label.Text);
+              step5Flow.Controls.Remove(am);
+            }
+          }
+          /*audios.Remove(checkbox.Text);
           Label txtLabel = row.Controls.Find("txtPathLabel", true)[0] as Label;
-          
+          */
           step4Flow.Controls.Remove(row);
 
         }

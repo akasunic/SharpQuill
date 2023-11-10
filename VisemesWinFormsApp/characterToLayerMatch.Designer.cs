@@ -61,6 +61,7 @@
             this.step3_mouthDropdown.Name = "step3_mouthDropdown";
             this.step3_mouthDropdown.Size = new System.Drawing.Size(329, 24);
             this.step3_mouthDropdown.TabIndex = 14;
+            this.step3_mouthDropdown.SelectedIndexChanged += new System.EventHandler(this.step3_mouthDropdown_SelectedIndexChanged);
             // 
             // characterToLayerMatch
             // 

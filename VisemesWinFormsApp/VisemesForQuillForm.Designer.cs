@@ -69,9 +69,17 @@
             this.setRhubarb_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.selectedQuillPath = new System.Windows.Forms.Label();
             this.mainFlow = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.step3Flow = new System.Windows.Forms.FlowLayoutPanel();
             this.step4Flow = new System.Windows.Forms.FlowLayoutPanel();
             this.step5Flow = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.progressBarPanel = new System.Windows.Forms.Panel();
+            this.aOfbfile = new System.Windows.Forms.Label();
+            this.rhubarbProgressBar = new System.Windows.Forms.ProgressBar();
+            this.label1 = new System.Windows.Forms.Label();
             this.setAudio_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.setTxt_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -87,9 +95,13 @@
             this.step4_addDelPanel.SuspendLayout();
             this.step5panel.SuspendLayout();
             this.mainFlow.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.step3Flow.SuspendLayout();
             this.step4Flow.SuspendLayout();
             this.step5Flow.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.progressBarPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chars_errorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audio_errorProvider)).BeginInit();
@@ -106,7 +118,7 @@
             this.selectQuill.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.selectQuill.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.selectQuill.ForeColor = System.Drawing.Color.Black;
-            this.selectQuill.Location = new System.Drawing.Point(87, 79);
+            this.selectQuill.Location = new System.Drawing.Point(59, 91);
             this.selectQuill.Name = "selectQuill";
             this.selectQuill.Size = new System.Drawing.Size(124, 24);
             this.selectQuill.TabIndex = 0;
@@ -119,7 +131,7 @@
             this.step2.AutoSize = true;
             this.step2.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.step2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
-            this.step2.Location = new System.Drawing.Point(33, 135);
+            this.step2.Location = new System.Drawing.Point(5, 147);
             this.step2.Name = "step2";
             this.step2.Size = new System.Drawing.Size(286, 16);
             this.step2.TabIndex = 1;
@@ -152,9 +164,9 @@
             this.step4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
             this.step4.Location = new System.Drawing.Point(3, 10);
             this.step4.Name = "step4";
-            this.step4.Size = new System.Drawing.Size(286, 16);
+            this.step4.Size = new System.Drawing.Size(275, 16);
             this.step4.TabIndex = 4;
-            this.step4.Text = "Step 4:  Select Audio file(s) and (optional) scripts";
+            this.step4.Text = "Step 4:  Add Audio file(s) and (optional) scripts";
             // 
             // step3
             // 
@@ -193,7 +205,7 @@
             this.step1.AutoSize = true;
             this.step1.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.step1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(52)))), ((int)(((byte)(126)))));
-            this.step1.Location = new System.Drawing.Point(33, 82);
+            this.step1.Location = new System.Drawing.Point(5, 94);
             this.step1.Name = "step1";
             this.step1.Size = new System.Drawing.Size(48, 16);
             this.step1.TabIndex = 8;
@@ -231,7 +243,7 @@
             this.submitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.submitButton.Font = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.submitButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.submitButton.Location = new System.Drawing.Point(3, 262);
+            this.submitButton.Location = new System.Drawing.Point(3, 3);
             this.submitButton.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(84, 34);
@@ -306,6 +318,7 @@
             this.step3panel.Name = "step3panel";
             this.step3panel.Size = new System.Drawing.Size(756, 57);
             this.step3panel.TabIndex = 17;
+            this.step3panel.Click += new System.EventHandler(this.clearMouthErrors);
             this.step3panel.Paint += new System.Windows.Forms.PaintEventHandler(this.step3panel_Paint);
             // 
             // step3_mouthContainerReminder
@@ -415,7 +428,7 @@
             // 
             this.quillFolders_checklistBox.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.quillFolders_checklistBox.FormattingEnabled = true;
-            this.quillFolders_checklistBox.Location = new System.Drawing.Point(72, 154);
+            this.quillFolders_checklistBox.Location = new System.Drawing.Point(44, 166);
             this.quillFolders_checklistBox.Name = "quillFolders_checklistBox";
             this.quillFolders_checklistBox.ScrollAlwaysVisible = true;
             this.quillFolders_checklistBox.Size = new System.Drawing.Size(704, 72);
@@ -429,7 +442,7 @@
             this.selectRhubarb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.selectRhubarb.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.selectRhubarb.ForeColor = System.Drawing.Color.White;
-            this.selectRhubarb.Location = new System.Drawing.Point(33, 43);
+            this.selectRhubarb.Location = new System.Drawing.Point(6, 44);
             this.selectRhubarb.Name = "selectRhubarb";
             this.selectRhubarb.Size = new System.Drawing.Size(209, 24);
             this.selectRhubarb.TabIndex = 22;
@@ -440,7 +453,7 @@
             // rhubarbLoc
             // 
             this.rhubarbLoc.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.rhubarbLoc.Location = new System.Drawing.Point(255, 47);
+            this.rhubarbLoc.Location = new System.Drawing.Point(218, 50);
             this.rhubarbLoc.Name = "rhubarbLoc";
             this.rhubarbLoc.Size = new System.Drawing.Size(519, 56);
             this.rhubarbLoc.TabIndex = 23;
@@ -450,7 +463,7 @@
             // 
             this.infoLink.AutoSize = true;
             this.infoLink.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.infoLink.Location = new System.Drawing.Point(33, 9);
+            this.infoLink.Location = new System.Drawing.Point(6, 10);
             this.infoLink.Name = "infoLink";
             this.infoLink.Size = new System.Drawing.Size(145, 17);
             this.infoLink.TabIndex = 24;
@@ -463,7 +476,7 @@
             this.step2_checkOnlyOneLabel.AutoSize = true;
             this.step2_checkOnlyOneLabel.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.step2_checkOnlyOneLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(59)))), ((int)(((byte)(186)))));
-            this.step2_checkOnlyOneLabel.Location = new System.Drawing.Point(325, 135);
+            this.step2_checkOnlyOneLabel.Location = new System.Drawing.Point(287, 146);
             this.step2_checkOnlyOneLabel.Name = "step2_checkOnlyOneLabel";
             this.step2_checkOnlyOneLabel.Size = new System.Drawing.Size(202, 15);
             this.step2_checkOnlyOneLabel.TabIndex = 25;
@@ -477,7 +490,7 @@
             // 
             this.selectedQuillPath.AutoSize = true;
             this.selectedQuillPath.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.selectedQuillPath.Location = new System.Drawing.Point(91, 106);
+            this.selectedQuillPath.Location = new System.Drawing.Point(63, 118);
             this.selectedQuillPath.Name = "selectedQuillPath";
             this.selectedQuillPath.Size = new System.Drawing.Size(128, 17);
             this.selectedQuillPath.TabIndex = 27;
@@ -487,15 +500,48 @@
             // 
             this.mainFlow.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.mainFlow.AutoSize = true;
+            this.mainFlow.Controls.Add(this.flowLayoutPanel1);
             this.mainFlow.Controls.Add(this.step3Flow);
             this.mainFlow.Controls.Add(this.step4Flow);
             this.mainFlow.Controls.Add(this.step5Flow);
-            this.mainFlow.Controls.Add(this.submitButton);
+            this.mainFlow.Controls.Add(this.panel2);
             this.mainFlow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.mainFlow.Location = new System.Drawing.Point(16, 232);
+            this.mainFlow.Location = new System.Drawing.Point(-2, 12);
             this.mainFlow.Name = "mainFlow";
-            this.mainFlow.Size = new System.Drawing.Size(768, 306);
+            this.mainFlow.Size = new System.Drawing.Size(770, 592);
             this.mainFlow.TabIndex = 28;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.panel1);
+            this.flowLayoutPanel1.Controls.Add(this.progressBar1);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(764, 253);
+            this.flowLayoutPanel1.TabIndex = 29;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.infoLink);
+            this.panel1.Controls.Add(this.rhubarbLoc);
+            this.panel1.Controls.Add(this.selectedQuillPath);
+            this.panel1.Controls.Add(this.selectRhubarb);
+            this.panel1.Controls.Add(this.step2_checkOnlyOneLabel);
+            this.panel1.Controls.Add(this.selectQuill);
+            this.panel1.Controls.Add(this.quillFolders_checklistBox);
+            this.panel1.Controls.Add(this.step2);
+            this.panel1.Controls.Add(this.step1);
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(761, 250);
+            this.panel1.TabIndex = 25;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(3, 259);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(100, 23);
+            this.progressBar1.TabIndex = 26;
             // 
             // step3Flow
             // 
@@ -503,7 +549,7 @@
             this.step3Flow.Controls.Add(this.step3panel);
             this.step3Flow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.step3Flow.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.step3Flow.Location = new System.Drawing.Point(3, 3);
+            this.step3Flow.Location = new System.Drawing.Point(3, 262);
             this.step3Flow.Name = "step3Flow";
             this.step3Flow.Size = new System.Drawing.Size(762, 63);
             this.step3Flow.TabIndex = 20;
@@ -514,7 +560,7 @@
             this.step4Flow.AutoSize = true;
             this.step4Flow.Controls.Add(this.step4panel);
             this.step4Flow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.step4Flow.Location = new System.Drawing.Point(5, 72);
+            this.step4Flow.Location = new System.Drawing.Point(6, 331);
             this.step4Flow.Name = "step4Flow";
             this.step4Flow.Size = new System.Drawing.Size(758, 109);
             this.step4Flow.TabIndex = 21;
@@ -524,10 +570,56 @@
             this.step5Flow.AutoSize = true;
             this.step5Flow.Controls.Add(this.step5panel);
             this.step5Flow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.step5Flow.Location = new System.Drawing.Point(3, 187);
+            this.step5Flow.Location = new System.Drawing.Point(3, 446);
             this.step5Flow.Name = "step5Flow";
             this.step5Flow.Size = new System.Drawing.Size(761, 69);
             this.step5Flow.TabIndex = 22;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.progressBarPanel);
+            this.panel2.Controls.Add(this.submitButton);
+            this.panel2.Location = new System.Drawing.Point(3, 521);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(740, 68);
+            this.panel2.TabIndex = 32;
+            // 
+            // progressBarPanel
+            // 
+            this.progressBarPanel.Controls.Add(this.aOfbfile);
+            this.progressBarPanel.Controls.Add(this.rhubarbProgressBar);
+            this.progressBarPanel.Controls.Add(this.label1);
+            this.progressBarPanel.Location = new System.Drawing.Point(93, 6);
+            this.progressBarPanel.Name = "progressBarPanel";
+            this.progressBarPanel.Size = new System.Drawing.Size(608, 53);
+            this.progressBarPanel.TabIndex = 33;
+            this.progressBarPanel.Visible = false;
+            // 
+            // aOfbfile
+            // 
+            this.aOfbfile.AutoSize = true;
+            this.aOfbfile.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.aOfbfile.Location = new System.Drawing.Point(148, 10);
+            this.aOfbfile.Name = "aOfbfile";
+            this.aOfbfile.Size = new System.Drawing.Size(0, 17);
+            this.aOfbfile.TabIndex = 32;
+            // 
+            // rhubarbProgressBar
+            // 
+            this.rhubarbProgressBar.Location = new System.Drawing.Point(170, 10);
+            this.rhubarbProgressBar.Name = "rhubarbProgressBar";
+            this.rhubarbProgressBar.Size = new System.Drawing.Size(186, 23);
+            this.rhubarbProgressBar.TabIndex = 30;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(3, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(139, 17);
+            this.label1.TabIndex = 31;
+            this.label1.Text = "Rhubarb analyzing file:";
             // 
             // setAudio_openFileDialog
             // 
@@ -571,17 +663,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(849, 793);
+            this.ClientSize = new System.Drawing.Size(849, 600);
             this.Controls.Add(this.mainFlow);
-            this.Controls.Add(this.selectedQuillPath);
-            this.Controls.Add(this.step2_checkOnlyOneLabel);
-            this.Controls.Add(this.infoLink);
-            this.Controls.Add(this.rhubarbLoc);
-            this.Controls.Add(this.selectRhubarb);
-            this.Controls.Add(this.quillFolders_checklistBox);
-            this.Controls.Add(this.step1);
-            this.Controls.Add(this.step2);
-            this.Controls.Add(this.selectQuill);
             this.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "VisemesForQuillForm";
@@ -597,9 +680,15 @@
             this.step5panel.PerformLayout();
             this.mainFlow.ResumeLayout(false);
             this.mainFlow.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.step3Flow.ResumeLayout(false);
             this.step4Flow.ResumeLayout(false);
             this.step5Flow.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.progressBarPanel.ResumeLayout(false);
+            this.progressBarPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chars_errorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audio_errorProvider)).EndInit();
@@ -668,5 +757,13 @@
     private ErrorProvider chooseMouths_errorProvider;
     private ErrorProvider selectAudio_errorProvider;
     private ErrorProvider rhub_errorProvider;
+    private FlowLayoutPanel flowLayoutPanel1;
+    private Panel panel1;
+    private ProgressBar progressBar1;
+    private Panel panel2;
+    private ProgressBar rhubarbProgressBar;
+    private Label label1;
+    private Label aOfbfile;
+    private Panel progressBarPanel;
   }
 }
