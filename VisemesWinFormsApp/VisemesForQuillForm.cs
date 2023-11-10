@@ -63,11 +63,11 @@ namespace VisemesWinFormsApp
         sequence = QuillSequenceReader.Read(quillPath);
         if (sequence == null)
         {
-          
-          quillErrorProvider.SetError(selectQuill, "Not a valid Quill project folder. Should be a folder containing Quill.json, State,json, Quill.qbin");
+           quillErrorProvider.SetError(selectQuill, "Not a valid Quill project folder. Should be a folder containing Quill.json, State,json, Quill.qbin");
         }
         else
         {
+          quillErrorProvider.SetError(selectQuill, String.Empty);
           populateCheckboxList(sequence.RootLayer, 0);
         }
       }
@@ -95,10 +95,7 @@ namespace VisemesWinFormsApp
           populateCheckboxList(child, offset + 1);
         }
       }
-      /*else if (layer.Type.ToString() == "Paint")
-      {
-        dropdown.Items.Add(layer.Name);
-      }*/
+
     }
 
     //I THINK THIS SHOULD BE RUN WHEN YOU CLICK ON CHECKEDLIST BOX!!
@@ -188,13 +185,42 @@ namespace VisemesWinFormsApp
 
     private void submitButton_MouseClick(object sender, MouseEventArgs e)
     {
-      if (saveFileDialog.ShowDialog() == DialogResult.OK)
+
+      quillErrorProvider.SetError(selectQuill, String.Empty);
+      chars_errorProvider.SetError(step2, String.Empty);
+      chooseCharacters_errorProvider.SetError(step5, String.Empty);
+      chooseMouths_errorProvider.Clear();
+      selectAudio_errorProvider.SetError(step4, String.Empty);
+      rhub_errorProvider.SetError(submitButton, String.Empty);
+
+
+
+      if (sequence == null)
       {
+        quillErrorProvider.SetError(selectQuill, "Please select a valid Quill project folder. Should be a folder containing Quill.json, State,json, and Quill.qbin");
+        return;
+      }
 
-        string writePath = saveFileDialog.FileName;
+      VisemesGenerator vg = new VisemesGenerator();
+        var controls = step5Flow.Controls.OfType<audioMatch>();
+        if(controls.Count() == 0)
+        {
+          
+          if(chosenCharacters.Count() == 0)
+          {
+            chars_errorProvider.SetError(step2, "Please select at least one Quill character");
+            return;
 
-        VisemesGenerator vg = new VisemesGenerator();
+          }
+          else
+          {
+            chooseCharacters_errorProvider.SetError(step5, "Please match up each audio file with the appropriate Quill character");
+              return;
+          }
+         
+        }
 
+        
         foreach (Control row in step5Flow.Controls.OfType<audioMatch>())
         {
           ComboBox charDropdown = row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
@@ -202,16 +228,47 @@ namespace VisemesWinFormsApp
           Character currChar = chosenCharacters[charKey];
           Label audioMatch = row.Controls.Find("step5_audioFile", true)[0] as Label;
           currChar.Audio = audios[audioMatch.Text];
-          Layer mouthLayer = currChar.mouthOptions[currChar.MouthDropDown.Text];
-
-
-          string jsonPath = vg.generateRhubarbJson(rhubarbExecPath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
-          vg.SetVisemeMap((LayerGroup)mouthLayer);
-          vg.SetVisemeAnims(jsonPath);
+          Layer mouthLayer;
+          try
+          {
+            mouthLayer = currChar.mouthOptions[currChar.MouthDropDown.Text];
+          }
+          catch
+          {
+            chooseMouths_errorProvider.SetError(row, "You must have a mouth layer selected for each character");
+            return;
+          }
+          List<LayerGroup> visemesLayers = new List<LayerGroup>();
+        //ALSO PUT HERE: MAKE SURE THERE ARE THE PROPER VISEMES-- iterate down the layer
+        bool val = vg.SetVisemeMap((LayerGroup)mouthLayer);
+          if (vg.SetVisemeMap((LayerGroup)mouthLayer)==false)
+          {
+            chooseMouths_errorProvider.SetError(row, "Each mouth layer must contain folder visemes: A, B, C, D, E, F, G, H, X");
+            return;
+          }
+          //maybe add a file dialog here? could even use json and just replace it here, take it out of the method. if that's easier
+          //but i'd much rather set location automaticalluy!!!
+        vg.generateRhubarbJson(rhubarbExecPath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
+        
+          if (!string.IsNullOrWhiteSpace(vg.rhubarbErrors)){
+          MessageBox.Show(vg.rhubarbErrors);
         }
+          
+          //rhub_errorProvider.SetError(submitButton, rhubarbOutput.Item2);
+         
+          vg.SetVisemeAnims(vg.jsonOutput);
+        
+          
+        }
+      if (saveFileDialog.ShowDialog() == DialogResult.OK)
+      {
+        
+
+
+
+
+        string writePath = saveFileDialog.FileName;
         QuillSequenceWriter.Write(sequence, writePath);
-
-
       }
     }
 
@@ -249,6 +306,7 @@ namespace VisemesWinFormsApp
 
     private void selectRhubarb_Click(object sender, EventArgs e)
     {
+      
       setRhubarb_openFileDialog.Filter = ".exe files(*.exe) | *.exe";
       if (setRhubarb_openFileDialog.ShowDialog() == DialogResult.OK)
       {
@@ -266,15 +324,11 @@ namespace VisemesWinFormsApp
         rhubarbExecPath = rhubarbExec;
 
       }
-      else
-      {
-        //BUILD OUT MORE LATER
-        //rhubarbLoc.Text = "ERROR";
-      }
     }
 
     private void quillFolders_checklistBox_ItemCheckEvent(object sender, ItemCheckEventArgs e)
     {
+      chars_errorProvider.SetError(step2, String.Empty);
       populateCharacters(e.Index, e.NewValue);
     }
 
@@ -285,7 +339,7 @@ namespace VisemesWinFormsApp
 
     private void addAudioButton_Click(object sender, EventArgs e)
     {
-
+      selectAudio_errorProvider.SetError(step4, String.Empty);
       setAudio_openFileDialog.Filter = ".wav files (*.wav)|*.wav|.ogg files (*.ogg)|*.ogg";
       if (setAudio_openFileDialog.ShowDialog() == DialogResult.OK)
       {
@@ -298,14 +352,23 @@ namespace VisemesWinFormsApp
         audioRow.Controls.Find("step4_audioCheckbox", true)[0].Text = shortenedPath; //or maybe just partial path
         //add a click event to the attach icon
         audioRow.Controls.Find("step4_attachButton", true)[0].Click += new System.EventHandler(this.addTxtScript_Click);
-        step4Flow.Controls.Add(audioRow);
+        
         audioMatch step5Row = new audioMatch();
         Audio newAudio = new Audio();
         newAudio.ShortAudio = shortenedPath;
         newAudio.LongAudio = audioPath;
         step5Row.Name = shortenedPath;
         step5Row.Controls.Find("step5_audioFile", true)[0].Text = shortenedPath;
-        audios.Add(shortenedPath, newAudio);
+        try
+        {
+          audios.Add(shortenedPath, newAudio);
+          step4Flow.Controls.Add(audioRow);
+        }
+        catch
+        {
+          selectAudio_errorProvider.SetError(step4, "Audio files must have unique names");
+          return;
+        }
         ComboBox charsDropdown = step5Row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
         //var charTest = characterLayers
         //CHECK THESE!!! 
@@ -316,6 +379,7 @@ namespace VisemesWinFormsApp
 
         step5Flow.Controls.Add(step5Row);
       }
+     
 
     }
     //make this a checkbox reading event...

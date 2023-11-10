@@ -76,6 +76,12 @@
             this.setTxt_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.quillErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.chars_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.audio_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.chooseCharacters_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.chooseMouths_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.selectAudio_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.rhub_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.step3panel.SuspendLayout();
             this.step4panel.SuspendLayout();
             this.step4_addDelPanel.SuspendLayout();
@@ -85,6 +91,12 @@
             this.step4Flow.SuspendLayout();
             this.step5Flow.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chars_errorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audio_errorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chooseCharacters_errorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chooseMouths_errorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.selectAudio_errorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rhub_errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // selectQuill
@@ -529,6 +541,30 @@
             // 
             this.quillErrorProvider.ContainerControl = this;
             // 
+            // chars_errorProvider
+            // 
+            this.chars_errorProvider.ContainerControl = this;
+            // 
+            // audio_errorProvider
+            // 
+            this.audio_errorProvider.ContainerControl = this;
+            // 
+            // chooseCharacters_errorProvider
+            // 
+            this.chooseCharacters_errorProvider.ContainerControl = this;
+            // 
+            // chooseMouths_errorProvider
+            // 
+            this.chooseMouths_errorProvider.ContainerControl = this;
+            // 
+            // selectAudio_errorProvider
+            // 
+            this.selectAudio_errorProvider.ContainerControl = this;
+            // 
+            // rhub_errorProvider
+            // 
+            this.rhub_errorProvider.ContainerControl = this;
+            // 
             // VisemesForQuillForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -565,6 +601,12 @@
             this.step4Flow.ResumeLayout(false);
             this.step5Flow.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chars_errorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audio_errorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chooseCharacters_errorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chooseMouths_errorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.selectAudio_errorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rhub_errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -620,5 +662,11 @@
     private OpenFileDialog setTxt_openFileDialog;
     private SaveFileDialog saveFileDialog;
     private ErrorProvider quillErrorProvider;
+    private ErrorProvider chars_errorProvider;
+    private ErrorProvider audio_errorProvider;
+    private ErrorProvider chooseCharacters_errorProvider;
+    private ErrorProvider chooseMouths_errorProvider;
+    private ErrorProvider selectAudio_errorProvider;
+    private ErrorProvider rhub_errorProvider;
   }
 }

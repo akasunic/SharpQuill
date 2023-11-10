@@ -33,26 +33,30 @@ namespace VisemesWinFormsApp
         "X"
       };
 
+    public string jsonOutput = "";
+    public string rhubarbErrors = "";
+
     //making sure I can properly run rhubarb from here-- put in a winforms later
     //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
-    public String generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
+    public void generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
     {
-
+      rhubarbErrors = "";
       Process rhubarbCli = new Process();
       //the exec path is rhubarbExecPath, should be set
       //string rhubarbExecPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb.exe";//complete path to rhubarb executable-- I think it should be folder that contains .exe, double check -- basically, where you need to be "cd" into to run
 
       string audioFileName = new DirectoryInfo(audioPath).Name;
-      string jsonOutputPath = rhubarbExecPath + "\\jsonOutput\\" + audioFileName; //allow user to choose where to save/output-- save as, and that will run it-- give errors if not selected, etc
+      jsonOutput = "C:\\Users\\amkas\\OneDrive\\Desktop\\HELPTEST.json";
+      //string jsonOutputPath = Path.GetFullPath(Path.Combine(rhubarbExecPath, @"..\")) + "\\jsonOutput\\" + audioFileName + ".json"; //allow user to choose where to save/output-- save as, and that will run it-- give errors if not selected, etc
       rhubarbCli.StartInfo.FileName = rhubarbExecPath;
       //IF textScriptPath is null, then you omit -d + textScriptPath part-- change later
       if (optionalTxtPath == "")
       {
-        rhubarbCli.StartInfo.Arguments = "-o " + jsonOutputPath + " -f json " + audioPath;
+        rhubarbCli.StartInfo.Arguments = "-o " + jsonOutput + " -f json " + audioPath;
       }
       else
       {
-        rhubarbCli.StartInfo.Arguments = "-o " + jsonOutputPath + " -f json -d " + optionalTxtPath + " " + audioPath;
+        rhubarbCli.StartInfo.Arguments = "-o " + jsonOutput + " -f json -d " + optionalTxtPath + " " + audioPath;
 
       }
 
@@ -60,18 +64,13 @@ namespace VisemesWinFormsApp
       rhubarbCli.StartInfo.UseShellExecute = false;
       rhubarbCli.StartInfo.CreateNoWindow = true;
 
+      rhubarbCli.Start();
+      rhubarbErrors = rhubarbCli.StandardError.ReadToEnd();
 
-      try
-      {
-        rhubarbCli.Start();
-        return jsonOutputPath;
 
-      }
-      catch (Exception e)
-      {
-        MessageBox.Show("Error: " + e.Message);
-        return "";
-      }
+     
+
+      
       /*
       rhubarbCli.Start();
 
@@ -84,7 +83,7 @@ namespace VisemesWinFormsApp
     }
 
     //for form: set when enter. try to autofill when possible-- so like, have a dropdown, set dropdown value to letter if it exists (do lower case and upper case)
-    public void SetVisemeMap(LayerGroup mouthRoot)
+    public bool SetVisemeMap(LayerGroup mouthRoot)
     {
       List<LayerGroup> groupLayers = new List<LayerGroup>();
       mouthRoot.GetGroupChildren(groupLayers);
@@ -93,13 +92,23 @@ namespace VisemesWinFormsApp
         //Console.WriteLine(child.Name);
         foreach (var item in visemes)
         {
+          //maybe take care of special characters here as well
           if (child.Name.ToLower().Trim() == item.ToLower())
           {
             visemeMap[item] = child;
             //Console.WriteLine(item);
           }
         }
+        foreach(var letter in visemeMap)
+        {
+          if (letter.Value == null)
+          {
+            return false;
+          }
+        }
+        
       }
+      return true;
 
     }  // find group layers with names-- each must contain at least one paint layer (can be empty and fill out later, I suppose)
 
