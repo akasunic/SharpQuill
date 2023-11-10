@@ -58,6 +58,7 @@ namespace VisemesWinFormsApp
       {
         rhubarbCli.StartInfo.Arguments = "-o " + jsonOutput + " -f json -d " + optionalTxtPath + " " + audioPath;
 
+
       }
 
       rhubarbCli.StartInfo.RedirectStandardError = true;
