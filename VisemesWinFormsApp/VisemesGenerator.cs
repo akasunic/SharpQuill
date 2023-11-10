@@ -38,16 +38,17 @@ namespace VisemesWinFormsApp
 
     //making sure I can properly run rhubarb from here-- put in a winforms later
     //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
-    public void generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
+    public void generateRhubarbJson(string rhubarbExecPath, string outputLocation, string audioPath, string optionalTxtPath = "")
     {
       rhubarbErrors = "";
       Process rhubarbCli = new Process();
       //the exec path is rhubarbExecPath, should be set
       //string rhubarbExecPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb.exe";//complete path to rhubarb executable-- I think it should be folder that contains .exe, double check -- basically, where you need to be "cd" into to run
 
-      string audioFileName = new DirectoryInfo(audioPath).Name;
-      jsonOutput = "C:\\Users\\amkas\\OneDrive\\Desktop\\HELPTEST.json";
-      //string jsonOutputPath = Path.GetFullPath(Path.Combine(rhubarbExecPath, @"..\")) + "\\jsonOutput\\" + audioFileName + ".json"; //allow user to choose where to save/output-- save as, and that will run it-- give errors if not selected, etc
+      string audioFileName = new DirectoryInfo(audioPath).Name.Replace(".", "");
+      jsonOutput = outputLocation + "\\" + audioFileName + ".json";
+      //jsonOutput = "C:\\Users\\amkas\\OneDrive\\Desktop\\HELPTEST.json";
+      //jsonOutput = Path.GetFullPath(Path.Combine(rhubarbExecPath, @"..\")) + "\\jsonOutput\\" + audioFileName + ".json"; //allow user to choose where to save/output-- save as, and that will run it-- give errors if not selected, etc
       rhubarbCli.StartInfo.FileName = rhubarbExecPath;
       //IF textScriptPath is null, then you omit -d + textScriptPath part-- change later
       if (optionalTxtPath == "")

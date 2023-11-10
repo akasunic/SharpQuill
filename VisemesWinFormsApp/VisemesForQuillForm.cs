@@ -219,9 +219,26 @@ namespace VisemesWinFormsApp
           }
          
         }
+      string writePath = "";
 
-        
-        foreach (Control row in step5Flow.Controls.OfType<audioMatch>())
+      if (saveFileDialog.ShowDialog() == DialogResult.OK)
+      {
+
+
+
+
+
+        writePath = saveFileDialog.FileName;
+
+
+      }
+      else
+      {
+        return;
+      }
+
+
+      foreach (Control row in step5Flow.Controls.OfType<audioMatch>())
         {
           ComboBox charDropdown = row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
           string charKey = charDropdown.Text;
@@ -248,7 +265,7 @@ namespace VisemesWinFormsApp
           }
           //maybe add a file dialog here? could even use json and just replace it here, take it out of the method. if that's easier
           //but i'd much rather set location automaticalluy!!!
-        vg.generateRhubarbJson(rhubarbExecPath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
+        vg.generateRhubarbJson(rhubarbExecPath, writePath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
         
           if (!string.IsNullOrWhiteSpace(vg.rhubarbErrors)){
           MessageBox.Show(vg.rhubarbErrors);
@@ -260,16 +277,8 @@ namespace VisemesWinFormsApp
         
           
         }
-      if (saveFileDialog.ShowDialog() == DialogResult.OK)
-      {
-        
-
-
-
-
-        string writePath = saveFileDialog.FileName;
-        QuillSequenceWriter.Write(sequence, writePath);
-      }
+   
+      QuillSequenceWriter.Write(sequence, writePath);
     }
 
 
