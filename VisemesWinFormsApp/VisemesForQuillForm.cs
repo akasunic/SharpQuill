@@ -6,6 +6,8 @@ using System.Windows.Forms.Design;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Drawing.Text;
+using System;
+using VisemesWinFormsApp.Properties;
 
 namespace VisemesWinFormsApp
 {
@@ -18,12 +20,16 @@ namespace VisemesWinFormsApp
     public string rhubarbErrors = "";
     private Dictionary<string, Layer> characterLayers = new Dictionary<string, Layer>();
     private Dictionary<string, Audio> audios = new Dictionary<string, Audio>();
+    private int ellipsisCount = 0;
+    
    // private Dictionary<string, string> txtFiles = new Dictionary<string, string>();
     private Dictionary<string, Character> chosenCharacters= new Dictionary<string, Character>();
     VisemesGenerator vg = new VisemesGenerator();
     public VisemesForQuillForm()
     {
       InitializeComponent();
+      rhubarbAnalysisMsg.Visible = true;
+   
       //see if Rhubarb exec location is already set. If so, prepopulate form and data
       //load config file
       // Load the configuration file
@@ -59,8 +65,17 @@ namespace VisemesWinFormsApp
 
     }
 
+  /*  private void Timer_Tick(object sender, EventArgs e)
+    {
+      ellipsisCount = (ellipsisCount + 1) % 4; // Update ellipsis position (0, 1, 2, 3)
+      string ellipsis = new string('.', ellipsisCount); // Create the ellipsis string
+      ellipsisText.Text = ellipsis; // Update the label's text
+      //await Task.Delay(1);
+    }*/
+
     private void selectQuill_Click(object sender, EventArgs e)
     {
+      clearFinalMessages();
       if (selectQuill_folderDialog.ShowDialog() == DialogResult.OK)
       {
         //clear checklist (and others-- chars and mouth layers for step3, chars for step 5
@@ -85,7 +100,7 @@ namespace VisemesWinFormsApp
 
     //making sure I can properly run rhubarb from here-- put in a winforms later
     //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
-    public void generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
+    public async Task<string> generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
     {
       //progressBarPanel.Visible = true;
       rhubarbErrors = "";
@@ -111,121 +126,30 @@ namespace VisemesWinFormsApp
 
       }
 
-      rhubarbCli.StartInfo.RedirectStandardOutput = true;
+     
       rhubarbCli.StartInfo.RedirectStandardError = true;
       rhubarbCli.StartInfo.UseShellExecute = false;
       rhubarbCli.StartInfo.CreateNoWindow = true;
-     //rhubarbCli.OutputDataReceived += RhubarbOutputHandler;
-     rhubarbCli.ErrorDataReceived+= RhubarbOutputHandler;
      
       rhubarbCli.Start();
+      string rhubarbOutput = rhubarbCli.StandardError.ReadToEnd();
 
-
-      string exitStatus = "" ;
-     
-      while (exitStatus == "")
+      string exitStatus = "";
+      if (rhubarbOutput != null)
       {
-        
-        string outputLine = rhubarbCli.StandardError.ReadLine();
-        if (outputLine != null)
+        // Process the output line to extract progress information
+        // In this example, we assume that progress information is in the format "Progress: [XX%]"
+        // You should adapt this to match the actual format of Rhubarb's output
+        if (rhubarbOutput.Contains("Done"))
         {
-          // Process the output line to extract progress information
-          // In this example, we assume that progress information is in the format "Progress: [XX%]"
-          // You should adapt this to match the actual format of Rhubarb's output
-          if (outputLine.Contains("Done"))
-          {
-            exitStatus = "done";
-          }
-          else if (outputLine.Contains("Fatal"))
-          {
-            exitStatus = "fatal";
-          }
-          
-          else if (outputLine.LastIndexOf("%")>-1)
-          {
-            int percIndex = outputLine.LastIndexOf("%");
-            string progress = outputLine.Substring(percIndex - 3, 3);
-            UpdateProgressBar(int.Parse(progress));
-         
-          }
+          exitStatus = "done";
         }
-      
-        // Introduce a short delay to avoid high CPU usage and allow other tasks to run
-        Thread.Sleep(100);
-      }
-      if (exitStatus == "done")
-      {
-        string writePath;
-        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+        else if (rhubarbOutput.Contains("Fatal"))
         {
-
-          vg.SetVisemeAnims(jsonOutput);
-
-
-
-          writePath = saveFileDialog.FileName;
-
-
+          exitStatus = "fatal";
         }
-        else
-        {
-          return;
-        }
-
-        QuillSequenceWriter.Write(sequence, writePath);
       }
-      //CHANGE THIS LATER
-      else if (exitStatus == "fatal")
-      {
-        MessageBox.Show("Fatal error in Rhubarb");
-      }
-
-
-      rhubarbCli.BeginErrorReadLine();
-
-      /*   rhubarbCli.BeginOutputReadLine();
-         rhubarbCli.BeginErrorReadLine();*/
-      //rhubarbErrors = rhubarbCli.StandardError.ReadToEnd();
-
-
-      /*
-      rhubarbCli.Start();
-
-      string errors = rhubarbCli.StandardError.ReadToEnd();
-
-      if (!string.IsNullOrWhiteSpace(errors))
-      {
-        Console.WriteLine("Error Output:\n" + errors);
-      }*/
-    }
-
-    //I think don't need this!
-    private void RhubarbOutputHandler(object sender, DataReceivedEventArgs e)
-    {
-      if (!string.IsNullOrEmpty(e.Data))
-      {
-        // Parse the output to extract progress information (e.g., percentage
-        string pattern = @"\d+%";
-        /*// int progress = ExtractProgress(e.Data);
-
-        test_rhubarbOutput_DEL.Invoke((MethodInvoker)delegate
-        {
-          test_rhubarbOutput_DEL.Text += "\n" + e.Data;
-        });
-        // Update the ProgressBar.
-        UpdateProgressBar(progress);*/
-      }
-    }
-
-
-    private void UpdateProgressBar(int progress)
-    {
-      // Update the ProgressBar.
-      if (rhubarbProgressBar != null)
-      {
-        rhubarbProgressBar.Invoke((MethodInvoker)(() => rhubarbProgressBar.Value = progress));
-
-      }
+      return exitStatus;
     }
 
     //recursive method, goes through all layers of selected project
@@ -345,17 +269,25 @@ namespace VisemesWinFormsApp
       }
     }
 
-    private void submitButton_MouseClick(object sender, MouseEventArgs e)
+    private void clearFinalMessages()
+    {
+      doneMessage.Text = "";
+      fatalMessage.Text = "";
+      rhubarbAnalysisMsg.Text = "";
+      finalMessage.Text = "";
+    }
+
+    private async void submitButton_MouseClick(object sender, MouseEventArgs e)
     {
 
+
+      clearFinalMessages();
       quillErrorProvider.SetError(selectQuill, String.Empty);
       chars_errorProvider.SetError(step2, String.Empty);
       chooseCharacters_errorProvider.SetError(step5, String.Empty);
       chooseMouths_errorProvider.Clear();
       selectAudio_errorProvider.SetError(step4, String.Empty);
       rhub_errorProvider.SetError(submitButton, String.Empty);
-
-
 
       if (sequence == null)
       {
@@ -382,12 +314,19 @@ namespace VisemesWinFormsApp
          
         }
 
-      
-
-
-      foreach (Control row in step5Flow.Controls.OfType<audioMatch>())
-        {
-          ComboBox charDropdown = row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
+      List<audioMatch> audioMatches = step5Flow.Controls.OfType<audioMatch>().ToList();
+      doneMessage.Text = "0 files successfully analyzed";
+      List<string> errors = new List<string>();
+      int successes = 0;
+     for (int i = 0; i< audioMatches.Count(); i++) {
+        
+        Control row = audioMatches[i];
+        int currCount = i + 1;
+        rhubarbAnalysisMsg.Text= "Rhubarb is analyzing audio, file " + currCount + " of " + audioMatches.Count() + "...";
+        
+        await Task.Delay(1); // Allow UI update
+       
+        ComboBox charDropdown = row.Controls.Find("step5_charDropdown", true)[0] as ComboBox;
           string charKey = charDropdown.Text;
           Character currChar = chosenCharacters[charKey];
           Label audioMatch = row.Controls.Find("step5_audioFile", true)[0] as Label;
@@ -410,24 +349,50 @@ namespace VisemesWinFormsApp
             chooseMouths_errorProvider.SetError(step3, "Each mouth layer must contain folder visemes: A, B, C, D, E, F, G, H, X");
             return;
           }
-          //maybe add a file dialog here? could even use json and just replace it here, take it out of the method. if that's easier
-          //but i'd much rather set location automaticalluy!!!
-        generateRhubarbJson(rhubarbExecPath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
-        
-        /*  if (!string.IsNullOrWhiteSpace(rhubarbErrors)){
-          MessageBox.Show(rhubarbErrors);
-        }*/
-
-        //rhub_errorProvider.SetError(submitButton, rhubarbOutput.Item2);
-
-
-
-       
+        //maybe add a file dialog here? could even use json and just replace it here, take it out of the method. if that's easier
+        //but i'd much rather set location automaticalluy!!!
+        string exitStatus = await generateRhubarbJson(rhubarbExecPath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
+        rhubarbAnalysisMsg.Text = "Rhubarb analysis complete.";
+        if (exitStatus == "done")
+        {
+         
+          vg.SetVisemeAnims(jsonOutput);
+          successes++;
+          doneMessage.Text = successes + " file(s) successfully analyzed by Rhubarb";
+        }
+        //CHANGE THIS LATER
+        else if (exitStatus == "fatal")
+        {
+         
+          errors.Add(audioMatch.Text);
+          fatalMessage.Text = "Rhubarb unable to analyze the following file(s): ";
+          foreach(string file in errors)
+          {
+            fatalMessage.Text += file + "; ";
+          }
+        }
+      }
+      await Task.Delay(2000); // Allow UI update
+      if (saveFileDialog.ShowDialog() == DialogResult.OK)
+      {
+        string writePath = saveFileDialog.FileName;
+        QuillSequenceWriter.Write(sequence, writePath);
+        rhubarbAnalysisMsg.Text = "";
+        finalMessage.Text = "Quill project successfully created! See: " + writePath;
 
       }
-
+      else
+      {
+        return;
+      }
+/*
+      rhubarbAnalysisMsg
+      doneMessage.Visible = true;
+      fatalMessage.Text = "";
+      fatalMessage.Visible = true;
+      rhubarbAnalysisMsg.Text = "";
+      rhubAnalysisMsg.Visible = true;*/
     }
-
 
     private void infoLink_Click(object sender, EventArgs e)
     {
@@ -462,7 +427,7 @@ namespace VisemesWinFormsApp
 
     private void selectRhubarb_Click(object sender, EventArgs e)
     {
-      
+      clearFinalMessages();
       setRhubarb_openFileDialog.Filter = ".exe files(*.exe) | *.exe";
       if (setRhubarb_openFileDialog.ShowDialog() == DialogResult.OK)
       {
@@ -484,6 +449,7 @@ namespace VisemesWinFormsApp
 
     private void quillFolders_checklistBox_ItemCheckEvent(object sender, ItemCheckEventArgs e)
     {
+      clearFinalMessages();
       chars_errorProvider.SetError(step2, String.Empty);
       populateCharacters(e.Index, e.NewValue);
     }
@@ -500,6 +466,7 @@ namespace VisemesWinFormsApp
 
     private void addAudioButton_Click(object sender, EventArgs e)
     {
+      clearFinalMessages();
       selectAudio_errorProvider.SetError(step4, String.Empty);
       setAudio_openFileDialog.Filter = ".wav files (*.wav)|*.wav|.ogg files (*.ogg)|*.ogg";
       if (setAudio_openFileDialog.ShowDialog() == DialogResult.OK)
@@ -549,6 +516,7 @@ namespace VisemesWinFormsApp
     //so also figure out how to parent up there
     private void deleteAudio_Click(object sender, EventArgs e)
     {
+      clearFinalMessages();
       //Oh. I think this just goes one level down
       foreach (audioRow row in step4Flow.Controls.OfType<audioRow>())
       {
@@ -579,7 +547,7 @@ namespace VisemesWinFormsApp
     //UPDATE THIS: for 
     private void addTxtScript_Click(object sender, EventArgs e)
     {
-
+      clearFinalMessages();
       setTxt_openFileDialog.Filter = ".txt files (*.txt)|*.txt";
       if (setTxt_openFileDialog.ShowDialog() == DialogResult.OK)
       {
@@ -601,7 +569,8 @@ namespace VisemesWinFormsApp
 
     }
 
-    private void rhubarbProgressBar_Click(object sender, EventArgs e)
+
+    private void panel2_Paint(object sender, PaintEventArgs e)
     {
 
     }

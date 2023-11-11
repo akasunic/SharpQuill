@@ -75,12 +75,11 @@
             this.step3Flow = new System.Windows.Forms.FlowLayoutPanel();
             this.step4Flow = new System.Windows.Forms.FlowLayoutPanel();
             this.step5Flow = new System.Windows.Forms.FlowLayoutPanel();
-            this.test_rhubarbOutput_DEL = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.progressBarPanel = new System.Windows.Forms.Panel();
-            this.aOfbfile = new System.Windows.Forms.Label();
-            this.rhubarbProgressBar = new System.Windows.Forms.ProgressBar();
-            this.label1 = new System.Windows.Forms.Label();
+            this.rhubarbAnalysisMsg = new System.Windows.Forms.Label();
+            this.finalMessage = new System.Windows.Forms.Label();
+            this.fatalMessage = new System.Windows.Forms.Label();
+            this.doneMessage = new System.Windows.Forms.Label();
             this.setAudio_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.setTxt_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -102,7 +101,6 @@
             this.step4Flow.SuspendLayout();
             this.step5Flow.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.progressBarPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chars_errorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audio_errorProvider)).BeginInit();
@@ -422,7 +420,7 @@
             this.step5panel.Controls.Add(this.step5_audioTitle);
             this.step5panel.Location = new System.Drawing.Point(3, 3);
             this.step5panel.Name = "step5panel";
-            this.step5panel.Size = new System.Drawing.Size(755, 63);
+            this.step5panel.Size = new System.Drawing.Size(755, 69);
             this.step5panel.TabIndex = 19;
             // 
             // quillFolders_checklistBox
@@ -501,12 +499,11 @@
             this.mainFlow.Controls.Add(this.step3Flow);
             this.mainFlow.Controls.Add(this.step4Flow);
             this.mainFlow.Controls.Add(this.step5Flow);
-            this.mainFlow.Controls.Add(this.test_rhubarbOutput_DEL);
             this.mainFlow.Controls.Add(this.panel2);
             this.mainFlow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.mainFlow.Location = new System.Drawing.Point(-4, 12);
+            this.mainFlow.Location = new System.Drawing.Point(35, 12);
             this.mainFlow.Name = "mainFlow";
-            this.mainFlow.Size = new System.Drawing.Size(770, 698);
+            this.mainFlow.Size = new System.Drawing.Size(770, 621);
             this.mainFlow.TabIndex = 28;
             // 
             // flowLayoutPanel1
@@ -570,63 +567,59 @@
             this.step5Flow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.step5Flow.Location = new System.Drawing.Point(3, 446);
             this.step5Flow.Name = "step5Flow";
-            this.step5Flow.Size = new System.Drawing.Size(761, 69);
+            this.step5Flow.Size = new System.Drawing.Size(761, 75);
             this.step5Flow.TabIndex = 22;
-            // 
-            // test_rhubarbOutput_DEL
-            // 
-            this.test_rhubarbOutput_DEL.AutoSize = true;
-            this.test_rhubarbOutput_DEL.Location = new System.Drawing.Point(3, 518);
-            this.test_rhubarbOutput_DEL.Name = "test_rhubarbOutput_DEL";
-            this.test_rhubarbOutput_DEL.Size = new System.Drawing.Size(44, 16);
-            this.test_rhubarbOutput_DEL.TabIndex = 33;
-            this.test_rhubarbOutput_DEL.Text = "label2";
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.progressBarPanel);
+            this.panel2.Controls.Add(this.rhubarbAnalysisMsg);
+            this.panel2.Controls.Add(this.finalMessage);
+            this.panel2.Controls.Add(this.fatalMessage);
+            this.panel2.Controls.Add(this.doneMessage);
             this.panel2.Controls.Add(this.submitButton);
-            this.panel2.Location = new System.Drawing.Point(3, 537);
+            this.panel2.Location = new System.Drawing.Point(3, 527);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(740, 68);
+            this.panel2.Size = new System.Drawing.Size(740, 91);
             this.panel2.TabIndex = 32;
+            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
-            // progressBarPanel
+            // rhubarbAnalysisMsg
             // 
-            this.progressBarPanel.Controls.Add(this.aOfbfile);
-            this.progressBarPanel.Controls.Add(this.rhubarbProgressBar);
-            this.progressBarPanel.Controls.Add(this.label1);
-            this.progressBarPanel.Location = new System.Drawing.Point(93, 6);
-            this.progressBarPanel.Name = "progressBarPanel";
-            this.progressBarPanel.Size = new System.Drawing.Size(608, 53);
-            this.progressBarPanel.TabIndex = 33;
+            this.rhubarbAnalysisMsg.AutoSize = true;
+            this.rhubarbAnalysisMsg.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.rhubarbAnalysisMsg.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(59)))), ((int)(((byte)(186)))));
+            this.rhubarbAnalysisMsg.Location = new System.Drawing.Point(93, 0);
+            this.rhubarbAnalysisMsg.Name = "rhubarbAnalysisMsg";
+            this.rhubarbAnalysisMsg.Size = new System.Drawing.Size(0, 23);
+            this.rhubarbAnalysisMsg.TabIndex = 11;
             // 
-            // aOfbfile
+            // finalMessage
             // 
-            this.aOfbfile.AutoSize = true;
-            this.aOfbfile.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.aOfbfile.Location = new System.Drawing.Point(148, 10);
-            this.aOfbfile.Name = "aOfbfile";
-            this.aOfbfile.Size = new System.Drawing.Size(0, 17);
-            this.aOfbfile.TabIndex = 32;
+            this.finalMessage.AutoSize = true;
+            this.finalMessage.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.finalMessage.ForeColor = System.Drawing.Color.Green;
+            this.finalMessage.Location = new System.Drawing.Point(96, 53);
+            this.finalMessage.Name = "finalMessage";
+            this.finalMessage.Size = new System.Drawing.Size(0, 23);
+            this.finalMessage.TabIndex = 16;
             // 
-            // rhubarbProgressBar
+            // fatalMessage
             // 
-            this.rhubarbProgressBar.Location = new System.Drawing.Point(170, 10);
-            this.rhubarbProgressBar.Name = "rhubarbProgressBar";
-            this.rhubarbProgressBar.Size = new System.Drawing.Size(186, 23);
-            this.rhubarbProgressBar.TabIndex = 30;
-            this.rhubarbProgressBar.Click += new System.EventHandler(this.rhubarbProgressBar_Click);
+            this.fatalMessage.AutoSize = true;
+            this.fatalMessage.ForeColor = System.Drawing.Color.Red;
+            this.fatalMessage.Location = new System.Drawing.Point(93, 37);
+            this.fatalMessage.Name = "fatalMessage";
+            this.fatalMessage.Size = new System.Drawing.Size(0, 16);
+            this.fatalMessage.TabIndex = 13;
             // 
-            // label1
+            // doneMessage
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(3, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(139, 17);
-            this.label1.TabIndex = 31;
-            this.label1.Text = "Rhubarb analyzing file:";
+            this.doneMessage.AutoSize = true;
+            this.doneMessage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(191)))), ((int)(((byte)(255)))));
+            this.doneMessage.Location = new System.Drawing.Point(94, 21);
+            this.doneMessage.Name = "doneMessage";
+            this.doneMessage.Size = new System.Drawing.Size(0, 16);
+            this.doneMessage.TabIndex = 12;
             // 
             // setAudio_openFileDialog
             // 
@@ -670,7 +663,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(849, 600);
+            this.ClientSize = new System.Drawing.Size(849, 636);
             this.Controls.Add(this.mainFlow);
             this.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ForeColor = System.Drawing.Color.Black;
@@ -694,8 +687,7 @@
             this.step4Flow.ResumeLayout(false);
             this.step5Flow.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.progressBarPanel.ResumeLayout(false);
-            this.progressBarPanel.PerformLayout();
+            this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.quillErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chars_errorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audio_errorProvider)).EndInit();
@@ -768,10 +760,9 @@
     private Panel panel1;
     private ProgressBar progressBar1;
     private Panel panel2;
-    private ProgressBar rhubarbProgressBar;
-    private Label label1;
-    private Label aOfbfile;
-    private Panel progressBarPanel;
-    private Label test_rhubarbOutput_DEL;
+    private Label doneMessage;
+    private Label rhubarbAnalysisMsg;
+    private Label fatalMessage;
+    private Label finalMessage;
   }
 }
