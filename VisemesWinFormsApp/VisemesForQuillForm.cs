@@ -5,7 +5,7 @@ using System.Configuration;
 using System.Windows.Forms.Design;
 using System.Text.RegularExpressions;
 using System.Threading;
-
+using System.Drawing.Text;
 
 namespace VisemesWinFormsApp
 {
@@ -81,11 +81,13 @@ namespace VisemesWinFormsApp
         }
       }
     }
+    
 
     //making sure I can properly run rhubarb from here-- put in a winforms later
     //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
-    public Process generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
+    public void generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
     {
+      //progressBarPanel.Visible = true;
       rhubarbErrors = "";
       Process rhubarbCli = new Process();
       //the exec path is rhubarbExecPath, should be set
@@ -110,18 +112,80 @@ namespace VisemesWinFormsApp
       }
 
       rhubarbCli.StartInfo.RedirectStandardOutput = true;
-      rhubarbCli.StartInfo.RedirectStandardError = true;// this one may not be needed
+      rhubarbCli.StartInfo.RedirectStandardError = true;
       rhubarbCli.StartInfo.UseShellExecute = false;
       rhubarbCli.StartInfo.CreateNoWindow = true;
-      rhubarbCli.OutputDataReceived += RhubarbOutputHandler;
-      rhubarbCli.ErrorDataReceived+= RhubarbOutputHandler;
+     //rhubarbCli.OutputDataReceived += RhubarbOutputHandler;
+     rhubarbCli.ErrorDataReceived+= RhubarbOutputHandler;
+     
       rhubarbCli.Start();
-      rhubarbCli.BeginOutputReadLine();
+
+
+      string exitStatus = "" ;
+     
+      while (exitStatus == "")
+      {
+        
+        string outputLine = rhubarbCli.StandardError.ReadLine();
+        if (outputLine != null)
+        {
+          // Process the output line to extract progress information
+          // In this example, we assume that progress information is in the format "Progress: [XX%]"
+          // You should adapt this to match the actual format of Rhubarb's output
+          if (outputLine.Contains("Done"))
+          {
+            exitStatus = "done";
+          }
+          else if (outputLine.Contains("Fatal"))
+          {
+            exitStatus = "fatal";
+          }
+          
+          else if (outputLine.LastIndexOf("%")>-1)
+          {
+            int percIndex = outputLine.LastIndexOf("%");
+            string progress = outputLine.Substring(percIndex - 3, 3);
+            UpdateProgressBar(int.Parse(progress));
+         
+          }
+        }
+      
+        // Introduce a short delay to avoid high CPU usage and allow other tasks to run
+        Thread.Sleep(100);
+      }
+      if (exitStatus == "done")
+      {
+        string writePath;
+        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+        {
+
+          vg.SetVisemeAnims(jsonOutput);
+
+
+
+          writePath = saveFileDialog.FileName;
+
+
+        }
+        else
+        {
+          return;
+        }
+
+        QuillSequenceWriter.Write(sequence, writePath);
+      }
+      //CHANGE THIS LATER
+      else if (exitStatus == "fatal")
+      {
+        MessageBox.Show("Fatal error in Rhubarb");
+      }
+
+
       rhubarbCli.BeginErrorReadLine();
+
+      /*   rhubarbCli.BeginOutputReadLine();
+         rhubarbCli.BeginErrorReadLine();*/
       //rhubarbErrors = rhubarbCli.StandardError.ReadToEnd();
-      return rhubarbCli;
-
-
 
 
       /*
@@ -135,37 +199,24 @@ namespace VisemesWinFormsApp
       }*/
     }
 
+    //I think don't need this!
     private void RhubarbOutputHandler(object sender, DataReceivedEventArgs e)
     {
       if (!string.IsNullOrEmpty(e.Data))
       {
-        // Parse the output to extract progress information (e.g., percentage).
-        int progress = ExtractProgress(e.Data);
-        test_rhubarbOutput_DEL.Invoke((MethodInvoker)delegate {
+        // Parse the output to extract progress information (e.g., percentage
+        string pattern = @"\d+%";
+        /*// int progress = ExtractProgress(e.Data);
+
+        test_rhubarbOutput_DEL.Invoke((MethodInvoker)delegate
+        {
           test_rhubarbOutput_DEL.Text += "\n" + e.Data;
         });
         // Update the ProgressBar.
-        UpdateProgressBar(progress);
+        UpdateProgressBar(progress);*/
       }
     }
 
-    private int ExtractProgress(string output)
-    {
-      // You need to implement a method to extract progress information
-      // from the output. This depends on the format of Rhubarb's output.
-      // This is just a placeholder.
-
-      // For example, if Rhubarb outputs progress like "Progress: 25%", you
-      // can use regular expressions to extract the percentage.
-
-      var match = Regex.Match(output, @"\b(\d+)%\b");
-      if (match.Success)
-      {
-        return int.Parse(match.Groups[1].Value);
-      }
-
-      return 0;
-    }
 
     private void UpdateProgressBar(int progress)
     {
@@ -173,6 +224,7 @@ namespace VisemesWinFormsApp
       if (rhubarbProgressBar != null)
       {
         rhubarbProgressBar.Invoke((MethodInvoker)(() => rhubarbProgressBar.Value = progress));
+
       }
     }
 
@@ -373,25 +425,7 @@ namespace VisemesWinFormsApp
        
 
       }
-      string writePath = "";
 
-      if (saveFileDialog.ShowDialog() == DialogResult.OK)
-      {
-
-        vg.SetVisemeAnims(jsonOutput);
-
-
-
-        writePath = saveFileDialog.FileName;
-
-
-      }
-      else
-      {
-        return;
-      }
-
-      QuillSequenceWriter.Write(sequence, writePath);
     }
 
 
@@ -563,6 +597,11 @@ namespace VisemesWinFormsApp
     }
 
     private void setAudio_openFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+
+    }
+
+    private void rhubarbProgressBar_Click(object sender, EventArgs e)
     {
 
     }

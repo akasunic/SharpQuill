@@ -75,6 +75,7 @@
             this.step3Flow = new System.Windows.Forms.FlowLayoutPanel();
             this.step4Flow = new System.Windows.Forms.FlowLayoutPanel();
             this.step5Flow = new System.Windows.Forms.FlowLayoutPanel();
+            this.test_rhubarbOutput_DEL = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.progressBarPanel = new System.Windows.Forms.Panel();
             this.aOfbfile = new System.Windows.Forms.Label();
@@ -90,7 +91,6 @@
             this.chooseMouths_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.selectAudio_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.rhub_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.test_rhubarbOutput_DEL = new System.Windows.Forms.Label();
             this.step3panel.SuspendLayout();
             this.step4panel.SuspendLayout();
             this.step4_addDelPanel.SuspendLayout();
@@ -504,7 +504,7 @@
             this.mainFlow.Controls.Add(this.test_rhubarbOutput_DEL);
             this.mainFlow.Controls.Add(this.panel2);
             this.mainFlow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.mainFlow.Location = new System.Drawing.Point(12, 12);
+            this.mainFlow.Location = new System.Drawing.Point(-4, 12);
             this.mainFlow.Name = "mainFlow";
             this.mainFlow.Size = new System.Drawing.Size(770, 698);
             this.mainFlow.TabIndex = 28;
@@ -573,6 +573,15 @@
             this.step5Flow.Size = new System.Drawing.Size(761, 69);
             this.step5Flow.TabIndex = 22;
             // 
+            // test_rhubarbOutput_DEL
+            // 
+            this.test_rhubarbOutput_DEL.AutoSize = true;
+            this.test_rhubarbOutput_DEL.Location = new System.Drawing.Point(3, 518);
+            this.test_rhubarbOutput_DEL.Name = "test_rhubarbOutput_DEL";
+            this.test_rhubarbOutput_DEL.Size = new System.Drawing.Size(44, 16);
+            this.test_rhubarbOutput_DEL.TabIndex = 33;
+            this.test_rhubarbOutput_DEL.Text = "label2";
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.progressBarPanel);
@@ -591,7 +600,6 @@
             this.progressBarPanel.Name = "progressBarPanel";
             this.progressBarPanel.Size = new System.Drawing.Size(608, 53);
             this.progressBarPanel.TabIndex = 33;
-            this.progressBarPanel.Visible = false;
             // 
             // aOfbfile
             // 
@@ -608,6 +616,7 @@
             this.rhubarbProgressBar.Name = "rhubarbProgressBar";
             this.rhubarbProgressBar.Size = new System.Drawing.Size(186, 23);
             this.rhubarbProgressBar.TabIndex = 30;
+            this.rhubarbProgressBar.Click += new System.EventHandler(this.rhubarbProgressBar_Click);
             // 
             // label1
             // 
@@ -654,15 +663,6 @@
             // rhub_errorProvider
             // 
             this.rhub_errorProvider.ContainerControl = this;
-            // 
-            // test_rhubarbOutput_DEL
-            // 
-            this.test_rhubarbOutput_DEL.AutoSize = true;
-            this.test_rhubarbOutput_DEL.Location = new System.Drawing.Point(3, 518);
-            this.test_rhubarbOutput_DEL.Name = "test_rhubarbOutput_DEL";
-            this.test_rhubarbOutput_DEL.Size = new System.Drawing.Size(44, 16);
-            this.test_rhubarbOutput_DEL.TabIndex = 33;
-            this.test_rhubarbOutput_DEL.Text = "label2";
             // 
             // VisemesForQuillForm
             // 
