@@ -3,6 +3,9 @@ using SharpQuill;
 using Newtonsoft.Json;
 using System.Configuration;
 using System.Windows.Forms.Design;
+using System.Text.RegularExpressions;
+using System.Threading;
+
 
 namespace VisemesWinFormsApp
 {
@@ -11,10 +14,13 @@ namespace VisemesWinFormsApp
     private string rhubarbExecPath;
     private string? quillPath;
     Sequence sequence;
+    public string jsonOutput = "";
+    public string rhubarbErrors = "";
     private Dictionary<string, Layer> characterLayers = new Dictionary<string, Layer>();
     private Dictionary<string, Audio> audios = new Dictionary<string, Audio>();
    // private Dictionary<string, string> txtFiles = new Dictionary<string, string>();
     private Dictionary<string, Character> chosenCharacters= new Dictionary<string, Character>();
+    VisemesGenerator vg = new VisemesGenerator();
     public VisemesForQuillForm()
     {
       InitializeComponent();
@@ -76,10 +82,102 @@ namespace VisemesWinFormsApp
       }
     }
 
+    //making sure I can properly run rhubarb from here-- put in a winforms later
+    //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
+    public Process generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
+    {
+      rhubarbErrors = "";
+      Process rhubarbCli = new Process();
+      //the exec path is rhubarbExecPath, should be set
+      //string rhubarbExecPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb.exe";//complete path to rhubarb executable-- I think it should be folder that contains .exe, double check -- basically, where you need to be "cd" into to run
 
+      string audioFileName = new DirectoryInfo(audioPath).Name.Replace(".", "");
+      //you needed to make sure the file existed!!! and before you were making errors with the rhub location I think
+      jsonOutput = Path.GetDirectoryName(rhubarbExecPath) + "\\" + audioFileName + ".json";
+      //jsonOutput = "C:\\Users\\amkas\\OneDrive\\Desktop\\HELPTEST.json";
+      //jsonOutput = Path.GetFullPath(Path.Combine(rhubarbExecPath, @"..\")) + "\\jsonOutput\\" + audioFileName + ".json"; //allow user to choose where to save/output-- save as, and that will run it-- give errors if not selected, etc
+      rhubarbCli.StartInfo.FileName = rhubarbExecPath;
+      //IF textScriptPath is null, then you omit -d + textScriptPath part-- change later
+      if (optionalTxtPath == "")
+      {
+        rhubarbCli.StartInfo.Arguments = "-o " + jsonOutput + " -f json " + audioPath;
+      }
+      else
+      {
+        rhubarbCli.StartInfo.Arguments = "-o " + jsonOutput + " -f json -d " + optionalTxtPath + " " + audioPath;
+
+
+      }
+
+      rhubarbCli.StartInfo.RedirectStandardOutput = true;
+      rhubarbCli.StartInfo.RedirectStandardError = true;// this one may not be needed
+      rhubarbCli.StartInfo.UseShellExecute = false;
+      rhubarbCli.StartInfo.CreateNoWindow = true;
+      rhubarbCli.OutputDataReceived += RhubarbOutputHandler;
+      rhubarbCli.ErrorDataReceived+= RhubarbOutputHandler;
+      rhubarbCli.Start();
+      rhubarbCli.BeginOutputReadLine();
+      rhubarbCli.BeginErrorReadLine();
+      //rhubarbErrors = rhubarbCli.StandardError.ReadToEnd();
+      return rhubarbCli;
+
+
+
+
+      /*
+      rhubarbCli.Start();
+
+      string errors = rhubarbCli.StandardError.ReadToEnd();
+
+      if (!string.IsNullOrWhiteSpace(errors))
+      {
+        Console.WriteLine("Error Output:\n" + errors);
+      }*/
+    }
+
+    private void RhubarbOutputHandler(object sender, DataReceivedEventArgs e)
+    {
+      if (!string.IsNullOrEmpty(e.Data))
+      {
+        // Parse the output to extract progress information (e.g., percentage).
+        int progress = ExtractProgress(e.Data);
+        test_rhubarbOutput_DEL.Invoke((MethodInvoker)delegate {
+          test_rhubarbOutput_DEL.Text += "\n" + e.Data;
+        });
+        // Update the ProgressBar.
+        UpdateProgressBar(progress);
+      }
+    }
+
+    private int ExtractProgress(string output)
+    {
+      // You need to implement a method to extract progress information
+      // from the output. This depends on the format of Rhubarb's output.
+      // This is just a placeholder.
+
+      // For example, if Rhubarb outputs progress like "Progress: 25%", you
+      // can use regular expressions to extract the percentage.
+
+      var match = Regex.Match(output, @"\b(\d+)%\b");
+      if (match.Success)
+      {
+        return int.Parse(match.Groups[1].Value);
+      }
+
+      return 0;
+    }
+
+    private void UpdateProgressBar(int progress)
+    {
+      // Update the ProgressBar.
+      if (rhubarbProgressBar != null)
+      {
+        rhubarbProgressBar.Invoke((MethodInvoker)(() => rhubarbProgressBar.Value = progress));
+      }
+    }
 
     //recursive method, goes through all layers of selected project
-    // if a group layer, keeps recursively calling, if paint layer, adds to comboxbox
+
     private void populateCheckboxList(Layer layer, int offset)
     {
       string spaces = new String(' ', offset * 5);
@@ -87,10 +185,15 @@ namespace VisemesWinFormsApp
       if (layer.Type.ToString() == "Group" && offset < 3)//okay, 3 is somewhat arbitrary... maybe a better way to do this??
       {
         //add to checkbox list
-        if (layer.Name != "Root")
+        if (layer.Name != "Root" && !vg.visemes.Contains(layer.Name))
         {
           quillFolders_checklistBox.Items.Add(spaces + layer.Name);
+          while (characterLayers.ContainsKey(layer.Name))
+          {
+            layer.Name = "_" + layer.Name;
+          }
           characterLayers.Add(layer.Name, layer);
+         
         }
 
         foreach (Layer child in ((LayerGroup)layer).Children)
@@ -208,7 +311,7 @@ namespace VisemesWinFormsApp
         return;
       }
 
-      VisemesGenerator vg = new VisemesGenerator();
+      
         var controls = step5Flow.Controls.OfType<audioMatch>();
         if(controls.Count() == 0)
         {
@@ -257,24 +360,25 @@ namespace VisemesWinFormsApp
           }
           //maybe add a file dialog here? could even use json and just replace it here, take it out of the method. if that's easier
           //but i'd much rather set location automaticalluy!!!
-        vg.generateRhubarbJson(rhubarbExecPath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
+        generateRhubarbJson(rhubarbExecPath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
         
-          if (!string.IsNullOrWhiteSpace(vg.rhubarbErrors)){
-          MessageBox.Show(vg.rhubarbErrors);
-        }
-          
-          //rhub_errorProvider.SetError(submitButton, rhubarbOutput.Item2);
-         
-          vg.SetVisemeAnims(vg.jsonOutput);
-        
-          
-        }
+        /*  if (!string.IsNullOrWhiteSpace(rhubarbErrors)){
+          MessageBox.Show(rhubarbErrors);
+        }*/
+
+        //rhub_errorProvider.SetError(submitButton, rhubarbOutput.Item2);
+
+
+
+       
+
+      }
       string writePath = "";
 
       if (saveFileDialog.ShowDialog() == DialogResult.OK)
       {
 
-
+        vg.SetVisemeAnims(jsonOutput);
 
 
 
@@ -455,6 +559,11 @@ namespace VisemesWinFormsApp
         audios[audioKey].ShortTxt= shortenedPath;
         audios[audioKey].LongTxt = txtPath;
       }
+
+    }
+
+    private void setAudio_openFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+    {
 
     }
   }

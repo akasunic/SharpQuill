@@ -90,6 +90,7 @@
             this.chooseMouths_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.selectAudio_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.rhub_errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.test_rhubarbOutput_DEL = new System.Windows.Forms.Label();
             this.step3panel.SuspendLayout();
             this.step4panel.SuspendLayout();
             this.step4_addDelPanel.SuspendLayout();
@@ -482,10 +483,6 @@
             this.step2_checkOnlyOneLabel.TabIndex = 25;
             this.step2_checkOnlyOneLabel.Text = "check only one folder per character";
             // 
-            // setRhubarb_openFileDialog
-            // 
-            this.setRhubarb_openFileDialog.FileName = "setRhubarb_openFileDialog";
-            // 
             // selectedQuillPath
             // 
             this.selectedQuillPath.AutoSize = true;
@@ -504,11 +501,12 @@
             this.mainFlow.Controls.Add(this.step3Flow);
             this.mainFlow.Controls.Add(this.step4Flow);
             this.mainFlow.Controls.Add(this.step5Flow);
+            this.mainFlow.Controls.Add(this.test_rhubarbOutput_DEL);
             this.mainFlow.Controls.Add(this.panel2);
             this.mainFlow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.mainFlow.Location = new System.Drawing.Point(-2, 12);
+            this.mainFlow.Location = new System.Drawing.Point(12, 12);
             this.mainFlow.Name = "mainFlow";
-            this.mainFlow.Size = new System.Drawing.Size(770, 592);
+            this.mainFlow.Size = new System.Drawing.Size(770, 698);
             this.mainFlow.TabIndex = 28;
             // 
             // flowLayoutPanel1
@@ -579,7 +577,7 @@
             // 
             this.panel2.Controls.Add(this.progressBarPanel);
             this.panel2.Controls.Add(this.submitButton);
-            this.panel2.Location = new System.Drawing.Point(3, 521);
+            this.panel2.Location = new System.Drawing.Point(3, 537);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(740, 68);
             this.panel2.TabIndex = 32;
@@ -623,11 +621,11 @@
             // 
             // setAudio_openFileDialog
             // 
-            this.setAudio_openFileDialog.FileName = "openFileDialog1";
+            this.setAudio_openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.setAudio_openFileDialog_FileOk);
             // 
-            // setTxt_openFileDialog
+            // saveFileDialog
             // 
-            this.setTxt_openFileDialog.FileName = "openFileDialog1";
+            this.saveFileDialog.FileName = "My Lip Sync Quill Project";
             // 
             // quillErrorProvider
             // 
@@ -656,6 +654,15 @@
             // rhub_errorProvider
             // 
             this.rhub_errorProvider.ContainerControl = this;
+            // 
+            // test_rhubarbOutput_DEL
+            // 
+            this.test_rhubarbOutput_DEL.AutoSize = true;
+            this.test_rhubarbOutput_DEL.Location = new System.Drawing.Point(3, 518);
+            this.test_rhubarbOutput_DEL.Name = "test_rhubarbOutput_DEL";
+            this.test_rhubarbOutput_DEL.Size = new System.Drawing.Size(44, 16);
+            this.test_rhubarbOutput_DEL.TabIndex = 33;
+            this.test_rhubarbOutput_DEL.Text = "label2";
             // 
             // VisemesForQuillForm
             // 
@@ -765,5 +772,6 @@
     private Label label1;
     private Label aOfbfile;
     private Panel progressBarPanel;
+    private Label test_rhubarbOutput_DEL;
   }
 }

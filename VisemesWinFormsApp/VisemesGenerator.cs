@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace VisemesWinFormsApp
@@ -33,57 +34,9 @@ namespace VisemesWinFormsApp
         "X"
       };
 
-    public string jsonOutput = "";
-    public string rhubarbErrors = "";
-
-    //making sure I can properly run rhubarb from here-- put in a winforms later
-    //generate rhubarb json! think about-- should that be a variable of the instance? yeah, maybe
-    public void generateRhubarbJson(string rhubarbExecPath, string audioPath, string optionalTxtPath = "")
-    {
-      rhubarbErrors = "";
-      Process rhubarbCli = new Process();
-      //the exec path is rhubarbExecPath, should be set
-      //string rhubarbExecPath = "C:\\Users\\amkas\\OneDrive\\Desktop\\QuillCodeStuff\\Rhubarb-Lip-Sync-1.13.0-Windows\\Rhubarb-Lip-Sync-1.13.0-Windows\\rhubarb.exe";//complete path to rhubarb executable-- I think it should be folder that contains .exe, double check -- basically, where you need to be "cd" into to run
-      
-      string audioFileName = new DirectoryInfo(audioPath).Name.Replace(".", "");
-      //you needed to make sure the file existed!!! and before you were making errors with the rhub location I think
-      jsonOutput = Path.GetDirectoryName(rhubarbExecPath) + "\\" + audioFileName + ".json";
-      //jsonOutput = "C:\\Users\\amkas\\OneDrive\\Desktop\\HELPTEST.json";
-      //jsonOutput = Path.GetFullPath(Path.Combine(rhubarbExecPath, @"..\")) + "\\jsonOutput\\" + audioFileName + ".json"; //allow user to choose where to save/output-- save as, and that will run it-- give errors if not selected, etc
-      rhubarbCli.StartInfo.FileName = rhubarbExecPath;
-      //IF textScriptPath is null, then you omit -d + textScriptPath part-- change later
-      if (optionalTxtPath == "")
-      {
-        rhubarbCli.StartInfo.Arguments = "-o " + jsonOutput + " -f json " + audioPath;
-      }
-      else
-      {
-        rhubarbCli.StartInfo.Arguments = "-o " + jsonOutput + " -f json -d " + optionalTxtPath + " " + audioPath;
 
 
-      }
-
-      rhubarbCli.StartInfo.RedirectStandardError = true;
-      rhubarbCli.StartInfo.UseShellExecute = false;
-      rhubarbCli.StartInfo.CreateNoWindow = true;
-
-      rhubarbCli.Start();
-      rhubarbErrors = rhubarbCli.StandardError.ReadToEnd();
-
-
-     
-
-      
-      /*
-      rhubarbCli.Start();
-
-      string errors = rhubarbCli.StandardError.ReadToEnd();
-
-      if (!string.IsNullOrWhiteSpace(errors))
-      {
-        Console.WriteLine("Error Output:\n" + errors);
-      }*/
-    }
+    
 
     //for form: set when enter. try to autofill when possible-- so like, have a dropdown, set dropdown value to letter if it exists (do lower case and upper case)
     public bool SetVisemeMap(LayerGroup mouthRoot)
