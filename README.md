@@ -1,101 +1,19 @@
 
-# SharpQuill
+# Mini projects built on SharpQuill
 
-FORKED FROM JOAN CHARMANT. I'M ONLY USING FOR VERY SIMPLE PURPOSES. SharpQuill is an open source .NET library for reading and writing Oculus Quill scenes.
+Please see Joan Charmant's SharpQuill for the original code and documentation; this repository is forked from SharpQuill. [SharpQuill by Joan Charmant](https://github.com/JoanCharmant/SharpQuill)
+This repo is basically a bunch of mini spaghetti code projects to help automate certain aspects of [Quill](https://quill.art/) (VR art and illustration tool for Quest/Rift) creation. Built using SharpQuill. Most are broken or experimental/partially finised. A few (mentioned below) are somewhat usable as is. But some of these are still very messy and not well commented--I may fix that eventually.
 
-This project is not affiliated with Facebook or Oculus.
+Please reach out if you'd like access to standalone versions of any of the mini apps, happy to share if there's interest.
 
-## Features
-- .NET Standard 2.0+.
-- Reads, creates, modifies and saves Oculus Quill project files.
-- Exposes the scene hierarchy, transforms, drawings, paint strokes, vertices, animation (tweening & frame by frame).
-- Supported layer types: Group, Paint, Viewpoint, Camera. Not supported: Sound, Picture, Model.
+Please also feel free to fork any code for your own projects. And to find a community of other using and creating for Quill, join the [Virtual Animation discord](https://discord.gg/virtual-animation-696504903060947116)
 
 ## Use cases
-- Exchange data with other VR painting programs or traditional programs.
-- Convert traditional assets into spatial drawings.
-- Create procedural VR paintings and render them in Quill.
-- Merge multiple scenes by cherry picking layers from various sources.
-
+- Duplicating and renaming layers automatically to get setup for blendshape creation (see Create Blendshapes Starter)
+= Automation of creating a steady particles effect in Quill (see Particle Generator)
+- Automation of visemes for characters in Quill, integrating [Rhubarb Lip Sync](https://github.com/DanielSWolf/rhubarb-lip-sync). (see VisemesWinFormsApp)
 
 ## Limitations
-- The application state file (state.json) is currently not parsed and a default one is created on output.
-- Attachment layers of type Sound, Picture and Model are not currently supported. 
-- The scene thumbnail is not supported.
-- The transform matrices from old projects (≤ Quill 1.3, circa 2017) are not supported. A work around is to open the file in a recent version of Quill and save it back.
+-There are a lot. In the standalone versions, I typically link to a Google doc. Maybe I will link these docs here later...
 
-
-## Examples
-
-### Reading
-
-Import a folder and print some top level info.
-
-```csharp
-      var sequence = QuillSequenceReader.Read(<Directory path>);
-      Console.WriteLine("Background color: {0}", sequence.BackgroundColor);
-      Console.WriteLine("Framerate: {0}", sequence.Framerate);
-```
-
-Drill down the layer tree and print out paint layer statistics.
-
-```csharp
-    // Visits the tree and prints the total number of strokes and vertices of each paint layer.
-    private void VisitLayers(Layer layer)
-    {
-      if (layer is LayerGroup)
-      {
-        foreach (Layer child in ((LayerGroup)layer).Children)
-          VisitLayers(child);
-      }
-      else if (layer is LayerPaint)
-      {
-        LayerPaint layerPaint = layer as LayerPaint;
-        int countStrokes = 0;
-        int countVertices = 0;
-        foreach (Drawing drawing in layerPaint.Drawings)
-        {
-          countStrokes += drawing.Data.Strokes.Count;
-          foreach (Stroke stroke in drawing.Data.Strokes)
-            countVertices += stroke.Vertices.Count;
-        }
-
-        Console.WriteLine("Layer:{0}, Drawings:{1}, Strokes:{2}, Vertices:{3}", 
-          layerPaint.Name, layerPaint.Drawings.Count, countStrokes, countVertices); 
-      }
-    }
-
-    // Call.
-    VisitLayers(sequence.RootLayer);
-```
-
-### Writing
-
-Create a new sequence, add an existing layer to some arbitrary path in the hierarchy, export to a folder.
-
-```csharp
-    // Create the standard default scene but without any paint layer.
-    var sequence = Sequence.CreateDefault();
-
-    // Insert an existing layer somewhere in the hierarchy.
-    // This creates the necessary groups along the way if they don't exist.
-    // The inital "/" is interpreted as the root group of the sequence.
-    sequence.InsertLayerAt(layer, "/Group/SubGroup/SubSubGroup");
-
-    // Export the scene to a folder.
-    QuillSequenceWriter.Write(sequence, <Directory path>);
-```
-
-
-## Document object model
-TODO
-
-## QBin binary format
-http://joancharmant.com/blog/turning-real-scenes-into-vr-paintings/#oculus-quill-data-format
-
-## Contributing
-Contributions are appreciated. The easiest way to get involved is to submit a pull request with your changes against the master branch.
-
-## License
-Apache 2.0. See [LICENSE](LICENSE.md) for details.
 
