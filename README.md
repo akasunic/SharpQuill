@@ -4,7 +4,7 @@
 Please see Joan Charmant's SharpQuill for the original code and documentation. [SharpQuill by Joan Charmant](https://github.com/JoanCharmant/SharpQuill)
 These are just mini spaghetti code projects to help automate certain aspects of [Quill](https://quill.art/) (VR art and illustration tool for Quest/Rift) creation. Built using SharpQuill. Most are broken or experimental/partially finised. A few (below) are somewhat usable as is. Some projects are still very messy and not well commented--I may fix that eventually.
 
-Please reach out if you'd like access to standalone versions of any of the mini apps. 
+Please reach out if you'd like access to standalone versions of any of the mini apps, happy to share if there's interest.
 
 Please also feel free to fork any code for your own projects. And to find a community of other using and creating for Quill, join the [Virtual Animation discord](https://discord.gg/virtual-animation-696504903060947116)
 
