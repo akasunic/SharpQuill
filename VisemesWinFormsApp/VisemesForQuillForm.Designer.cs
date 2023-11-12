@@ -71,6 +71,7 @@
             this.mainFlow = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.title = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.step3Flow = new System.Windows.Forms.FlowLayoutPanel();
             this.step4Flow = new System.Windows.Forms.FlowLayoutPanel();
@@ -462,12 +463,12 @@
             // 
             this.infoLink.AutoSize = true;
             this.infoLink.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.infoLink.Location = new System.Drawing.Point(6, 10);
+            this.infoLink.Location = new System.Drawing.Point(391, 6);
             this.infoLink.Name = "infoLink";
-            this.infoLink.Size = new System.Drawing.Size(145, 17);
+            this.infoLink.Size = new System.Drawing.Size(245, 17);
             this.infoLink.TabIndex = 24;
             this.infoLink.TabStop = true;
-            this.infoLink.Text = "Click here for more info";
+            this.infoLink.Text = "For more info and instructions, click here";
             this.infoLink.Click += new System.EventHandler(this.infoLink_Click);
             // 
             // step2_checkOnlyOneLabel
@@ -501,7 +502,7 @@
             this.mainFlow.Controls.Add(this.step5Flow);
             this.mainFlow.Controls.Add(this.panel2);
             this.mainFlow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.mainFlow.Location = new System.Drawing.Point(35, 12);
+            this.mainFlow.Location = new System.Drawing.Point(43, 12);
             this.mainFlow.Name = "mainFlow";
             this.mainFlow.Size = new System.Drawing.Size(770, 621);
             this.mainFlow.TabIndex = 28;
@@ -517,6 +518,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.title);
             this.panel1.Controls.Add(this.infoLink);
             this.panel1.Controls.Add(this.rhubarbLoc);
             this.panel1.Controls.Add(this.selectedQuillPath);
@@ -530,6 +532,18 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(761, 250);
             this.panel1.TabIndex = 25;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // title
+            // 
+            this.title.AutoSize = true;
+            this.title.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.title.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(191)))), ((int)(((byte)(255)))));
+            this.title.Location = new System.Drawing.Point(3, 0);
+            this.title.Name = "title";
+            this.title.Size = new System.Drawing.Size(386, 23);
+            this.title.TabIndex = 28;
+            this.title.Text = "Quill Visemes Automator (using Rhubarb)";
             // 
             // progressBar1
             // 
@@ -667,6 +681,7 @@
             this.Controls.Add(this.mainFlow);
             this.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ForeColor = System.Drawing.Color.Black;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "VisemesForQuillForm";
             this.Text = "Viseme Automator for Quill";
             this.Load += new System.EventHandler(this.VisemesForQuillForm_Load_1);
@@ -764,5 +779,7 @@
     private Label rhubarbAnalysisMsg;
     private Label fatalMessage;
     private Label finalMessage;
+    private Label label1;
+    private Label title;
   }
 }

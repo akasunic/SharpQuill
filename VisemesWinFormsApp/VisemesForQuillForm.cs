@@ -338,6 +338,7 @@ namespace VisemesWinFormsApp
           }
           catch
           {
+          
             chooseMouths_errorProvider.SetError(step3, "You must have a mouth layer selected for each character");
             return;
           }
@@ -349,6 +350,10 @@ namespace VisemesWinFormsApp
             chooseMouths_errorProvider.SetError(step3, "Each mouth layer must contain folder visemes: A, B, C, D, E, F, G, H, X");
             return;
           }
+          //cloning here, before 
+        LayerGroup neutralMouth = vg.createNeutralMouth();
+        neutralMouth.Name += "_" + charKey;
+        sequence.InsertLayerAt(neutralMouth, "");
         //maybe add a file dialog here? could even use json and just replace it here, take it out of the method. if that's easier
         //but i'd much rather set location automaticalluy!!!
         string exitStatus = await generateRhubarbJson(rhubarbExecPath, currChar.Audio.LongAudio, currChar.Audio.LongTxt);
@@ -372,13 +377,13 @@ namespace VisemesWinFormsApp
           }
         }
       }
-      await Task.Delay(2000); // Allow UI update
+      await Task.Delay(2000); // Allow user to view UI update (success/fail messages)
       if (saveFileDialog.ShowDialog() == DialogResult.OK)
       {
         string writePath = saveFileDialog.FileName;
         QuillSequenceWriter.Write(sequence, writePath);
         rhubarbAnalysisMsg.Text = "";
-        finalMessage.Text = "Quill project successfully created! See: " + writePath;
+        finalMessage.Text = "Quill project successfully created!";
 
       }
       else
@@ -571,6 +576,11 @@ namespace VisemesWinFormsApp
 
 
     private void panel2_Paint(object sender, PaintEventArgs e)
+    {
+
+    }
+
+    private void panel1_Paint(object sender, PaintEventArgs e)
     {
 
     }

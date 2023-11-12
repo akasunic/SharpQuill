@@ -52,7 +52,7 @@ namespace VisemesWinFormsApp
         //Console.WriteLine(child.Name);
         foreach (var item in visemes)
         {
-          //maybe take care of special characters here as well
+          //maybe take care of special characters here as well. eh
           if (child.Name.ToLower().Trim() == item.ToLower())
           {
             visemeMap[item] = child;
@@ -72,8 +72,23 @@ namespace VisemesWinFormsApp
 
     }  // find group layers with names-- each must contain at least one paint layer (can be empty and fill out later, I suppose)
 
-    //read the json file in
-    //later get from form, but hardcoding for now
+    //this should be run right after SetVisemeMap, before SetVisemeAnims
+   public LayerGroup createNeutralMouth()
+    {
+      LayerGroup neutralMouth = new LayerGroup();
+      neutralMouth.Name = "Neutral_Mouth";
+      foreach (Layer child in visemeMap["X"].Children)
+      {
+        if (child.Type.ToString() == "Paint")
+        {
+          LayerPaint paintCopy = JsonConvert.DeserializeObject<LayerPaint>(JsonConvert.SerializeObject(child));
+          neutralMouth.Children.Add(paintCopy);
+        }
+      }
+     
+      return neutralMouth;
+      
+    }
 
     public void SetVisemeAnims(string jsonPath)
 
