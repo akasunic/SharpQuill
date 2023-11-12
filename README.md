@@ -1,8 +1,8 @@
 
 # Mini projects built on SharpQuill
 
-Please see Joan Charmant's SharpQuill for the original code and documentation. [SharpQuill by Joan Charmant](https://github.com/JoanCharmant/SharpQuill)
-These are just mini spaghetti code projects to help automate certain aspects of [Quill](https://quill.art/) (VR art and illustration tool for Quest/Rift) creation. Built using SharpQuill. Most are broken or experimental/partially finised. A few (below) are somewhat usable as is. Some projects are still very messy and not well commented--I may fix that eventually.
+Please see Joan Charmant's SharpQuill for the original code and documentation; this repository is forked from SharpQuill. [SharpQuill by Joan Charmant](https://github.com/JoanCharmant/SharpQuill)
+This repo is basically a bunch of mini spaghetti code projects to help automate certain aspects of [Quill](https://quill.art/) (VR art and illustration tool for Quest/Rift) creation. Built using SharpQuill. Most are broken or experimental/partially finised. A few (mentioned below) are somewhat usable as is. But some of these are still very messy and not well commented--I may fix that eventually.
 
 Please reach out if you'd like access to standalone versions of any of the mini apps, happy to share if there's interest.
 
