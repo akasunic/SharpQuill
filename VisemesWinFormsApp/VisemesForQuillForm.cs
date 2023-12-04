@@ -158,7 +158,7 @@ namespace VisemesWinFormsApp
     {
       string spaces = new String(' ', offset * 5);
       //not including paint layers, because it should be a group layer!
-      if (layer.Type.ToString() == "Group" && offset < 3)//okay, 3 is somewhat arbitrary... maybe a better way to do this??
+      if (layer.Type.ToString() == "Group")//-- just going to inclued all, it's fine
       {
         //add to checkbox list
         if (layer.Name != "Root" && !vg.visemes.Contains(layer.Name))
@@ -166,10 +166,11 @@ namespace VisemesWinFormsApp
           quillFolders_checklistBox.Items.Add(spaces + layer.Name);
           while (characterLayers.ContainsKey(layer.Name))
           {
-            layer.Name = "_" + layer.Name;
+            layer.Name = layer.Name + " ";
           }
           characterLayers.Add(layer.Name, layer);
-         
+
+
         }
 
         foreach (Layer child in ((LayerGroup)layer).Children)
@@ -205,7 +206,7 @@ namespace VisemesWinFormsApp
         ComboBox mouthDropdown = ((ComboBox)(charMouthPanel.Controls.Find("step3_mouthDropdown", true)[0]));
         thisChar.mouthOptions.Clear();
         thisChar.MouthDropDown= mouthDropdown;
-        populateMouthDropdown(mouthDropdown, charLayer,  0, thisChar);
+        populateMouthDropdown(mouthDropdown, charLayer,  0, thisChar, "");
         updateAudioMatchDropdowns(true, thisChar);
         //also add to all the audiomatch dropdowns (step 5)
       }
@@ -251,19 +252,31 @@ namespace VisemesWinFormsApp
       }
     }
 
-    private void populateMouthDropdown(ComboBox mouthDropdown, Layer layer, int offset, Character charac)
+    private void populateMouthDropdown(ComboBox mouthDropdown, Layer layer, int offset, Character charac, String path)
     {
       string spaces = new String(' ', offset * 5);
+      string layerPath = path;
       if (layer.Type.ToString() == "Group" && !layer.Name.ToString().ToLower().Contains("mouth"))
       {
+        layerPath += "_" + layer.Name;
         foreach (Layer child in ((LayerGroup)layer).Children)
         {
           if (child.Type.ToString() == "Group")
           {
             mouthDropdown.Items.Add(spaces + child.Name);
-            charac.mouthOptions.Add(spaces + child.Name, child);
+            try
+            {
+              charac.mouthOptions.Add(spaces + child.Name, child);
 
-            populateMouthDropdown(mouthDropdown, child, offset + 1, charac);
+            }
+
+            catch
+            {
+              charac.mouthOptions.Add(spaces + child.Name + layerPath, child);
+            }
+            
+
+            populateMouthDropdown(mouthDropdown, child, offset + 1, charac, layerPath);
           }
         }
       }
